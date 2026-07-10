@@ -44,7 +44,7 @@ AVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAP
 NFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARA
 FGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR
 
->LACTAMASE|Acinetobacter_baumannii|blaNDM-1|W8T3S1 Metallo-beta-lactamase NDM-1 (real, UniProt, from Acinetobacter sp. NF512 — closely related to A. baumannii; NOTE: NDM-1 spreads via horizontal plasmid transfer (Tn125 transposon), so this sequence is virtually IDENTICAL to the K. pneumoniae entry above rather than independently evolved — see the interpretation notes)
+>LACTAMASE|Acinetobacter_baumannii|blaNDM-1|W8T3S1 Metallo-beta-lactamase NDM-1 (real, UniProt, from Acinetobacter sp. NF512). DELIBERATE CHOICE: this is a close relative of A. baumannii rather than the species itself, kept intentionally — NDM-1 spreads via horizontal plasmid transfer (Tn125 transposon) rather than vertical inheritance, so this sequence being virtually identical to the K. pneumoniae entry above, despite the species difference, is itself the evidence for Finding 1 in the Discussion (algorithm sensitivity to sequence length shows up even when the underlying biology is near-identical copies, not divergent lineages).
 MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQ
 HTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTH
 AHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPL
