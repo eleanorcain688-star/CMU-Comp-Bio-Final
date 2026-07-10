@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Structure Is Not Function: Testing Alignment Algorithms on Bacterial Proteins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #eef1ef;
+    --surface: #ffffff;
+    --ink: #1b241f;
+    --ink-soft: #4c574f;
+    --rule: #d3dad4;
+    --lactamase: #2e7d6b;
+    --lactamase-bg: #e3f0ec;
+    --trnase: #4a5f9e;
+    --trnase-bg: #e6e9f5;
+    --tf: #b5651d;
+    --tf-bg: #f6e9dc;
+    --accent: #2e7d6b;
+    --max-w: 980px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 { font-family: 'Source Serif 4', serif; font-weight: 600; margin: 0; color: var(--ink); }
+
+  .mono { font-family: 'IBM Plex Mono', monospace; }
+
+  a { color: var(--lactamase); }
+
+  .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- Nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(238,241,239,0.92);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; }
+  nav .brand { font-family: 'Source Serif 4', serif; font-weight: 600; font-size: 15px; letter-spacing: 0.01em; }
+  nav ul { list-style: none; display: flex; gap: 22px; margin: 0; padding: 0; }
+  nav a { color: var(--ink-soft); text-decoration: none; font-size: 13px; letter-spacing: 0.03em; text-transform: uppercase; }
+  nav a:hover { color: var(--ink); }
+
+  /* ---------- Hero ---------- */
+  header.hero { padding: 86px 0 54px; border-bottom: 1px solid var(--rule); }
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-soft); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--ink-soft); display: inline-block; }
+  h1.title { font-size: clamp(32px, 4.4vw, 50px); line-height: 1.12; max-width: 15ch; letter-spacing: -0.01em; }
+  .subtitle { max-width: 62ch; margin-top: 22px; font-size: 17.5px; color: var(--ink-soft); }
+  .hero-meta { margin-top: 34px; display: flex; gap: 40px; flex-wrap: wrap; }
+  .hero-meta div { font-size: 13px; }
+  .hero-meta .label { color: var(--ink-soft); font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+
+  /* ---------- Sections ---------- */
+  section { padding: 64px 0; border-bottom: 1px solid var(--rule); }
+  .section-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 34px; }
+  .section-num { font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); font-size: 14px; }
+  .section-head h2 { font-size: 27px; }
+  .lede { max-width: 68ch; color: var(--ink-soft); font-size: 16px; margin-bottom: 28px; }
+
+  /* ---------- Class legend chips ---------- */
+  .legend { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 30px; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; padding: 6px 12px; border-radius: 3px; border: 1px solid var(--rule); background: var(--surface); }
+  .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .dot.lac { background: var(--lactamase); }
+  .dot.trn { background: var(--trnase); }
+  .dot.tf  { background: var(--tf); }
+
+  /* ---------- Cards ---------- */
+  .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 26px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 720px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+  .algo-card h3 { font-size: 17px; margin-bottom: 6px; }
+  .algo-card .tagline { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); margin-bottom: 12px; }
+  .algo-card p { font-size: 14.5px; color: var(--ink-soft); margin: 0; }
+
+  /* ---------- Heatmap (signature element) ---------- */
+  .heatmap-panel { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 30px; }
+  .algo-toggle { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+  .algo-toggle button {
+    font-family: 'IBM Plex Mono', monospace; font-size: 12.5px; padding: 9px 16px;
+    border: 1px solid var(--rule); background: var(--bg); color: var(--ink-soft);
+    border-radius: 3px; cursor: pointer; transition: all .15s ease;
+  }
+  .algo-toggle button:hover { border-color: var(--accent); color: var(--ink); }
+  .algo-toggle button.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+
+  #heatmapWrap { overflow-x: auto; }
+  table.heatmap { border-collapse: collapse; font-family: 'IBM Plex Mono', monospace; font-size: 11px; }
+  table.heatmap th { font-weight: 500; padding: 5px 6px; text-align: left; white-space: nowrap; }
+  table.heatmap th.rowlabel { text-align: right; padding-right: 10px; }
+  table.heatmap th.collabel { writing-mode: vertical-rl; transform: rotate(180deg); height: 90px; vertical-align: bottom; }
+  table.heatmap td {
+    width: 34px; height: 34px; text-align: center; cursor: pointer;
+    border: 1px solid var(--bg); color: #14261f; font-size: 10.5px;
+    transition: outline .1s ease;
+  }
+  table.heatmap td:hover { outline: 2px solid var(--ink); outline-offset: -2px; }
+  .class-tick { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+
+  #tooltip {
+    margin-top: 18px; padding: 16px 18px; background: var(--bg); border: 1px dashed var(--rule);
+    border-radius: 4px; font-size: 13.5px; min-height: 26px; color: var(--ink-soft);
+  }
+  #tooltip .pair { color: var(--ink); font-weight: 500; }
+  #tooltip .seqline { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; margin-top: 10px; word-break: break-all; }
+
+  .caveat {
+    margin-top: 20px; font-size: 13px; color: var(--ink-soft); background: var(--tf-bg);
+    border-left: 3px solid var(--tf); padding: 10px 14px; border-radius: 0 3px 3px 0;
+  }
+
+  /* ---------- Alignment viewer ---------- */
+  .align-view { font-family: 'IBM Plex Mono', monospace; font-size: 13px; overflow-x: auto; white-space: pre; padding: 16px; background: #10201a; color: #dbe7e1; border-radius: 4px; line-height: 1.9; }
+  .align-view .match { color: #8fe0c4; }
+  .align-view .mismatch { color: #e8b06b; }
+  .align-view .gap { color: #6b7a72; }
+
+  /* ---------- Refs ---------- */
+  ol.refs { padding-left: 20px; font-size: 14px; color: var(--ink-soft); }
+  ol.refs li { margin-bottom: 10px; }
+  ol.refs .paper-title { color: var(--ink); }
+
+  footer { padding: 40px 0 70px; text-align: center; color: var(--ink-soft); font-size: 13px; }
+
+  ::selection { background: var(--lactamase); color: white; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">β-lactamase / tRNase Z alignment study</div>
+    <ul>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#methods">Methods</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#explorer">Explorer</a></li>
+      <li><a href="#discussion">Discussion</a></li>
+      <li><a href="#references">References</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Computational Biology — Pre-College Final Project</div>
+    <h1 class="title">Does sequence alignment recover function, or only ancestry?</h1>
+    <p class="subtitle">
+      We compare three alignment algorithms — global, local, and a seed-and-extend
+      heuristic modeled on BLAST — across three protein classes with a known,
+      layered relationship: a target enzyme, its likely structural ancestor with an
+      unrelated function, and an unrelated negative control.
+    </p>
+    <div class="hero-meta">
+      <div><div class="label">Target</div>β-lactamases</div>
+      <div><div class="label">Structural homolog</div>tRNase Z</div>
+      <div><div class="label">Negative control</div>Transcription factors</div>
+      <div><div class="label">Algorithms</div>NW · SW · mini-BLAST</div>
+    </div>
+  </div>
+</header>
+
+<section id="background">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">01</span><h2>Background</h2></div>
+    <p class="lede">
+      β-lactamases are the enzymes that make bacteria resistant to penicillin-class
+      antibiotics — they cut open the drug's reactive ring before it can disable the
+      cell-wall-building machinery. Structural studies place their likely evolutionary
+      origin in a much older family: <strong>tRNase Z</strong> enzymes, which trim the
+      3′ ends of pre-tRNA molecules. Both fold around the same metallo-β-lactamase
+      scaffold, coordinating similar active-site geometry, but the two proteins do
+      almost nothing alike in the cell.
+    </p>
+    <p class="lede">
+      That split — same fold, different job — is a standing problem for any tool that
+      infers function from sequence similarity. If an alignment algorithm scores
+      β-lactamase against tRNase Z as "highly similar," it's really only picking up
+      shared ancestry, not shared function. We use a third, functionally and
+      structurally unrelated protein family (bacterial transcription factors) as a
+      negative control: an algorithm that's actually function-aware should separate
+      TFs cleanly from both of the other groups, while still correctly relating —
+      or correctly failing to relate — β-lactamase to tRNase Z.
+    </p>
+    <div class="legend">
+      <span class="chip"><span class="dot lac"></span>β-lactamase (target)</span>
+      <span class="chip"><span class="dot trn"></span>tRNase Z (structural homolog)</span>
+      <span class="chip"><span class="dot tf"></span>Transcription factor (negative control)</span>
+    </div>
+
+    <div class="card" style="margin-top:8px;">
+      <svg viewBox="0 0 860 260" style="width:100%;height:auto;font-family:'IBM Plex Sans',sans-serif;">
+        <!-- shared ancestral fold, left pair -->
+        <text x="185" y="26" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4c574f" letter-spacing="0.04em">SAME FOLD</text>
+        <line x1="70" y1="34" x2="300" y2="34" stroke="#d3dad4" stroke-width="1"/>
+
+        <!-- beta-lactamase blob -->
+        <path d="M60,70 C40,110 55,150 95,165 C140,180 175,155 178,115 C180,80 150,55 110,58 C85,60 70,55 60,70 Z"
+              fill="#e3f0ec" stroke="#2e7d6b" stroke-width="2"/>
+        <circle cx="118" cy="112" r="7" fill="#2e7d6b"/>
+        <text x="119" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#1b241f">β-lactamase</text>
+        <text x="119" y="222" text-anchor="middle" font-size="11.5" fill="#4c574f">breaks down penicillin</text>
+
+        <!-- tRNase Z blob (same base shape/fold, different label) -->
+        <path d="M230,70 C210,110 225,150 265,165 C310,180 345,155 348,115 C350,80 320,55 280,58 C255,60 240,55 230,70 Z"
+              fill="#e6e9f5" stroke="#4a5f9e" stroke-width="2"/>
+        <circle cx="288" cy="112" r="7" fill="#4a5f9e"/>
+        <text x="289" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#1b241f">tRNase Z</text>
+        <text x="289" y="222" text-anchor="middle" font-size="11.5" fill="#4c574f">trims pre-tRNA ends</text>
+
+        <!-- evolutionary arrow between them -->
+        <path d="M190,115 C200,115 218,115 228,115" stroke="#8a958d" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+        <text x="209" y="100" text-anchor="middle" font-size="10.5" fill="#8a958d" font-family="IBM Plex Mono">diverged</text>
+
+        <!-- divider -->
+        <line x1="420" y1="20" x2="420" y2="240" stroke="#d3dad4" stroke-dasharray="4 4"/>
+
+        <text x="640" y="26" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#4c574f" letter-spacing="0.04em">UNRELATED FOLD</text>
+        <line x1="530" y1="34" x2="750" y2="34" stroke="#d3dad4" stroke-width="1"/>
+
+        <!-- TF blob: different shape entirely (helix-turn-helix suggestion) -->
+        <path d="M520,140 Q540,60 610,70 Q660,78 650,120 Q700,110 715,150 Q725,185 685,195 Q640,205 610,180 Q560,195 535,175 Q505,165 520,140 Z"
+              fill="#f6e9dc" stroke="#b5651d" stroke-width="2"/>
+        <circle cx="618" cy="128" r="7" fill="#b5651d"/>
+        <text x="618" y="222" text-anchor="middle" font-size="13" font-weight="600" fill="#1b241f">Transcription factor</text>
+        <text x="618" y="239" text-anchor="middle" font-size="11.5" fill="#4c574f">turns genes on / off</text>
+
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#8a958d"/>
+          </marker>
+        </defs>
+      </svg>
+      <p style="font-size:13px;color:var(--ink-soft);margin:14px 0 0;">
+        β-lactamase and tRNase Z share the same underlying metallo-hydrolase
+        scaffold (illustrated here as the same blob shape) — evidence they
+        share a common ancestor — but carry out unrelated chemistry. The
+        transcription factor control has no such shared scaffold with either.
+        An alignment method that's actually function-aware shouldn't be fooled
+        by shape alone.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="methods">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2>Methods</h2></div>
+    <p class="lede">
+      Sequences for three bacterial species were pulled from UniProt for each of the
+      three protein classes (nine sequences total), then run pairwise through three
+      alignment algorithms, all implemented from scratch and scored with the standard
+      BLOSUM62 substitution matrix.
+    </p>
+    <div class="grid-3">
+      <div class="card algo-card">
+        <h3>Needleman–Wunsch</h3>
+        <div class="tagline">global · dynamic programming</div>
+        <p>Forces an end-to-end alignment across the full length of both sequences. Sensitive to length mismatches and unrelated flanking regions.</p>
+      </div>
+      <div class="card algo-card">
+        <h3>Smith–Waterman</h3>
+        <div class="tagline">local · dynamic programming</div>
+        <p>Finds the single best-matching subregion, ignoring the rest. Better suited to comparing a conserved domain shared by otherwise divergent proteins.</p>
+      </div>
+      <div class="card algo-card">
+        <h3>Mini-BLAST</h3>
+        <div class="tagline">seed-and-extend heuristic</div>
+        <p>Indexes short exact-match "words," then extends each hit until the score drops off (X-drop). Ungapped and fast — the same core idea as real BLAST.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="results">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">03</span><h2>Results</h2></div>
+    <p class="lede">
+      Percent identity for every pair of sequences, under each algorithm. Rows and
+      columns are grouped and color-ticked by protein class — watch whether the
+      β-lactamase/tRNase Z block lights up differently from the transcription-factor
+      block as you switch algorithms.
+    </p>
+
+    <div class="grid-2" style="align-items:start;">
+      <div class="heatmap-panel">
+        <div class="algo-toggle" id="algoToggle"></div>
+        <div id="heatmapWrap"></div>
+        <div id="tooltip">Hover or tap a cell to see the pairwise alignment detail.</div>
+      </div>
+
+      <div class="heatmap-panel">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:16px;">
+          Clustering by similarity (average linkage)
+        </div>
+        <div id="dendrogramWrap"></div>
+        <p style="font-size:12.5px;color:var(--ink-soft);margin-top:14px;">
+          Branch length = dissimilarity (100 − % identity). If an algorithm
+          recovers <em>function</em>, β-lactamase and TF should end up in
+          separate branches while β-lactamase and tRNase Z may still merge
+          early despite different jobs, since this view reflects sequence
+          similarity, not annotated function.
+        </p>
+      </div>
+    </div>
+
+    <div class="caveat" id="placeholderNotice" style="display:none">
+      ⚠ This dataset currently includes placeholder sequences (marked in the FASTA
+      file) standing in for species not yet finalized. Swap them for real UniProt
+      sequences before treating these numbers as a finding — see Methods.
+    </div>
+  </div>
+</section>
+
+<section id="explorer">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">04</span><h2>Alignment Explorer</h2></div>
+    <p class="lede">Pick any two sequences to see their actual aligned residues, colored by match / mismatch / gap.</p>
+    <div class="grid-2" style="margin-bottom:22px;">
+      <div>
+        <div class="hero-meta-label" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:6px;">Sequence A</div>
+        <select id="seqA" class="mono" style="width:100%;padding:9px;border:1px solid var(--rule);border-radius:3px;background:#fff;"></select>
+      </div>
+      <div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:6px;">Sequence B</div>
+        <select id="seqB" class="mono" style="width:100%;padding:9px;border:1px solid var(--rule);border-radius:3px;background:#fff;"></select>
+      </div>
+    </div>
+    <div class="algo-toggle" id="explorerToggle"></div>
+    <div class="align-view" id="alignView">Select two sequences above.</div>
+  </div>
+</section>
+
+<section id="discussion">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">05</span><h2>Discussion</h2></div>
+    <p class="lede" id="discussionText">
+      Run the analysis on your finalized species set and interpret the heatmap here:
+      does any algorithm separate β-lactamase from tRNase Z despite their shared
+      fold? Does mini-BLAST's ungapped, word-based approach miss relationships that
+      the full dynamic-programming methods catch, or does it agree with them? Replace
+      this paragraph with your own reading of the results once real sequences are in.
+    </p>
+  </div>
+</section>
+
+<section id="references" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">06</span><h2>References</h2></div>
+    <ol class="refs">
+      <li><span class="paper-title">Altschul, S. F., et al. (1990).</span> Basic local alignment search tool. <em>Journal of Molecular Biology</em>, 215(3), 403–410.</li>
+      <li><span class="paper-title">Needleman, S. B., & Wunsch, C. D. (1970).</span> A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>Journal of Molecular Biology</em>, 48(3), 443–453.</li>
+      <li><span class="paper-title">Smith, T. F., & Waterman, M. S. (1981).</span> Identification of common molecular subsequences. <em>Journal of Molecular Biology</em>, 147(1), 195–197.</li>
+      <li><span class="paper-title">UniProt Consortium.</span> UniProt: the Universal Protein Knowledgebase. <em>Nucleic Acids Research</em>. uniprot.org</li>
+      <li>Add your remaining sources here (aim for 4+ reputable references per the checkpoint requirements).</li>
+    </ol>
+  </div>
+</section>
+
+<footer>CMU Pre-College Computational Biology · Final Project</footer>
+
+<script id="resultsData" type="application/json">
+{
+  "labels": [
+    "LACTAMASE:Escherichia_coli",
+    "LACTAMASE:PLACEHOLDER_species2",
+    "LACTAMASE:PLACEHOLDER_species3",
+    "TRNASE_Z:Pseudomonas_putida",
+    "TRNASE_Z:PLACEHOLDER_species2",
+    "TRNASE_Z:PLACEHOLDER_species3",
+    "TF:PLACEHOLDER_species1",
+    "TF:PLACEHOLDER_species2",
+    "TF:PLACEHOLDER_species3"
+  ],
+  "classes": [
+    "LACTAMASE",
+    "LACTAMASE",
+    "LACTAMASE",
+    "TRNASE_Z",
+    "TRNASE_Z",
+    "TRNASE_Z",
+    "TF",
+    "TF",
+    "TF"
+  ],
+  "species": [
+    "Escherichia_coli",
+    "PLACEHOLDER_species2",
+    "PLACEHOLDER_species3",
+    "Pseudomonas_putida",
+    "PLACEHOLDER_species2",
+    "PLACEHOLDER_species3",
+    "PLACEHOLDER_species1",
+    "PLACEHOLDER_species2",
+    "PLACEHOLDER_species3"
+  ],
+  "genes": [
+    "blaTEM-1",
+    "blaXXX",
+    "blaXXX",
+    "rnz",
+    "rnz",
+    "rnz",
+    "crp_or_other",
+    "crp_or_other",
+    "crp_or_other"
+  ],
+  "accessions": [
+    "P62593",
+    "PLACEHOLDER",
+    "PLACEHOLDER",
+    "Q88FQ4",
+    "PLACEHOLDER",
+    "PLACEHOLDER",
+    "PLACEHOLDER",
+    "PLACEHOLDER",
+    "PLACEHOLDER"
+  ],
+  "lengths": [
+    286,
+    180,
+    180,
+    319,
+    120,
+    120,
+    120,
+    120,
+    106
+  ],
+  "matrices": {
+    "needleman_wunsch": [
+      [
+        100.0,
+        62.94,
+        62.94,
+        17.13,
+        18.53,
+        22.03,
+        17.83,
+        19.23,
+        17.48
+      ],
+      [
+        62.94,
+        100.0,
+        71.27,
+        21.0,
+        22.65,
+        21.11,
+        16.67,
+        19.89,
+        16.67
+      ],
+      [
+        62.94,
+        71.27,
+        100.0,
+        21.32,
+        20.56,
+        20.56,
+        18.78,
+        22.65,
+        18.33
+      ],
+      [
+        17.13,
+        21.0,
+        21.32,
+        100.0,
+        37.62,
+        37.62,
+        20.38,
+        19.12,
+        16.93
+      ],
+      [
+        18.53,
+        22.65,
+        20.56,
+        37.62,
+        100.0,
+        57.38,
+        18.9,
+        14.52,
+        16.67
+      ],
+      [
+        22.03,
+        21.11,
+        20.56,
+        37.62,
+        57.38,
+        100.0,
+        18.11,
+        19.35,
+        17.5
+      ],
+      [
+        17.83,
+        16.67,
+        18.78,
+        20.38,
+        18.9,
+        18.11,
+        100.0,
+        53.72,
+        57.5
+      ],
+      [
+        19.23,
+        19.89,
+        22.65,
+        19.12,
+        14.52,
+        19.35,
+        53.72,
+        100.0,
+        58.33
+      ],
+      [
+        17.48,
+        16.67,
+        18.33,
+        16.93,
+        16.67,
+        17.5,
+        57.5,
+        58.33,
+        100.0
+      ]
+    ],
+    "smith_waterman": [
+      [
+        100.0,
+        100.0,
+        90.58,
+        31.25,
+        31.25,
+        25.93,
+        30.43,
+        25.0,
+        44.44
+      ],
+      [
+        100.0,
+        100.0,
+        90.58,
+        32.35,
+        32.35,
+        38.46,
+        30.43,
+        25.0,
+        44.44
+      ],
+      [
+        90.58,
+        90.58,
+        100.0,
+        42.86,
+        25.93,
+        25.93,
+        36.36,
+        25.0,
+        44.44
+      ],
+      [
+        31.25,
+        32.35,
+        42.86,
+        100.0,
+        100.0,
+        100.0,
+        21.15,
+        38.1,
+        20.83
+      ],
+      [
+        31.25,
+        32.35,
+        25.93,
+        100.0,
+        100.0,
+        93.85,
+        26.92,
+        26.92,
+        26.92
+      ],
+      [
+        25.93,
+        38.46,
+        25.93,
+        100.0,
+        93.85,
+        100.0,
+        50.0,
+        50.0,
+        31.03
+      ],
+      [
+        30.43,
+        30.43,
+        36.36,
+        21.15,
+        26.92,
+        50.0,
+        100.0,
+        98.36,
+        91.04
+      ],
+      [
+        25.0,
+        25.0,
+        25.0,
+        38.1,
+        26.92,
+        50.0,
+        98.36,
+        100.0,
+        77.11
+      ],
+      [
+        44.44,
+        44.44,
+        44.44,
+        20.83,
+        26.92,
+        31.03,
+        91.04,
+        77.11,
+        100.0
+      ]
+    ],
+    "mini_blast": [
+      [
+        100.0,
+        100.0,
+        90.58,
+        66.67,
+        66.67,
+        100.0,
+        38.46,
+        38.46,
+        45.45
+      ],
+      [
+        100.0,
+        100.0,
+        90.58,
+        66.67,
+        66.67,
+        100.0,
+        38.46,
+        38.46,
+        45.45
+      ],
+      [
+        90.58,
+        90.58,
+        100.0,
+        100.0,
+        36.36,
+        100.0,
+        38.46,
+        38.46,
+        45.45
+      ],
+      [
+        66.67,
+        66.67,
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        55.56,
+        33.33,
+        60.0
+      ],
+      [
+        66.67,
+        66.67,
+        36.36,
+        100.0,
+        100.0,
+        93.85,
+        100.0,
+        100.0,
+        100.0
+      ],
+      [
+        100.0,
+        100.0,
+        100.0,
+        100.0,
+        93.85,
+        100.0,
+        55.56,
+        0.0,
+        0.0
+      ],
+      [
+        38.46,
+        38.46,
+        38.46,
+        55.56,
+        100.0,
+        55.56,
+        100.0,
+        98.36,
+        91.04
+      ],
+      [
+        38.46,
+        38.46,
+        38.46,
+        33.33,
+        100.0,
+        0.0,
+        98.36,
+        100.0,
+        100.0
+      ],
+      [
+        45.45,
+        45.45,
+        45.45,
+        60.0,
+        100.0,
+        0.0,
+        91.04,
+        100.0,
+        100.0
+      ]
+    ]
+  },
+  "alignments": {
+    "needleman_wunsch": {
+      "0-1": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPN---------------------------------------------------------D-----E---R--------D-----------T----TM------------------"
+      },
+      "0-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDG------------M-------------------T---------V----R---EL-------------PAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADK-------S-G---A----------------G------E--R-----G-S-----"
+      },
+      "0-3": {
+        "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAED-QLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLS-RVDAGQEQLGRRIH-YSQNDLV--E-YSPVTEKHL-TDGMTV-R-E-LCSAAITMSDNT-AANLLLTTIGGPKELTAFLHNMGDHVTRLDRW-E-PE-L----N-EAI-PNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGW-FIADKSGAGE-RGSRGIIAA-LGP--DGKPSRIVVIYTTGSQA-T-MD-ERN-RQ-I-A-EIGAS-LIK-HW",
+        "a2": "MDLLFLGTSAGVP-TKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEI-NPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
+      },
+      "0-4": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MDLL-F---L-G-TSA---GV---P-T----K-ARN-VSA-TAVIE--A-SG----S-----HW-----Y--------L--VDCG-E--GTQ-H--R--L-----L---H-TP-LSIRDL--RAI-----------F--I------T-HVH--GDHCFGL----PGL---L------AS--AGM--------SGR--T----QPL----EV--IL-P---AVL-HDW-V--------R--QGLVAS---D---T-FLP-F----E--L----R-L--L--P-VE--"
+      },
+      "0-5": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MDLL-F---L-G-TSA---GV---P-T----K-ARN-VSA-TAVIE--A-SG----S-----HW-----Y--------L--VDCG-E--GTQ-H--R--L-----L---H-TP-LSIRDL--RAI-----------F--IGG----T-F----G-HST-----AAEV--A-----R-FA-EAAGVRNL--VLT-H-FS-A-RYQ--N----D----P-RRS--P---HI-D-N-V--R-DE----AL------AH----Y-SG-QLT--------------L----"
+      },
+      "0-6": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDEEGKE--M--I-----L-SYL-NQGDFIGELGLFE-E-GQ-----ER-----SAW---VR----AK--T-A--------CE---VA-E-I-S------Y---KK-F--R--Q-LI-QVNPD-----I--L--------M----R-LS---A---Q--"
+      },
+      "0-7": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDE---E-------G-KE-------M------M-R----LS-A----Q--------MA---RR-L--Q-VT--S--------E--KV-G----N-L-A--FL-DVT--G-RIAQTLL-NLA-K-QPD--AMTHPDGMQ--I-KITRQ--EIG-------"
+      },
+      "0-8": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDE---E-------G-KE-------M--QI-KITR---Q--E-I-G-Q---------------IV-G-----CSR-------ET--V-G---R--I-----L--KM-L-E--DQNLISA---HGK-T-IVV-Y--G---T-----R-------------"
+      },
+      "1-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPE-LNEAIPNDERDTTM",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELL-TLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS"
+      },
+      "1-3": {
+        "a1": "MSIQHFRV-ALIPFFA--AFCLPVF-A---H----P--E-T----L---VKVKD--A------E-DQ---L-G--A-R-V-G--Y-IE------L-D-LNSGKIL-ESFRP-EER-FPM--MSTFK--VLLCGAV-LS-RV-DAG-Q-EQLG-R-RIHYSQNDL--VEYSPV-TE--KHL--T-DGMTV--RE-L-CS----AAITMSDN--------TA--ANLLL---T-T---I---GGP---K---ELTAF-----LHNMG-DHVT-RL--D-RWEPEL-N---EAIP--N-------D-E-----R----DTTM",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
+      },
+      "1-4": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEP-ELNEAIPNDERDTTM",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FITH--V-HG---D-HCF-GLP-GLLASAG--MSGRTQP---LEVI-LPAVLHDWV-RQG-LVAS-DTFLPFEL-RLLP-VE-----"
+      },
+      "1-5": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VDCGEG--TQ-HRLLHT-P-LS-IRD-L-RAIF--I-GG--TFG---H-S-T-AAEVARFAE--AA-G--VRNL---VLT---HFSAR--Y-Q-NDPRR-SP--H-I-DNV-R-D--E-AL--A--HYSGQLTL"
+      },
+      "1-6": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "M-VLG-KPQTDPTLEWF-L---SHCH-IHKY-PSKSTL---I-H-Q-----G---E--KAETLY-YI-V-KGSV--AVLIKDEEGKEMI-LS-YLNQGDFIGELGLFE----EG---QER-SAWV-RA-KTACE--VAEI-SYKK---F-RQL---I-QVN---PDI---L---MRLSAQ"
+      },
+      "1-7": {
+        "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "MVLGKPQTDPTLEWFLSHC-HIHKYPSKSTLIHQGE-K-AETLYYI-VK-GSVAVL--IKDEE-----G--KEMM--R-LS---A---QMARRL---Q---VT-S---EK-V--G-NLAFL-D--VT-G-R-IAQTLL-NL-A-KQPDAMTHPDGMQI-KITR---Q--E-I-G-------"
+      },
+      "1-8": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "M-VLG-KPQTDPTLEWF-L---SHCH-IHKY-PSKSTL---I-H-Q-----G---E--KAETLY-YI-V-KGSV--AVLIK-D---EE-GKEM---Q---IK---ITRQEI--GQIV-G-CS-----RE-TVGR-ILKML-EDQNLIS-AH--G-K-T-I------V---V----YG-TR"
+      },
+      "2-3": {
+        "a1": "MSIQHFRV-ALIPFFA--AFCLPVF-A---H----P--E-T----L---VKVKD--A------E-DQ---L-G--A-R-V-G--Y-IE------L-D-LNSGKIL-ESFRP-EER-FP---MM---S-TFK---V-L---L--CG---A-V-----L--SRVDA-G--QEQL-GR--R---IHY-SQ----NDLVEYS--P----V---TEK-H-L---TDG--MTVRE--L-PAAM-AT--TLRKLLTGELLTLA-SR--QQLI-DWMEA----DKVAGP-L--LR-SALP--AGWF-IA-D--K-S-GA-G--ERGS",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
+      },
+      "2-4": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FITH--V-HG---D-HCF-GLPGLLASAGMSGRTQP-L--EVI-LPA--VLHDWVRQGLVASD---TFLP---FEL-RLLPVE---"
+      },
+      "2-5": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-F-----I--GG-TFGHST-AAEVARF-AE-AAGVRNLV---LTHFSARYQ-NDPRRSPHIDN--VRD--EA---LAHYS--GQLTL"
+      },
+      "2-6": {
+        "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "MVLGKPQTDPTLEWFLSHC-HIHKYPSKSTLIHQGE-K-AETLYYI-VK-GSVAVL--IKDEEGKEMILSY--LNQGD-F--I--G-E-LG--L-F---E--E-G--QER--S-AW-VR----A-KTAC-E-V-AE-ISYKKFRQLIQ-VNPD-I---LMR--L---------S-A-Q---"
+      },
+      "2-7": {
+        "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "MVLGKPQTDPTLEWFLSHC-HIHKYPSKSTLIHQGE-K-AETLYYI-VK-GSVAVL--IKDEE-----G--KEMM--R-LS---A---QMARRL---Q---VT-S---EK-V--G----NL--AF---L-D-VTGR---IA--QTLLN-L-A-K-Q-PDAMTH-PDGMQI--KITRQEIG-"
+      },
+      "2-8": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "M-VLG-KPQTDPTLEWF-L---SHCH-IHKY-PSKSTL---I-H-Q-----G---E--KAETLY-YI-V-KGSV--AVLIK-D---EE-GKEM---Q---IK---ITRQEI--G----QI---VGCS-R-----E--TV-GR--ILKMLE-DQ--N-LI-SA--HGKTIV-VYGT--R--"
+      },
+      "3-4": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDT---F------------------------L----P-----F-----------------------------------------------------------------E-----------L-----------------------------------R-L-L--------------P----V-----------------------------E---"
+      },
+      "3-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSI---R---------D----------------------------L----R----A-----------------I------------------------F--------------------------------------------------------I-----------------------------------GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLT---------------L----"
+      },
+      "3-6": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
+        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-----EM---I-LSY----LNQGDF----------I--G-----E-L-----G---LFEEG---Q---ER-------S--AWV-R-AKTA-C-E-V-AEIS--Y----KK---F---R-Q-L--I--QVN--PDI----LMR---LSAQ-"
+      },
+      "3-7": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
+        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-----EMMR-L--S--AQ-M-A----R--R--LQV-T---SEK------V--G-N-L---A-F----LD-V--T-G--------RIAQTL-L-N--L----AK-Q------P------D-AMTHPDG---M-Q-I-K--ITRQ---EI-G"
+      },
+      "3-8": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
+        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-EM--QI-K---IT-------------------R--------Q-E----I--G-----------Q-IV----GC---S------R--ETVG-R--IL---K-MLE-D--Q--NL--I---S-AH--GK-TIV--V--Y-----G----TR"
+      },
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLV--ASDTFLPFELRLLPVE",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARFAEAA-GVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL-"
+      },
+      "4-6": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRD-L-RAIFITHVH-GDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDF-IGELGLF-EEGQE-RSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ"
+      },
+      "4-7": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
+      },
+      "4-8": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAE-TLYY--I-VKGSVAVLIKDEEGKE-MQIKITRQEIGQIVGCS-RETV-GRILKMLEDQNLISAHG-KTI-V-VYGTR"
+      },
+      "5-6": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRDLRA-IFIGGTFGHST-AAEVARFAEAAGVRNLVLTHFSARY-QNDPRRSPHIDNVRDEALAHYSGQLTL",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ---"
+      },
+      "5-7": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARF-AEAAGVRNLVLTHFSARY-QN--DPRRSPHIDNVRDEALAHYSGQLTL",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
+      },
+      "5-8": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAE-TLYY--I-VKGSVAVLIKDEEGKEMQIKITR-QEIGQIVG-CSRETVGRILK-MLEDQNLISAHGKTIVVY-G--TR"
+      },
+      "6-7": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDI-LMRLSAQ",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRL-QVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
+      },
+      "6-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQ-E-IGQI-V---G--CS---R-ETVGRILKM-LED-QNLISAHGKTIVVYGTR"
+      },
+      "7-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKE-MQI--KITRQ-EI-GQIVG-CS-RETVGRILK-MLE--DQ-NLIS-AHGKTI-VV-YGTR"
+      }
+    },
+    "smith_waterman": {
+      "0-1": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM"
+      },
+      "0-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+      },
+      "0-3": {
+        "a1": "FIADKSGAGERGSRGIIAALGPDGKPSRIVVI",
+        "a2": "FITHVHGDHCFGLPGLLASAGMSGRTQPLEVI"
+      },
+      "0-4": {
+        "a1": "FIADKSGAGERGSRGIIAALGPDGKPSRIVVI",
+        "a2": "FITHVHGDHCFGLPGLLASAGMSGRTQPLEVI"
+      },
+      "0-5": {
+        "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
+        "a2": "KARNVSATAVIEASGSHWYLVD-CGEG"
+      },
+      "0-6": {
+        "a1": "GPKELTAFLHNMGDHVTRLDRWE",
+        "a2": "GKEMILSYL-NQGDFIGELGLFE"
+      },
+      "0-7": {
+        "a1": "HPETLVKVKDAEDQLG",
+        "a2": "HPDGM-QIKITRQEIG"
+      },
+      "0-8": {
+        "a1": "VFAHPETLV",
+        "a2": "ISAHGKTIV"
+      },
+      "1-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+      },
+      "1-3": {
+        "a1": "ITMSDNTAANLLLTTIGGPKELTA-FL-HNMGDH",
+        "a2": "VDCGEGTQHRLLHTPL-SIRDLRAIFITHVHGDH"
+      },
+      "1-4": {
+        "a1": "ITMSDNTAANLLLTTIGGPKELTA-FL-HNMGDH",
+        "a2": "VDCGEGTQHRLLHTPL-SIRDLRAIFITHVHGDH"
+      },
+      "1-5": {
+        "a1": "VDAGQEQLGRRIH",
+        "a2": "VDCGEGTQHRLLH"
+      },
+      "1-6": {
+        "a1": "GPKELTAFLHNMGDHVTRLDRWE",
+        "a2": "GKEMILSYL-NQGDFIGELGLFE"
+      },
+      "1-7": {
+        "a1": "HPETLVKVKDAEDQLG",
+        "a2": "HPDGM-QIKITRQEIG"
+      },
+      "1-8": {
+        "a1": "VFAHPETLV",
+        "a2": "ISAHGKTIV"
+      },
+      "2-3": {
+        "a1": "RRIHYSQNDLVEYS",
+        "a2": "QRYHLGRNGLLEAS"
+      },
+      "2-4": {
+        "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
+        "a2": "KARNVSATAVIEASGSHWYLVD-CGEG"
+      },
+      "2-5": {
+        "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
+        "a2": "KARNVSATAVIEASGSHWYLVD-CGEG"
+      },
+      "2-6": {
+        "a1": "GELLTLASRQQLIDWMEADKVA",
+        "a2": "GELGLFEEGQERSAWVRA-KTA"
+      },
+      "2-7": {
+        "a1": "HPETLVKVKDAEDQLG",
+        "a2": "HPDGM-QIKITRQEIG"
+      },
+      "2-8": {
+        "a1": "VFAHPETLV",
+        "a2": "ISAHGKTIV"
+      },
+      "3-4": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE"
+      },
+      "3-5": {
+        "a1": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
+        "a2": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL"
+      },
+      "3-6": {
+        "a1": "IVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFA",
+        "a2": "VLIKDEEGKEMILSYLNQGDFIGELGLFEEG-QERSAWVRA-KTACEVAEIS"
+      },
+      "3-7": {
+        "a1": "DAEGITRGPLWGELAKGLTVT",
+        "a2": "DEEGKEMMRLSAQMARRLQVT"
+      },
+      "3-8": {
+        "a1": "PRRVIVCGDNDKPELLAAVARGA-DVLVHEATFTQAVVERTGGTFGH--STAAE-VARFAEAAGVRNLVLTH",
+        "a2": "PSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAH"
+      },
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHG",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFG"
+      },
+      "4-6": {
+        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
+        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "4-7": {
+        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
+        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "4-8": {
+        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
+        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "5-6": {
+        "a1": "WYLVDC",
+        "a2": "WFLSHC"
+      },
+      "5-7": {
+        "a1": "WYLVDC",
+        "a2": "WFLSHC"
+      },
+      "5-8": {
+        "a1": "IGGTFGHSTAAEVARFAEAAGVRNLVLTH",
+        "a2": "IGQIVGCSRET-VGRILKMLEDQNLISAH"
+      },
+      "6-7": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMI",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMM"
+      },
+      "6-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQ",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQ"
+      },
+      "7-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM-MRLSAQ-MARRLQVTSEKVGNL",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQEIGQIVGCSRETVGRI"
+      }
+    },
+    "mini_blast": {
+      "0-1": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM"
+      },
+      "0-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+      },
+      "0-3": {
+        "a1": "HNMGDH",
+        "a2": "HVHGDH"
+      },
+      "0-4": {
+        "a1": "HNMGDH",
+        "a2": "HVHGDH"
+      },
+      "0-5": {
+        "a1": "HYS",
+        "a2": "HYS"
+      },
+      "0-6": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMI"
+      },
+      "0-7": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMM"
+      },
+      "0-8": {
+        "a1": "AVLSRVDAGQE",
+        "a2": "AVLIKDEEGKE"
+      },
+      "1-2": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+      },
+      "1-3": {
+        "a1": "HNMGDH",
+        "a2": "HVHGDH"
+      },
+      "1-4": {
+        "a1": "HNMGDH",
+        "a2": "HVHGDH"
+      },
+      "1-5": {
+        "a1": "HYS",
+        "a2": "HYS"
+      },
+      "1-6": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMI"
+      },
+      "1-7": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMM"
+      },
+      "1-8": {
+        "a1": "AVLSRVDAGQE",
+        "a2": "AVLIKDEEGKE"
+      },
+      "2-3": {
+        "a1": "HYS",
+        "a2": "HYS"
+      },
+      "2-4": {
+        "a1": "LPAAMATTLRK",
+        "a2": "LPAVLHDWVRQ"
+      },
+      "2-5": {
+        "a1": "HYS",
+        "a2": "HYS"
+      },
+      "2-6": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMI"
+      },
+      "2-7": {
+        "a1": "AVLSRVDAGQEQL",
+        "a2": "AVLIKDEEGKEMM"
+      },
+      "2-8": {
+        "a1": "AVLSRVDAGQE",
+        "a2": "AVLIKDEEGKE"
+      },
+      "3-4": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE"
+      },
+      "3-5": {
+        "a1": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
+        "a2": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL"
+      },
+      "3-6": {
+        "a1": "TAAEVARFA",
+        "a2": "TACEVAEIS"
+      },
+      "3-7": {
+        "a1": "LIAWRSETLQVTTVQLSH",
+        "a2": "LSAQMARRLQVTSEKVGN"
+      },
+      "3-8": {
+        "a1": "RSETL",
+        "a2": "KAETL"
+      },
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHG",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFG"
+      },
+      "4-6": {
+        "a1": "WVR",
+        "a2": "WVR"
+      },
+      "4-7": {
+        "a1": "AVL",
+        "a2": "AVL"
+      },
+      "4-8": {
+        "a1": "AVL",
+        "a2": "AVL"
+      },
+      "5-6": {
+        "a1": "TAAEVARFA",
+        "a2": "TACEVAEIS"
+      },
+      "5-7": {
+        "a1": "",
+        "a2": ""
+      },
+      "5-8": {
+        "a1": "",
+        "a2": ""
+      },
+      "6-7": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMI",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMM"
+      },
+      "6-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQ",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQ"
+      },
+      "7-8": {
+        "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM",
+        "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM"
+      }
+    }
+  },
+  "metric": "percent_identity"
+}
+</script>
+
+<script>
+const DATA = JSON.parse(document.getElementById('resultsData').textContent);
+
+const CLASS_COLOR = {
+  LACTAMASE: '#2e7d6b',
+  TRNASE_Z: '#4a5f9e',
+  TF: '#b5651d'
+};
+
+const ALGOS = [
+  { key: 'needleman_wunsch', label: 'Needleman–Wunsch' },
+  { key: 'smith_waterman', label: 'Smith–Waterman' },
+  { key: 'mini_blast', label: 'Mini-BLAST' }
+];
+
+let currentAlgo = 'needleman_wunsch';
+
+// -------- placeholder notice --------
+if (DATA.species.some(s => s.includes('PLACEHOLDER'))) {
+  document.getElementById('placeholderNotice').style.display = 'block';
+}
+
+// -------- color scale for heatmap cells --------
+function cellColor(value) {
+  // 0-100 percent identity -> pale to deep teal
+  const t = Math.max(0, Math.min(100, value)) / 100;
+  const r = Math.round(238 - t * (238 - 46));
+  const g = Math.round(241 - t * (241 - 125));
+  const b = Math.round(239 - t * (239 - 107));
+  return `rgb(${r},${g},${b})`;
+}
+
+function shortLabel(i) {
+  const species = DATA.species[i].replace('PLACEHOLDER_', 'PH:').replace(/_/g, ' ');
+  return `${DATA.genes[i]} · ${species}`;
+}
+
+// -------- build algo toggle buttons --------
+function buildToggle(containerId, onSelect) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  ALGOS.forEach((a, idx) => {
+    const btn = document.createElement('button');
+    btn.textContent = a.label;
+    if (a.key === currentAlgo) btn.classList.add('active');
+    btn.onclick = () => {
+      currentAlgo = a.key;
+      [...el.children].forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      onSelect(a.key);
+    };
+    el.appendChild(btn);
+  });
+}
+
+// -------- render heatmap --------
+function renderHeatmap() {
+  const matrix = DATA.matrices[currentAlgo];
+  const n = DATA.labels.length;
+  let html = '<table class="heatmap"><thead><tr><th></th>';
+  for (let j = 0; j < n; j++) {
+    html += `<th class="collabel"><span class="class-tick" style="background:${CLASS_COLOR[DATA.classes[j]]}"></span>${shortLabel(j)}</th>`;
+  }
+  html += '</tr></thead><tbody>';
+  for (let i = 0; i < n; i++) {
+    html += `<tr><th class="rowlabel"><span class="class-tick" style="background:${CLASS_COLOR[DATA.classes[i]]}"></span>${shortLabel(i)}</th>`;
+    for (let j = 0; j < n; j++) {
+      const v = matrix[i][j];
+      html += `<td style="background:${cellColor(v)}" data-i="${i}" data-j="${j}">${Math.round(v)}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  document.getElementById('heatmapWrap').innerHTML = html;
+
+  document.querySelectorAll('table.heatmap td').forEach(td => {
+    td.addEventListener('mouseenter', () => showTooltip(+td.dataset.i, +td.dataset.j));
+  });
+}
+
+function showTooltip(i, j) {
+  const tip = document.getElementById('tooltip');
+  if (i === j) {
+    tip.innerHTML = `<span class="pair">${shortLabel(i)}</span> — identity comparison against itself.`;
+    return;
+  }
+  const v = DATA.matrices[currentAlgo][i][j];
+  tip.innerHTML = `<span class="pair">${shortLabel(i)} &harr; ${shortLabel(j)}</span>
+    &nbsp;·&nbsp; ${ALGOS.find(a=>a.key===currentAlgo).label}: <strong>${v}% identity</strong>
+    &nbsp;·&nbsp; classes: <span style="color:${CLASS_COLOR[DATA.classes[i]]}">${DATA.classes[i]}</span> vs
+    <span style="color:${CLASS_COLOR[DATA.classes[j]]}">${DATA.classes[j]}</span>`;
+}
+
+// -------- hierarchical clustering (average linkage) + dendrogram --------
+
+function buildDistanceMatrix(pctMatrix) {
+  const n = pctMatrix.length;
+  const d = [];
+  for (let i = 0; i < n; i++) {
+    d.push([]);
+    for (let j = 0; j < n; j++) d[i].push(100 - pctMatrix[i][j]);
+  }
+  return d;
+}
+
+function averageLinkageCluster(distMatrix, n) {
+  let active = [];
+  for (let i = 0; i < n; i++) active.push({ members: [i], height: 0, left: null, right: null });
+
+  function avgDist(a, b) {
+    let sum = 0, count = 0;
+    for (const i of a.members) for (const j of b.members) { sum += distMatrix[i][j]; count++; }
+    return sum / count;
+  }
+
+  while (active.length > 1) {
+    let bi = 0, bj = 1, best = Infinity;
+    for (let i = 0; i < active.length; i++) {
+      for (let j = i + 1; j < active.length; j++) {
+        const dist = avgDist(active[i], active[j]);
+        if (dist < best) { best = dist; bi = i; bj = j; }
+      }
+    }
+    const a = active[bi], b = active[bj];
+    const merged = { members: a.members.concat(b.members), height: best, left: a, right: b };
+    active = active.filter((_, idx) => idx !== bi && idx !== bj);
+    active.push(merged);
+  }
+  return active[0];
+}
+
+function renderDendrogram() {
+  const matrix = DATA.matrices[currentAlgo];
+  const n = matrix.length;
+  const dist = buildDistanceMatrix(matrix);
+  const root = averageLinkageCluster(dist, n);
+
+  const LEFT = 150, RIGHT_PAD = 20, WIDTH = 560, ROW_H = 30;
+  const height = ROW_H * n + 20;
+
+  let maxHeight = 0;
+  (function findMax(node) { if (node.height > maxHeight) maxHeight = node.height; if (node.left) findMax(node.left); if (node.right) findMax(node.right); })(root);
+  if (maxHeight === 0) maxHeight = 1;
+
+  const xScale = h => LEFT + (h / maxHeight) * (WIDTH - LEFT - RIGHT_PAD);
+
+  let leafIndex = 0;
+  function assignY(node) {
+    if (!node.left && !node.right) {
+      node.y = 10 + leafIndex * ROW_H + ROW_H / 2;
+      leafIndex++;
+    } else {
+      assignY(node.left);
+      assignY(node.right);
+      node.y = (node.left.y + node.right.y) / 2;
+    }
+  }
+  assignY(root);
+
+  let svgParts = [];
+  function draw(node) {
+    if (node.left && node.right) {
+      draw(node.left);
+      draw(node.right);
+      const x = xScale(node.height);
+      const xl = xScale(node.left.height);
+      const xr = xScale(node.right.height);
+      svgParts.push(`<line x1="${x}" y1="${node.left.y}" x2="${x}" y2="${node.right.y}" stroke="#a9b5ae" stroke-width="1.4"/>`);
+      svgParts.push(`<line x1="${xl}" y1="${node.left.y}" x2="${x}" y2="${node.left.y}" stroke="#a9b5ae" stroke-width="1.4"/>`);
+      svgParts.push(`<line x1="${xr}" y1="${node.right.y}" x2="${x}" y2="${node.right.y}" stroke="#a9b5ae" stroke-width="1.4"/>`);
+    } else {
+      const idx = node.members[0];
+      const x0 = xScale(0);
+      svgParts.push(`<circle cx="${x0}" cy="${node.y}" r="3.5" fill="${CLASS_COLOR[DATA.classes[idx]]}"/>`);
+      svgParts.push(`<text x="${x0 - 10}" y="${node.y + 4}" text-anchor="end" font-family="IBM Plex Mono" font-size="11" fill="#1b241f">${shortLabel(idx)}</text>`);
+    }
+  }
+  draw(root);
+
+  const svg = `<svg viewBox="0 0 ${WIDTH} ${height}" style="width:100%;height:auto;">${svgParts.join('')}</svg>`;
+  document.getElementById('dendrogramWrap').innerHTML = svg;
+}
+
+buildToggle('algoToggle', (key) => { renderHeatmap(); renderDendrogram(); });
+renderHeatmap();
+renderDendrogram();
+
+// -------- alignment explorer --------
+// Note: this re-runs the same algorithms client-side in JS on the raw
+// sequences so users can inspect the actual aligned string, not just
+// the summary percentage from results.json.
+const SEQS = DATA.labels.map((l, i) => ({
+  label: shortLabel(i),
+  cls: DATA.classes[i]
+}));
+
+function populateSelect(id) {
+  const sel = document.getElementById(id);
+  SEQS.forEach((s, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = s.label;
+    sel.appendChild(opt);
+  });
+}
+populateSelect('seqA');
+populateSelect('seqB');
+document.getElementById('seqB').selectedIndex = Math.min(3, SEQS.length - 1);
+
+let explorerAlgo = 'needleman_wunsch';
+buildToggle('explorerToggle', (key) => { explorerAlgo = key; renderExplorer(); });
+// second toggle should not fight the first one's currentAlgo state
+document.getElementById('explorerToggle').querySelectorAll('button').forEach((btn, idx) => {
+  btn.classList.toggle('active', ALGOS[idx].key === explorerAlgo);
+});
+
+function wrapLines(str, width) {
+  const lines = [];
+  for (let k = 0; k < str.length; k += width) lines.push(str.slice(k, k + width));
+  return lines;
+}
+
+function renderExplorer() {
+  const i = +document.getElementById('seqA').value;
+  const j = +document.getElementById('seqB').value;
+  const view = document.getElementById('alignView');
+  if (isNaN(i) || isNaN(j) || i === j) { view.textContent = 'Select two different sequences above.'; return; }
+
+  const pct = DATA.matrices[explorerAlgo][i][j];
+  const algoLabel = ALGOS.find(a => a.key === explorerAlgo).label;
+  const key = i < j ? `${i}-${j}` : `${j}-${i}`;
+  const pair = DATA.alignments[explorerAlgo][key];
+  if (!pair) { view.textContent = 'No alignment stored for this pair.'; return; }
+
+  let a1 = pair.a1, a2 = pair.a2;
+  if (i > j) { [a1, a2] = [a2, a1]; } // alignments stored for i<j; flip display order if user picked reverse
+
+  const width = 60;
+  const l1 = wrapLines(a1, width), l2 = wrapLines(a2, width);
+
+  let html = `<div style="color:#8fe0c4;margin-bottom:10px;">${SEQS[i].label} vs ${SEQS[j].label} — ${algoLabel}: ${pct}% identity (aligned length ${a1.length})</div>`;
+
+  for (let k = 0; k < l1.length; k++) {
+    let top = '', mid = '', bot = '';
+    for (let c = 0; c < l1[k].length; c++) {
+      const x = l1[k][c], y = l2[k][c];
+      if (x === '-' || y === '-') {
+        top += `<span class="gap">${x}</span>`;
+        bot += `<span class="gap">${y}</span>`;
+        mid += ' ';
+      } else if (x === y) {
+        top += `<span class="match">${x}</span>`;
+        bot += `<span class="match">${y}</span>`;
+        mid += '|';
+      } else {
+        top += `<span class="mismatch">${x}</span>`;
+        bot += `<span class="mismatch">${y}</span>`;
+        mid += '·';
+      }
+    }
+    html += `${top}\n${mid}\n${bot}\n\n`;
+  }
+  view.innerHTML = html;
+}
+document.getElementById('seqA').addEventListener('change', renderExplorer);
+document.getElementById('seqB').addEventListener('change', renderExplorer);
+renderExplorer();
+</script>
+
+</body>
+</html>
