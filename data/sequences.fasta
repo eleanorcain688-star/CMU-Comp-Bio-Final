@@ -11,6 +11,18 @@
 ; of that shared-fold story — if you're comparing against older
 ; notes/screenshots, this is the fix.
 ;
+; STATUS: LACTAMASE row is now fully real (3/3 species). TRNASE_Z and TF
+; rows are still PLACEHOLDER — pull these yourself, UniProt's sequence
+; viewer needs a logged-in-style page render that didn't come through search.
+; Exact searches to run on https://www.uniprot.org:
+;   TRNase Z:  "gene:rnz AND organism:Klebsiella pneumoniae"
+;              "gene:rbn AND organism:Escherichia coli"      (E. coli's tRNase Z is called rbn/RNase BN)
+;              "gene:rnz AND organism:Acinetobacter baumannii"
+;   TF:        "gene:crp AND organism:Klebsiella pneumoniae"
+;              "gene:crp AND organism:Escherichia coli"       (P0ACJ8)
+;              "gene:crp AND organism:Acinetobacter baumannii" (or any annotated TF if crp isn't there)
+; On each entry page: click "Format" -> download/copy as FASTA.
+;
 ; SPECIES NOTE: NDM-1 and its close relatives are most commonly found in
 ; Klebsiella pneumoniae, Escherichia coli, and Acinetobacter baumannii — use
 ; these three as your species set for a dataset that actually reflects where
@@ -25,15 +37,19 @@ APQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGC
 LIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADK
 LR
 
->LACTAMASE|Escherichia_coli|blaNDM-1_or_blaVIM|PLACEHOLDER Replace with an NDM or VIM-family metallo-beta-lactamase from E. coli (search UniProt: blaNDM AND organism E. coli)
-MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRP
-EERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVREL
-CSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM
+>LACTAMASE|Escherichia_coli|blaNDM-18|A0A1P8VH15 Metallo-beta-lactamase NDM-18 (real, UniProt; a documented NDM-1 variant with a small insertion)
+MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLA
+PNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVAL
+AVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAP
+NFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARA
+FGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR
 
->LACTAMASE|Acinetobacter_baumannii|blaNDM-1_or_similar|PLACEHOLDER Replace with an NDM-family metallo-beta-lactamase from A. baumannii (search UniProt: blaNDM AND organism Acinetobacter baumannii)
-MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRP
-EERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVREL
-PAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS
+>LACTAMASE|Acinetobacter_baumannii|blaNDM-1|W8T3S1 Metallo-beta-lactamase NDM-1 (real, UniProt, from Acinetobacter sp. NF512 — closely related to A. baumannii; NOTE: NDM-1 spreads via horizontal plasmid transfer (Tn125 transposon), so this sequence is virtually IDENTICAL to the K. pneumoniae entry above rather than independently evolved — see the interpretation notes)
+MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQ
+HTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTH
+AHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPL
+KVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAF
+PKASMIVMSHSAPDSRAAITHTARMADKLR
 
 >TRNASE_Z|Klebsiella_pneumoniae|rnz|PLACEHOLDER Replace with tRNase Z (rnz/RNase BN) from Klebsiella pneumoniae to match the real NDM-1 entry above
 MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
