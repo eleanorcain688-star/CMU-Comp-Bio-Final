@@ -163,6 +163,7 @@
     <div class="brand">β-lactamase / tRNase Z alignment study</div>
     <ul>
       <li><a href="#background">Background</a></li>
+      <li><a href="#phenomena">Phenomena</a></li>
       <li><a href="#methods">Methods</a></li>
       <li><a href="#results">Results</a></li>
       <li><a href="#explorer">Explorer</a></li>
@@ -183,7 +184,7 @@
       unrelated function, and an unrelated negative control.
     </p>
     <div class="hero-meta">
-      <div><div class="label">Target</div>β-lactamases</div>
+      <div><div class="label">Target</div>Metallo-β-lactamases</div>
       <div><div class="label">Structural homolog</div>tRNase Z</div>
       <div><div class="label">Negative control</div>Transcription factors</div>
       <div><div class="label">Algorithms</div>NW · SW · mini-BLAST</div>
@@ -197,24 +198,28 @@
     <p class="lede">
       β-lactamases are the enzymes that make bacteria resistant to penicillin-class
       antibiotics — they cut open the drug's reactive ring before it can disable the
-      cell-wall-building machinery. Structural studies place their likely evolutionary
-      origin in a much older family: <strong>tRNase Z</strong> enzymes, which trim the
-      3′ ends of pre-tRNA molecules. Both fold around the same metallo-β-lactamase
-      scaffold, coordinating similar active-site geometry, but the two proteins do
-      almost nothing alike in the cell.
+      cell-wall-building machinery. There are several unrelated families of them.
+      This project focuses on <strong>metallo-β-lactamases</strong> (class B) — a
+      zinc-dependent group responsible for some of the hardest-to-treat resistant
+      infections (NDM, VIM, IMP), as distinct from the more familiar serine-based
+      enzymes like TEM or SHV. Structural studies place metallo-β-lactamases'
+      likely evolutionary origin in a much older family: <strong>tRNase Z</strong>
+      enzymes, which trim the 3′ ends of pre-tRNA molecules. Both fold around the
+      same zinc-binding metallo-hydrolase scaffold, but the two proteins do almost
+      nothing alike in the cell.
     </p>
     <p class="lede">
       That split — same fold, different job — is a standing problem for any tool that
       infers function from sequence similarity. If an alignment algorithm scores
-      β-lactamase against tRNase Z as "highly similar," it's really only picking up
-      shared ancestry, not shared function. We use a third, functionally and
-      structurally unrelated protein family (bacterial transcription factors) as a
-      negative control: an algorithm that's actually function-aware should separate
+      metallo-β-lactamase against tRNase Z as "highly similar," it's really only
+      picking up shared ancestry, not shared function. We use a third, functionally
+      and structurally unrelated protein family (bacterial transcription factors) as
+      a negative control: an algorithm that's actually function-aware should separate
       TFs cleanly from both of the other groups, while still correctly relating —
-      or correctly failing to relate — β-lactamase to tRNase Z.
+      or correctly failing to relate — metallo-β-lactamase to tRNase Z.
     </p>
     <div class="legend">
-      <span class="chip"><span class="dot lac"></span>β-lactamase (target)</span>
+      <span class="chip"><span class="dot lac"></span>Metallo-β-lactamase (target)</span>
       <span class="chip"><span class="dot trn"></span>tRNase Z (structural homolog)</span>
       <span class="chip"><span class="dot tf"></span>Transcription factor (negative control)</span>
     </div>
@@ -229,8 +234,8 @@
         <path d="M60,70 C40,110 55,150 95,165 C140,180 175,155 178,115 C180,80 150,55 110,58 C85,60 70,55 60,70 Z"
               fill="#e3f0ec" stroke="#2e7d6b" stroke-width="2"/>
         <circle cx="118" cy="112" r="7" fill="#2e7d6b"/>
-        <text x="119" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#1b241f">β-lactamase</text>
-        <text x="119" y="222" text-anchor="middle" font-size="11.5" fill="#4c574f">breaks down penicillin</text>
+        <text x="119" y="205" text-anchor="middle" font-size="13" font-weight="600" fill="#1b241f">Metallo-β-lactamase</text>
+        <text x="119" y="222" text-anchor="middle" font-size="11.5" fill="#4c574f">zinc-dependent, breaks penicillin</text>
 
         <!-- tRNase Z blob (same base shape/fold, different label) -->
         <path d="M230,70 C210,110 225,150 265,165 C310,180 345,155 348,115 C350,80 320,55 280,58 C255,60 240,55 230,70 Z"
@@ -275,9 +280,63 @@
   </div>
 </section>
 
+<section id="phenomena">
+  <div class="wrap">
+    <div class="section-head"><span class="section-num">02</span><h2>Related Phenomena: Three Ways Sequence Misleads You</h2></div>
+    <p class="lede">
+      Our experiment tests one specific way biology decouples sequence from
+      function — <strong>divergent evolution</strong>, where two genes duplicate
+      from a shared ancestor and then drift apart. It's worth being explicit that
+      this is only one of at least three distinct phenomena that break the
+      "similar sequence → similar function" assumption. The other two involve no
+      sequence divergence at all.
+    </p>
+
+    <div class="grid-3">
+      <div class="card algo-card" style="border-top:3px solid var(--lactamase);">
+        <h3>Divergent evolution</h3>
+        <div class="tagline">our project · metallo-β-lactamase / tRNase Z</div>
+        <p>Two separate genes, duplicated long ago, drift apart in sequence while
+        keeping the ancestral fold. Different genes, different sequences today,
+        unrelated functions — but a shared structural signature if you look
+        closely enough.</p>
+      </div>
+      <div class="card algo-card" style="border-top:3px solid var(--trnase);">
+        <h3>Gene sharing</h3>
+        <div class="tagline">delta-crystallin / argininosuccinate lyase</div>
+        <p>Often the <em>same gene</em>, doing two jobs depending on where and how
+        much of it gets made. In duck lenses, the metabolic enzyme
+        argininosuccinate lyase is massively overexpressed and repurposed wholesale
+        as a transparent structural protein — no mutation required, just dosage
+        and location.</p>
+      </div>
+      <div class="card algo-card" style="border-top:3px solid var(--tf);">
+        <h3>Moonlighting</h3>
+        <div class="tagline">phosphoglucose isomerase (PGI)</div>
+        <p>The single <em>identical</em> protein performs two mechanistically
+        unrelated jobs depending on context. Inside the cell, PGI runs step two of
+        glycolysis. Secreted outside the cell, that exact same molecule acts as a
+        cytokine — independently rediscovered and renamed three times
+        (neuroleukin, autocrine motility factor, maturation factor) before anyone
+        realized it was one protein.</p>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top:24px;">
+      Put together, these three cases suggest sequence-based tools like the ones
+      we're testing can only ever address the first category. A protein could
+      align at 0% identity with another and still be doing an identical job
+      (gene sharing, moonlighting) — or align at high identity with a close
+      relative and still be doing something completely different (our main
+      experiment). Alignment identity is genuinely informative, but it is not,
+      on its own, a function detector.
+    </p>
+  </div>
+</section>
+
 <section id="methods">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">02</span><h2>Methods</h2></div>
+    <div class="section-head"><span class="section-num">03</span><h2>Methods</h2></div>
     <p class="lede">
       Sequences for three bacterial species were pulled from UniProt for each of the
       three protein classes (nine sequences total), then run pairwise through three
@@ -306,7 +365,7 @@
 
 <section id="results">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">03</span><h2>Results</h2></div>
+    <div class="section-head"><span class="section-num">04</span><h2>Results</h2></div>
     <p class="lede">
       Percent identity for every pair of sequences, under each algorithm. Rows and
       columns are grouped and color-ticked by protein class — watch whether the
@@ -346,7 +405,7 @@
 
 <section id="explorer">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">04</span><h2>Alignment Explorer</h2></div>
+    <div class="section-head"><span class="section-num">05</span><h2>Alignment Explorer</h2></div>
     <p class="lede">Pick any two sequences to see their actual aligned residues, colored by match / mismatch / gap.</p>
     <div class="grid-2" style="margin-bottom:22px;">
       <div>
@@ -365,7 +424,7 @@
 
 <section id="discussion">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">05</span><h2>Discussion</h2></div>
+    <div class="section-head"><span class="section-num">06</span><h2>Discussion</h2></div>
     <p class="lede" id="discussionText">
       Run the analysis on your finalized species set and interpret the heatmap here:
       does any algorithm separate β-lactamase from tRNase Z despite their shared
@@ -378,31 +437,36 @@
 
 <section id="references" style="border-bottom:none;">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">06</span><h2>References</h2></div>
+    <div class="section-head"><span class="section-num">07</span><h2>References</h2></div>
     <ol class="refs">
+      <li><span class="paper-title">Kim, Y., et al. (2019).</span> Dual activity of PNGM-1, a metallo-β-lactamase and tRNase Z, pinpoints the evolutionary origin of subclass B3 metallo-β-lactamases. <em>Communications Biology</em>. — establishes the shared MBL-fold superfamily linking metallo-β-lactamases and tRNase Z.</li>
+      <li><span class="paper-title">Daiyasu, H., Osaka, K., Ishino, Y., & Toh, H. (2001).</span> Expansion of the zinc metallo-hydrolase family of the β-lactamase fold. <em>FEBS Letters</em>, 503, 1–6.</li>
+      <li><span class="paper-title">Redko, Y., Li de la Sierra-Gallay, I., & Condon, C. (2007).</span> When all's zed and done: the structure and function of RNase Z in prokaryotes. <em>Nature Reviews Microbiology</em>, 5, 278–286.</li>
+      <li><span class="paper-title">Todd, A. E., Orengo, C. A., & Thornton, J. M. (2001).</span> Evolution of function in protein superfamilies, from a structural perspective. <em>Journal of Molecular Biology</em>, 307(4), 1113–1143. — quantifies how sequence identity thresholds relate to functional conservation, used to interpret our results.</li>
+      <li><span class="paper-title">Piatigorsky, J., et al. (1988).</span> Gene sharing by delta-crystallin and argininosuccinate lyase. <em>PNAS</em>, 85(10), 3479–3483. — the gene-sharing example discussed in "Related Phenomena."</li>
+      <li><span class="paper-title">Jeffery, C. J., Bahnson, B. J., Chien, W., Ringe, D., & Petsko, G. A. (2000).</span> Crystal structure of rabbit phosphoglucose isomerase, a glycolytic enzyme that moonlights as neuroleukin, autocrine motility factor, and differentiation mediator. <em>Biochemistry</em>, 39(5), 955–964. — the moonlighting example discussed in "Related Phenomena."</li>
       <li><span class="paper-title">Altschul, S. F., et al. (1990).</span> Basic local alignment search tool. <em>Journal of Molecular Biology</em>, 215(3), 403–410.</li>
       <li><span class="paper-title">Needleman, S. B., & Wunsch, C. D. (1970).</span> A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>Journal of Molecular Biology</em>, 48(3), 443–453.</li>
       <li><span class="paper-title">Smith, T. F., & Waterman, M. S. (1981).</span> Identification of common molecular subsequences. <em>Journal of Molecular Biology</em>, 147(1), 195–197.</li>
+      <li><span class="paper-title">Henikoff, S., & Henikoff, J. G. (1992).</span> Amino acid substitution matrices from protein blocks. <em>PNAS</em>, 89, 10915–10919. — source of the BLOSUM62 matrix used throughout this project's scoring.</li>
       <li><span class="paper-title">UniProt Consortium.</span> UniProt: the Universal Protein Knowledgebase. <em>Nucleic Acids Research</em>. uniprot.org</li>
-      <li>Add your remaining sources here (aim for 4+ reputable references per the checkpoint requirements).</li>
     </ol>
   </div>
 </section>
 
 <footer>CMU Pre-College Computational Biology · Final Project</footer>
 
-<script id="resultsData" type="application/json">
-{
+<script id="resultsData" type="application/json">{
   "labels": [
+    "LACTAMASE:Klebsiella_pneumoniae",
     "LACTAMASE:Escherichia_coli",
-    "LACTAMASE:PLACEHOLDER_species2",
-    "LACTAMASE:PLACEHOLDER_species3",
-    "TRNASE_Z:Pseudomonas_putida",
-    "TRNASE_Z:PLACEHOLDER_species2",
-    "TRNASE_Z:PLACEHOLDER_species3",
-    "TF:PLACEHOLDER_species1",
-    "TF:PLACEHOLDER_species2",
-    "TF:PLACEHOLDER_species3"
+    "LACTAMASE:Acinetobacter_baumannii",
+    "TRNASE_Z:Klebsiella_pneumoniae",
+    "TRNASE_Z:Escherichia_coli",
+    "TRNASE_Z:Acinetobacter_baumannii",
+    "TF:Klebsiella_pneumoniae",
+    "TF:Escherichia_coli",
+    "TF:Acinetobacter_baumannii"
   ],
   "classes": [
     "LACTAMASE",
@@ -416,32 +480,32 @@
     "TF"
   ],
   "species": [
+    "Klebsiella_pneumoniae",
     "Escherichia_coli",
-    "PLACEHOLDER_species2",
-    "PLACEHOLDER_species3",
-    "Pseudomonas_putida",
-    "PLACEHOLDER_species2",
-    "PLACEHOLDER_species3",
-    "PLACEHOLDER_species1",
-    "PLACEHOLDER_species2",
-    "PLACEHOLDER_species3"
+    "Acinetobacter_baumannii",
+    "Klebsiella_pneumoniae",
+    "Escherichia_coli",
+    "Acinetobacter_baumannii",
+    "Klebsiella_pneumoniae",
+    "Escherichia_coli",
+    "Acinetobacter_baumannii"
   ],
   "genes": [
-    "blaTEM-1",
-    "blaXXX",
-    "blaXXX",
+    "blaNDM-1",
+    "blaNDM-1_or_blaVIM",
+    "blaNDM-1_or_similar",
     "rnz",
-    "rnz",
+    "rbn",
     "rnz",
     "crp_or_other",
     "crp_or_other",
     "crp_or_other"
   ],
   "accessions": [
-    "P62593",
+    "C7C422",
     "PLACEHOLDER",
     "PLACEHOLDER",
-    "Q88FQ4",
+    "PLACEHOLDER",
     "PLACEHOLDER",
     "PLACEHOLDER",
     "PLACEHOLDER",
@@ -449,10 +513,10 @@
     "PLACEHOLDER"
   ],
   "lengths": [
-    286,
+    242,
     180,
     180,
-    319,
+    120,
     120,
     120,
     120,
@@ -463,99 +527,99 @@
     "needleman_wunsch": [
       [
         100.0,
-        62.94,
-        62.94,
-        17.13,
-        18.53,
-        22.03,
-        17.83,
-        19.23,
-        17.48
+        20.66,
+        20.66,
+        20.66,
+        19.42,
+        18.6,
+        18.6,
+        20.66,
+        18.6
       ],
       [
-        62.94,
+        20.66,
         100.0,
         71.27,
-        21.0,
         22.65,
         21.11,
+        21.67,
         16.67,
         19.89,
         16.67
       ],
       [
-        62.94,
+        20.66,
         71.27,
         100.0,
-        21.32,
         20.56,
         20.56,
+        21.11,
         18.78,
         22.65,
         18.33
       ],
       [
-        17.13,
-        21.0,
-        21.32,
-        100.0,
-        37.62,
-        37.62,
-        20.38,
-        19.12,
-        16.93
-      ],
-      [
-        18.53,
+        20.66,
         22.65,
         20.56,
-        37.62,
         100.0,
+        57.38,
         57.38,
         18.9,
         14.52,
         16.67
       ],
       [
-        22.03,
+        19.42,
         21.11,
         20.56,
-        37.62,
         57.38,
         100.0,
+        56.56,
         18.11,
         19.35,
         17.5
       ],
       [
-        17.83,
+        18.6,
+        21.67,
+        21.11,
+        57.38,
+        56.56,
+        100.0,
+        15.87,
+        18.55,
+        18.33
+      ],
+      [
+        18.6,
         16.67,
         18.78,
-        20.38,
         18.9,
         18.11,
+        15.87,
         100.0,
         53.72,
         57.5
       ],
       [
-        19.23,
+        20.66,
         19.89,
         22.65,
-        19.12,
         14.52,
         19.35,
+        18.55,
         53.72,
         100.0,
         58.33
       ],
       [
-        17.48,
+        18.6,
         16.67,
         18.33,
-        16.93,
         16.67,
         17.5,
+        18.33,
         57.5,
         58.33,
         100.0
@@ -564,31 +628,31 @@
     "smith_waterman": [
       [
         100.0,
-        100.0,
-        90.58,
-        31.25,
-        31.25,
-        25.93,
-        30.43,
-        25.0,
-        44.44
+        26.32,
+        35.71,
+        40.91,
+        31.03,
+        23.33,
+        30.0,
+        29.55,
+        30.0
       ],
       [
-        100.0,
+        26.32,
         100.0,
         90.58,
-        32.35,
         32.35,
         38.46,
+        23.81,
         30.43,
         25.0,
         44.44
       ],
       [
-        90.58,
+        35.71,
         90.58,
         100.0,
-        42.86,
+        25.93,
         25.93,
         25.93,
         36.36,
@@ -596,67 +660,67 @@
         44.44
       ],
       [
-        31.25,
-        32.35,
-        42.86,
-        100.0,
-        100.0,
-        100.0,
-        21.15,
-        38.1,
-        20.83
-      ],
-      [
-        31.25,
+        40.91,
         32.35,
         25.93,
         100.0,
-        100.0,
         93.85,
+        100.0,
         26.92,
         26.92,
         26.92
       ],
       [
-        25.93,
+        31.03,
         38.46,
         25.93,
-        100.0,
         93.85,
+        100.0,
         100.0,
         50.0,
         50.0,
         31.03
       ],
       [
-        30.43,
+        23.33,
+        23.81,
+        25.93,
+        100.0,
+        100.0,
+        100.0,
+        50.0,
+        50.0,
+        50.0
+      ],
+      [
+        30.0,
         30.43,
         36.36,
-        21.15,
         26.92,
+        50.0,
         50.0,
         100.0,
         98.36,
         91.04
       ],
       [
+        29.55,
         25.0,
         25.0,
-        25.0,
-        38.1,
         26.92,
+        50.0,
         50.0,
         98.36,
         100.0,
         77.11
       ],
       [
+        30.0,
         44.44,
         44.44,
-        44.44,
-        20.83,
         26.92,
         31.03,
+        50.0,
         91.04,
         77.11,
         100.0
@@ -665,99 +729,99 @@
     "mini_blast": [
       [
         100.0,
+        35.71,
+        35.71,
+        66.67,
+        75.0,
+        100.0,
+        50.0,
+        46.15,
+        50.0
+      ],
+      [
+        35.71,
         100.0,
         90.58,
         66.67,
-        66.67,
         100.0,
+        57.14,
         38.46,
         38.46,
         45.45
       ],
       [
-        100.0,
-        100.0,
+        35.71,
         90.58,
-        66.67,
-        66.67,
-        100.0,
-        38.46,
-        38.46,
-        45.45
-      ],
-      [
-        90.58,
-        90.58,
-        100.0,
         100.0,
         36.36,
         100.0,
+        57.14,
         38.46,
         38.46,
         45.45
-      ],
-      [
-        66.67,
-        66.67,
-        100.0,
-        100.0,
-        100.0,
-        100.0,
-        55.56,
-        33.33,
-        60.0
       ],
       [
         66.67,
         66.67,
         36.36,
-        100.0,
         100.0,
         93.85,
+        100.0,
         100.0,
         100.0,
         100.0
       ],
       [
-        100.0,
-        100.0,
+        75.0,
         100.0,
         100.0,
         93.85,
+        100.0,
         100.0,
         55.56,
         0.0,
         0.0
       ],
       [
+        100.0,
+        57.14,
+        57.14,
+        100.0,
+        100.0,
+        100.0,
+        40.0,
+        30.0,
+        60.0
+      ],
+      [
+        50.0,
         38.46,
         38.46,
-        38.46,
-        55.56,
         100.0,
         55.56,
+        40.0,
         100.0,
         98.36,
         91.04
       ],
       [
+        46.15,
         38.46,
         38.46,
-        38.46,
-        33.33,
         100.0,
         0.0,
+        30.0,
         98.36,
         100.0,
         100.0
       ],
       [
+        50.0,
         45.45,
         45.45,
-        45.45,
-        60.0,
         100.0,
         0.0,
+        60.0,
         91.04,
         100.0,
         100.0
@@ -767,52 +831,52 @@
   "alignments": {
     "needleman_wunsch": {
       "0-1": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPN---------------------------------------------------------D-----E---R--------D-----------T----TM------------------"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "--M--SI-QHFRVALIPF-FAAF-CL-P-VFAHPETL-VK-V-KDAEDQL----GARVGYIE---LDLNSGKILESFRPEERFPM-MS--T--F--KV--L--L--CG----A-VLSRVDAGQE-QL-GRR-IHYSQNDLVE------YSP--V--T-EKHLTDGMTV----RELCSAAITMSDNTAANL--L--LTTIGGPKELTAFLHNMGD-HVTRLDRWEPELNEAIPNDER--DTTM"
       },
       "0-2": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDG------------M-------------------T---------V----R---EL-------------PAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADK-------S-G---A----------------G------E--R-----G-S-----"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "--M--SI-QHFRVALIPF-FAAF-CL-P-VFAHPETL-VK-V-KDAEDQL----GARVGYIE---LDLNSGKILESFRPEERFPM-MS--T--F--KV--L--L--CG----A-VLSRVDAGQE-QL-GRR-IHYSQNDLVE------YSP--V--T-EKHLTDGMTVR-E-LPAAMATTLRKLLTGELL-TL--ASRQQLIDWMEADKVAGP---LL-RS-ALP-AGWFIADKSGAGERGS"
       },
       "0-3": {
-        "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAED-QLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLS-RVDAGQEQLGRRIH-YSQNDLV--E-YSPVTEKHL-TDGMTV-R-E-LCSAAITMSDNT-AANLLLTTIGGPKELTAFLHNMGDHVTRLDRW-E-PE-L----N-EAI-PNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGW-FIADKSGAGE-RGSRGIIAA-LGP--DGKPSRIVVIYTTGSQA-T-MD-ERN-RQ-I-A-EIGAS-LIK-HW",
-        "a2": "MDLLFLGTSAGVP-TKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEI-NPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "MDLL-FLG----T--SA-G--VPTK-ARNV-SATAVIE-AS-G---SHWYLV-DCGE----GTQHRLLHT-P-LS-IR-D--LR-AI-FITHVH-----G-D--HCFG-----------L-P--GLL-A--S----A-G-MSGRT--Q--PLEVILPAVLH--D--WV----RQ----G-LV----A-S-------DT---------F---LP-FELRLL----P-----V-------E---"
       },
       "0-4": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "MDLL-F---L-G-TSA---GV---P-T----K-ARN-VSA-TAVIE--A-SG----S-----HW-----Y--------L--VDCG-E--GTQ-H--R--L-----L---H-TP-LSIRDL--RAI-----------F--I------T-HVH--GDHCFGL----PGL---L------AS--AGM--------SGR--T----QPL----EV--IL-P---AVL-HDW-V--------R--QGLVAS---D---T-FLP-F----E--L----R-L--L--P-VE--"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "----------M--------DLLF--L--G----TS-AGVP---TKARN---V--SA-TAVIE-A-----SGS--HW----Y-L-VDCGEGTQ-H--R---L--LH-----T---PLS--I--RD-L-RA---I-F-I-G----------G---TF----GH-S---T----AAEVA------RFAEAAGVRNL--VLT-HF--SAR-Y-QNDPRRSPHI-D-NVRD-E-ALAHYSGQL-TL-"
       },
       "0-5": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "MDLL-F---L-G-TSA---GV---P-T----K-ARN-VSA-TAVIE--A-SG----S-----HW-----Y--------L--VDCG-E--GTQ-H--R--L-----L---H-TP-LSIRDL--RAI-----------F--IGG----T-F----G-HST-----AAEV--A-----R-FA-EAAGVRNL--VLT-H-FS-A-RYQ--N----D----P-RRS--P---HI-D-N-V--R-DE----AL------AH----Y-SG-QLT--------------L----"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "MDLL-FLG----T--SA-G--VPTK-ARNV-SATAVIE-AS-G---SHWYLV-DCG-----E-G-T--Q-HRLLH------T-P--LS-I----RD-L--R-AIFIELIA-W-R--SETL--Q--VTTVQ--L---SHR-V-P-SV---G-F-VF------T-E-----IN-PE-P--R-L--DIQ-R----L-DA--E--GIT-R--G---P----L-W---G-E----L---AK-G--L-"
       },
       "0-6": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDEEGKE--M--I-----L-SYL-NQGDFIGELGLFE-E-GQ-----ER-----SAW---VR----AK--T-A--------CE---VA-E-I-S------Y---KK-F--R--Q-LI-QVNPD-----I--L--------M----R-LS---A---Q--"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "--M--VLGKP-QT-DPTL-EW-F--LS-HCHIH-KY---P---S-KST-LI-HQ-G-----EKA----ET---LYYI---VK-G-SVAVL--I-KDE-EGKE-M----ILSY---L-N----Q-G------D--F-I-G--E------LG-L--F-E-EG--QER-------S--AW----V---RAKT------A-CE--VAEI-SY-KKF-R-QLIQV--N-PD----I--LMRLS--AQ"
       },
       "0-7": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDE---E-------G-KE-------M------M-R----LS-A----Q--------MA---RR-L--Q-VT--S--------E--KV-G----N-L-A--FL-DVT--G-RIAQTLL-NLA-K-QPD--AMTHPDGMQ--I-KITRQ--EIG-------"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "--M--VLGKP-QT-DPTL-EW-F--LS-HCHIH-KY---P---S-KST-LI-HQ-G-----EKA----ET---LYYI---VK-G-SVAVL--I-KDE-EGKE-M----M----R-LS---A-Q--M--ARR-L----Q--V---TS-E----KV-----G----NLAF-L---DVT--G-RI----AQTLLNL--A--K------Q------PDA----MTH--PDG-MQIKIT-RQ-E-IG"
       },
       "0-8": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
-        "a2": "M------V-L----GK---PQ-TDP-TL------E--------WF-LS-HC-HI-------HKYP--S--K-----STL--I----HQ-GEK---AET-LY-Y--IV-K----G-SV------AVLIKDE---E-------G-KE-------M--QI-KITR---Q--E-I-G-Q---------------IV-G-----CSR-------ET--V-G---R--I-----L--KM-L-E--DQNLISA---HGK-T-IVV-Y--G---T-----R-------------"
+        "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
+        "a2": "--M--VLGKP-QT-DPTL-EW-F--LS-HCHIH-KY---P---S-KST-LI-HQ-G-----EKA----ET---L-Y--Y-I--------V------K--G--SV--A-V------L---IKDEEGK-EMQ--I----K--I---TRQEIGQI-V-----G-CSRE-TV---GR-I-----L------K-M--L-E-D-QN-LISAH--G----K-T-IVV-Y-------G---T-------R"
       },
       "1-2": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPE-LNEAIPNDERDTTM",
         "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELL-TLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS"
       },
       "1-3": {
-        "a1": "MSIQHFRV-ALIPFFA--AFCLPVF-A---H----P--E-T----L---VKVKD--A------E-DQ---L-G--A-R-V-G--Y-IE------L-D-LNSGKIL-ESFRP-EER-FPM--MSTFK--VLLCGAV-LS-RV-DAG-Q-EQLG-R-RIHYSQNDL--VEYSPV-TE--KHL--T-DGMTV--RE-L-CS----AAITMSDN--------TA--ANLLL---T-T---I---GGP---K---ELTAF-----LHNMG-DHVT-RL--D-RWEPEL-N---EAIP--N-------D-E-----R----DTTM",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
-      },
-      "1-4": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEP-ELNEAIPNDERDTTM",
         "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FITH--V-HG---D-HCF-GLP-GLLASAG--MSGRTQP---LEVI-LPAVLHDWV-RQG-LVAS-DTFLPFEL-RLLP-VE-----"
       },
-      "1-5": {
+      "1-4": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
         "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VDCGEG--TQ-HRLLHT-P-LS-IRD-L-RAIF--I-GG--TFG---H-S-T-AAEVARFAE--AA-G--VRNL---VLT---HFSAR--Y-Q-NDPRR-SP--H-I-DNV-R-D--E-AL--A--HYSGQLTL"
+      },
+      "1-5": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FI--ELIAWRSET-LQVT---TV-QL-SHRVP-S----VGFVFTEI-NP-E-PR-L----D-IQRLDA-E-GITRGPLWGELAKGL"
       },
       "1-6": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
@@ -827,16 +891,16 @@
         "a2": "M-VLG-KPQTDPTLEWF-L---SHCH-IHKY-PSKSTL---I-H-Q-----G---E--KAETLY-YI-V-KGSV--AVLIK-D---EE-GKEM---Q---IK---ITRQEI--GQIV-G-CS-----RE-TVGR-ILKML-EDQNLIS-AH--G-K-T-I------V---V----YG-TR"
       },
       "2-3": {
-        "a1": "MSIQHFRV-ALIPFFA--AFCLPVF-A---H----P--E-T----L---VKVKD--A------E-DQ---L-G--A-R-V-G--Y-IE------L-D-LNSGKIL-ESFRP-EER-FP---MM---S-TFK---V-L---L--CG---A-V-----L--SRVDA-G--QEQL-GR--R---IHY-SQ----NDLVEYS--P----V---TEK-H-L---TDG--MTVRE--L-PAAM-AT--TLRKLLTGELLTLA-SR--QQLI-DWMEA----DKVAGP-L--LR-SALP--AGWF-IA-D--K-S-GA-G--ERGS",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA"
-      },
-      "2-4": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
         "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FITH--V-HG---D-HCF-GLPGLLASAGMSGRTQP-L--EVI-LPA--VLHDWVRQGLVASD---TFLP---FEL-RLLPVE---"
       },
-      "2-5": {
+      "2-4": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
         "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-F-----I--GG-TFGHST-AAEVARF-AE-AAGVRNLV---LTHFSARYQ-NDPRRSPHIDN--VRD--EA---LAHYS--GQLTL"
+      },
+      "2-5": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
+        "a2": "MDLL-F-LG-TS--AG--VPTKARNVSATAVIEA--S-GSH-WYL-VD--CG---EG--TQHR--LLHT-P--L--SI--R-D-----L-RAI-FI--ELIAWRSET-LQVT---TV-QL-SHRVPSVGFVFT-E-INPEPR--L-DIQRLD-AEG-ITR-G-PL-W--GE-L-A--KGL"
       },
       "2-6": {
         "a1": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS",
@@ -851,52 +915,52 @@
         "a2": "M-VLG-KPQTDPTLEWF-L---SHCH-IHKY-PSKSTL---I-H-Q-----G---E--KAETLY-YI-V-KGSV--AVLIK-D---EE-GKEM---Q---IK---ITRQEI--G----QI---VGCS-R-----E--TV-GR--ILKMLE-DQ--N-LI-SA--HGKTIV-VYGT--R--"
       },
       "3-4": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDT---F------------------------L----P-----F-----------------------------------------------------------------E-----------L-----------------------------------R-L-L--------------P----V-----------------------------E---"
-      },
-      "3-5": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSI---R---------D----------------------------L----R----A-----------------I------------------------F--------------------------------------------------------I-----------------------------------GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLT---------------L----"
-      },
-      "3-6": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
-        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-----EM---I-LSY----LNQGDF----------I--G-----E-L-----G---LFEEG---Q---ER-------S--AWV-R-AKTA-C-E-V-AEIS--Y----KK---F---R-Q-L--I--QVN--PDI----LMR---LSAQ-"
-      },
-      "3-7": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
-        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-----EMMR-L--S--AQ-M-A----R--R--LQV-T---SEK------V--G-N-L---A-F----LD-V--T-G--------RIAQTL-L-N--L----AK-Q------P------D-AMTHPDG---M-Q-I-K--ITRQ---EI-G"
-      },
-      "3-8": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVEELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGLTVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTLAQDLQRYHLGRNGLLEASA",
-        "a2": "M--V-LG-K---P-QT-D--PT--LE-----WFL------S-----H---------C----HIH--K-Y--P----S--KS--T--L--I-----H----QG----------E-K--------A---ETLYY--I-----V-K-GSV-A-V-----L-I-K-DEEG--K-EM--QI-K---IT-------------------R--------Q-E----I--G-----------Q-IV----GC---S------R--ETVG-R--IL---K-MLE-D--Q--NL--I---S-AH--GK-TIV--V--Y-----G----TR"
-      },
-      "4-5": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLV--ASDTFLPFELRLLPVE",
         "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARFAEAA-GVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL-"
       },
-      "4-6": {
+      "3-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHV-HGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASD-TFLPFELRLLPVE",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLD-I-QRLDAEGITRGPLWGELAKGL"
+      },
+      "3-6": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRD-L-RAIFITHVH-GDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDF-IGELGLF-EEGQE-RSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ"
       },
-      "4-7": {
+      "3-7": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
       },
-      "4-8": {
+      "3-8": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAE-TLYY--I-VKGSVAVLIKDEEGKE-MQIKITRQEIGQIVGCS-RETV-GRILKMLEDQNLISAHG-KTI-V-VYGTR"
       },
-      "5-6": {
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLT--L",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIELIAWRSETLQVTTVQLSHRVPSVGFV-FT-EINPEPRLDIQRLDAEGITRGPLWGELAKGL"
+      },
+      "4-6": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLH-T-PLSIRDLRA-IFIGGTFGHST-AAEVARFAEAAGVRNLVLTHFSARY-QNDPRRSPHIDNVRDEALAHYSGQLTL",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ---"
       },
-      "5-7": {
+      "4-7": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARF-AEAAGVRNLVLTHFSARY-QN--DPRRSPHIDNVRDEALAHYSGQLTL",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
       },
-      "5-8": {
+      "4-8": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
         "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAE-TLYY--I-VKGSVAVLIKDEEGKEMQIKITR-QEIGQIVG-CSRETVGRILK-MLEDQNLISAHGKTIVVY-G--TR"
+      },
+      "5-6": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGE-G-TQHRLLHTPLSIRDLRAIFIELI-AWRSETLQVTTVQL-SHRVPSVGFVFTEINPE-PRLDIQRLDAEGITRGP-LWGELAKGL",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKF-RQLIQVNPDILMRLS-AQ"
+      },
+      "5-7": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIELIAWRSETLQVTTVQL-SHRVPSVGFV-FTEINPEPRLDI-QRLDAEGITRGPLWGELAKGL-",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG"
+      },
+      "5-8": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGL",
+        "a2": "M--V-LGKPQTDPTLEWFLS-HCHIHKYPSKSTLIHQGEKAE-TLYY--I-VKGSVAVLIKDEEGKEMQIKITRQEIGQIVGCSRETVGRI-LKMLEDQNLISAHGKTI-VVYG--TR--"
       },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDI-LMRLSAQ",
@@ -913,36 +977,36 @@
     },
     "smith_waterman": {
       "0-1": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM"
+        "a1": "ASNGLIVRDGG-RVLVVDTAWTDDQTAQILNWIKQEIN",
+        "a2": "AANLLLTTIGGPKELTAFLHNMGDHVTRLDRW-EPELN"
       },
       "0-2": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
       },
       "0-3": {
-        "a1": "FIADKSGAGERGSRGIIAALGPDGKPSRIVVI",
-        "a2": "FITHVHGDHCFGLPGLLASAGMSGRTQPLEVI"
+        "a1": "VTHAHQDKMGGMDALHA-AGIA",
+        "a2": "ITHVHGDHCFGLPGLLASAGMS"
       },
       "0-4": {
-        "a1": "FIADKSGAGERGSRGIIAALGPDGKPSRIVVI",
-        "a2": "FITHVHGDHCFGLPGLLASAGMSGRTQPLEVI"
+        "a1": "IKDSKAKSL-GNLGDADTEHYAASARAFG",
+        "a2": "IRDLRAIFIGGTFGHSTAAEVARFAEAAG"
       },
       "0-5": {
-        "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
-        "a2": "KARNVSATAVIEASGSHWYLVD-CGEG"
+        "a1": "LIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGI",
+        "a2": "LSIRDLRAIFIELIAWR-SETLQVTT-VQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGI"
       },
       "0-6": {
-        "a1": "GPKELTAFLHNMGDHVTRLDRWE",
-        "a2": "GKEMILSYL-NQGDFIGELGLFE"
+        "a1": "HSAPDSRAAITHTARMADKL",
+        "a2": "HKYP-SKSTLIHQGEKAETL"
       },
       "0-7": {
-        "a1": "HPETLVKVKDAEDQLG",
-        "a2": "HPDGM-QIKITRQEIG"
+        "a1": "KQEINLPVALAVVTHAHQDKMGGMDALHAAG-IA-TYANALSNQ",
+        "a2": "KEMMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLN-LAKQ"
       },
       "0-8": {
-        "a1": "VFAHPETLV",
-        "a2": "ISAHGKTIV"
+        "a1": "HSAPDSRAAITHTARMADKL",
+        "a2": "HKYP-SKSTLIHQGEKAETL"
       },
       "1-2": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
@@ -953,12 +1017,12 @@
         "a2": "VDCGEGTQHRLLHTPL-SIRDLRAIFITHVHGDH"
       },
       "1-4": {
-        "a1": "ITMSDNTAANLLLTTIGGPKELTA-FL-HNMGDH",
-        "a2": "VDCGEGTQHRLLHTPL-SIRDLRAIFITHVHGDH"
-      },
-      "1-5": {
         "a1": "VDAGQEQLGRRIH",
         "a2": "VDCGEGTQHRLLH"
+      },
+      "1-5": {
+        "a1": "LVEYSPVTEKHLT-DGMTVRELCSAAITMSDNTAANLLLTTI",
+        "a2": "LVDCGEGTQHRLLHTPLSIRDLRAIFIELIAWRSETLQVTTV"
       },
       "1-6": {
         "a1": "GPKELTAFLHNMGDHVTRLDRWE",
@@ -973,8 +1037,8 @@
         "a2": "ISAHGKTIV"
       },
       "2-3": {
-        "a1": "RRIHYSQNDLVEYS",
-        "a2": "QRYHLGRNGLLEAS"
+        "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
+        "a2": "KARNVSATAVIEASGSHWYLVD-CGEG"
       },
       "2-4": {
         "a1": "EADKVAGPLLRSALPAGWFIADKSGAG",
@@ -997,40 +1061,40 @@
         "a2": "ISAHGKTIV"
       },
       "3-4": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE"
-      },
-      "3-5": {
-        "a1": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
-        "a2": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL"
-      },
-      "3-6": {
-        "a1": "IVCGDNDKPELLAAVARGADVLVHEATFTQAVVERTGGTFGHSTAAEVARFA",
-        "a2": "VLIKDEEGKEMILSYLNQGDFIGELGLFEEG-QERSAWVRA-KTACEVAEIS"
-      },
-      "3-7": {
-        "a1": "DAEGITRGPLWGELAKGLTVT",
-        "a2": "DEEGKEMMRLSAQMARRLQVT"
-      },
-      "3-8": {
-        "a1": "PRRVIVCGDNDKPELLAAVARGA-DVLVHEATFTQAVVERTGGTFGH--STAAE-VARFAEAAGVRNLVLTH",
-        "a2": "PSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAH"
-      },
-      "4-5": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHG",
         "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFG"
       },
-      "4-6": {
+      "3-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI"
+      },
+      "3-6": {
         "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
         "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "3-7": {
+        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
+        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "3-8": {
+        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
+        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+      },
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI"
+      },
+      "4-6": {
+        "a1": "WYLVDC",
+        "a2": "WFLSHC"
       },
       "4-7": {
-        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
-        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+        "a1": "WYLVDC",
+        "a2": "WFLSHC"
       },
       "4-8": {
-        "a1": "FITHVHGDHCFGLPGLLASAGMSGRT",
-        "a2": "FLSHCH-IHKYPSKSTLIHQGEKAET"
+        "a1": "IGGTFGHSTAAEVARFAEAAGVRNLVLTH",
+        "a2": "IGQIVGCSRET-VGRILKMLEDQNLISAH"
       },
       "5-6": {
         "a1": "WYLVDC",
@@ -1041,8 +1105,8 @@
         "a2": "WFLSHC"
       },
       "5-8": {
-        "a1": "IGGTFGHSTAAEVARFAEAAGVRNLVLTH",
-        "a2": "IGQIVGCSRET-VGRILKMLEDQNLISAH"
+        "a1": "WYLVDC",
+        "a2": "WFLSHC"
       },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMI",
@@ -1059,36 +1123,36 @@
     },
     "mini_blast": {
       "0-1": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM"
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
       },
       "0-2": {
-        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
-        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELPAAMATTLRKLLTGELLT"
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
       },
       "0-3": {
-        "a1": "HNMGDH",
-        "a2": "HVHGDH"
+        "a1": "GAVASN",
+        "a2": "GLVASD"
       },
       "0-4": {
-        "a1": "HNMGDH",
-        "a2": "HVHGDH"
+        "a1": "AAGI",
+        "a2": "AAGV"
       },
       "0-5": {
-        "a1": "HYS",
-        "a2": "HYS"
+        "a1": "GPL",
+        "a2": "GPL"
       },
       "0-6": {
-        "a1": "AVLSRVDAGQEQL",
-        "a2": "AVLIKDEEGKEMI"
+        "a1": "LIKDSKAKSL",
+        "a2": "LIKDEEGKEM"
       },
       "0-7": {
-        "a1": "AVLSRVDAGQEQL",
-        "a2": "AVLIKDEEGKEMM"
+        "a1": "LIKDSKAKSLGNL",
+        "a2": "LIKDEEGKEMMRL"
       },
       "0-8": {
-        "a1": "AVLSRVDAGQE",
-        "a2": "AVLIKDEEGKE"
+        "a1": "LIKDSKAKSL",
+        "a2": "LIKDEEGKEM"
       },
       "1-2": {
         "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLT",
@@ -1099,12 +1163,12 @@
         "a2": "HVHGDH"
       },
       "1-4": {
-        "a1": "HNMGDH",
-        "a2": "HVHGDH"
-      },
-      "1-5": {
         "a1": "HYS",
         "a2": "HYS"
+      },
+      "1-5": {
+        "a1": "RVGYIEL",
+        "a2": "RAIFIEL"
       },
       "1-6": {
         "a1": "AVLSRVDAGQEQL",
@@ -1119,16 +1183,16 @@
         "a2": "AVLIKDEEGKE"
       },
       "2-3": {
-        "a1": "HYS",
-        "a2": "HYS"
-      },
-      "2-4": {
         "a1": "LPAAMATTLRK",
         "a2": "LPAVLHDWVRQ"
       },
-      "2-5": {
+      "2-4": {
         "a1": "HYS",
         "a2": "HYS"
+      },
+      "2-5": {
+        "a1": "RVGYIEL",
+        "a2": "RAIFIEL"
       },
       "2-6": {
         "a1": "AVLSRVDAGQEQL",
@@ -1143,52 +1207,52 @@
         "a2": "AVLIKDEEGKE"
       },
       "3-4": {
-        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE",
-        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE"
-      },
-      "3-5": {
-        "a1": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL",
-        "a2": "GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL"
-      },
-      "3-6": {
-        "a1": "TAAEVARFA",
-        "a2": "TACEVAEIS"
-      },
-      "3-7": {
-        "a1": "LIAWRSETLQVTTVQLSH",
-        "a2": "LSAQMARRLQVTSEKVGN"
-      },
-      "3-8": {
-        "a1": "RSETL",
-        "a2": "KAETL"
-      },
-      "4-5": {
         "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFITHVHG",
         "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFIGGTFG"
       },
-      "4-6": {
+      "3-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI"
+      },
+      "3-6": {
         "a1": "WVR",
         "a2": "WVR"
       },
-      "4-7": {
+      "3-7": {
         "a1": "AVL",
         "a2": "AVL"
       },
-      "4-8": {
+      "3-8": {
         "a1": "AVL",
         "a2": "AVL"
       },
-      "5-6": {
+      "4-5": {
+        "a1": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI",
+        "a2": "MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI"
+      },
+      "4-6": {
         "a1": "TAAEVARFA",
         "a2": "TACEVAEIS"
       },
-      "5-7": {
+      "4-7": {
         "a1": "",
         "a2": ""
       },
-      "5-8": {
+      "4-8": {
         "a1": "",
         "a2": ""
+      },
+      "5-6": {
+        "a1": "ITRGPLWGEL",
+        "a2": "LNQGDFIGEL"
+      },
+      "5-7": {
+        "a1": "IELIAWRSETLQVTTVQLSH",
+        "a2": "MRLSAQMARRLQVTSEKVGN"
+      },
+      "5-8": {
+        "a1": "RSETL",
+        "a2": "KAETL"
       },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMI",
@@ -1205,8 +1269,7 @@
     }
   },
   "metric": "percent_identity"
-}
-</script>
+}</script>
 
 <script>
 const DATA = JSON.parse(document.getElementById('resultsData').textContent);
