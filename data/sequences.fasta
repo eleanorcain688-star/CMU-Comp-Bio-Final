@@ -1,67 +1,60 @@
 ; =============================================================
 ; STARTER PROTEIN DATABASE
 ; =============================================================
-; This file is a WORKING STARTER SET so the pipeline runs end-to-end.
-; Two sequences below are real, verified UniProt entries. The rest
-; are clearly marked PLACEHOLDER — short synthetic stand-ins so the
-; scripts run without errors. Replace every PLACEHOLDER entry with
-; real sequences for YOUR three chosen bacterial species before you
-; report any results. This is part of the assignment's research
-; requirement, not busywork.
+; CORRECTED per research: the evolutionary link to tRNase Z runs
+; through METALLO-beta-lactamases (zinc-dependent, class B — e.g.
+; NDM, VIM, IMP, L1), NOT serine beta-lactamases (class A — TEM,
+; SHV, CTX-M) or class D (OXA). Both metallo-beta-lactamases and
+; tRNase Z belong to the same ancient "MBL-fold" superfamily
+; (Daiyasu et al. 2001; Kim et al. on PNGM-1). An earlier version
+; of this file used TEM-1, which is a serine enzyme and NOT part
+; of that shared-fold story — if you're comparing against older
+; notes/screenshots, this is the fix.
 ;
-; HOW TO GET REAL SEQUENCES:
-;   1. Go to https://www.uniprot.org
-;   2. Search e.g. "gene:blaTEM AND organism:Klebsiella pneumoniae"
-;   3. Open the entry, click "Format" / download as FASTA
-;   4. Paste the FASTA block below, keeping the header format used here
-;      (>class|species|gene|accession  short description)
-;
-; Header convention used throughout the scripts:
-;   >CLASS|SPECIES|GENE|ACCESSION description
-;   CLASS is one of: LACTAMASE, TRNASE_Z, TF   (used to auto-group results)
+; SPECIES NOTE: NDM-1 and its close relatives are most commonly found in
+; Klebsiella pneumoniae, Escherichia coli, and Acinetobacter baumannii — use
+; these three as your species set for a dataset that actually reflects where
+; this resistance gene shows up clinically (see NDM Metallo-β-Lactamases
+; review, PMC6431124, in your references).
 ; =============================================================
 
->LACTAMASE|Escherichia_coli|blaTEM-1|P62593 Beta-lactamase TEM-1 (real, UniProt)
+>LACTAMASE|Klebsiella_pneumoniae|blaNDM-1|C7C422 Metallo-beta-lactamase NDM-1, mature protein region 29-270 (real, UniProt)
+GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLV
+VDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQL
+APQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGC
+LIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADK
+LR
+
+>LACTAMASE|Escherichia_coli|blaNDM-1_or_blaVIM|PLACEHOLDER Replace with an NDM or VIM-family metallo-beta-lactamase from E. coli (search UniProt: blaNDM AND organism E. coli)
 MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRP
 EERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVREL
 CSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM
-PAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS
-RGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW
 
->LACTAMASE|PLACEHOLDER_species2|blaXXX|PLACEHOLDER Replace with a beta-lactamase from your 2nd species (e.g. blaSHV, blaOXA)
-MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRP
-EERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVREL
-CSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTM
-
->LACTAMASE|PLACEHOLDER_species3|blaXXX|PLACEHOLDER Replace with a beta-lactamase from your 3rd species
+>LACTAMASE|Acinetobacter_baumannii|blaNDM-1_or_similar|PLACEHOLDER Replace with an NDM-family metallo-beta-lactamase from A. baumannii (search UniProt: blaNDM AND organism Acinetobacter baumannii)
 MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRP
 EERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVREL
 PAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGS
 
->TRNASE_Z|Pseudomonas_putida|rnz|Q88FQ4 Ribonuclease Z (real, UniProt; metallo-beta-lactamase fold)
+>TRNASE_Z|Klebsiella_pneumoniae|rnz|PLACEHOLDER Replace with tRNase Z (rnz/RNase BN) from Klebsiella pneumoniae to match the real NDM-1 entry above
 MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
 THVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE
+
+>TRNASE_Z|Escherichia_coli|rbn|PLACEHOLDER Replace with tRNase Z / RNase BN (gene rbn, UniProt P0A8V0) from E. coli
+MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
+GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL
+
+>TRNASE_Z|Acinetobacter_baumannii|rnz|PLACEHOLDER Replace with tRNase Z from Acinetobacter baumannii
+MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
 ELIAWRSETLQVTTVQLSHRVPSVGFVFTEINPEPRLDIQRLDAEGITRGPLWGELAKGL
-TVTYDGQLLNGNDYLRPSRPPRRVIVCGDNDKPELLAAVARGADVLVHEATFTQAVVERT
-GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL
-AQDLQRYHLGRNGLLEASA
 
->TRNASE_Z|PLACEHOLDER_species2|rnz|PLACEHOLDER Replace with tRNase Z from your 2nd species
-MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
-THVHGDHCFGLPGLLASAGMSGRTQPLEVILPAVLHDWVRQGLVASDTFLPFELRLLPVE
-
->TRNASE_Z|PLACEHOLDER_species3|rnz|PLACEHOLDER Replace with tRNase Z from your 3rd species
-MDLLFLGTSAGVPTKARNVSATAVIEASGSHWYLVDCGEGTQHRLLHTPLSIRDLRAIFI
-GGTFGHSTAAEVARFAEAAGVRNLVLTHFSARYQNDPRRSPHIDNVRDEALAHYSGQLTL
-
->TF|PLACEHOLDER_species1|crp_or_other|PLACEHOLDER Replace with a transcription factor from species 1 (e.g. CRP, Fis)
+>TF|Klebsiella_pneumoniae|crp_or_other|PLACEHOLDER Replace with a transcription factor (e.g. CRP, Fis) from Klebsiella pneumoniae
 MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM
 ILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQ
 
->TF|PLACEHOLDER_species2|crp_or_other|PLACEHOLDER Replace with a transcription factor from species 2
+>TF|Escherichia_coli|crp_or_other|PLACEHOLDER Replace with a transcription factor (e.g. CRP) from Escherichia coli
 MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM
 MRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIG
 
->TF|PLACEHOLDER_species3|crp_or_other|PLACEHOLDER Replace with a transcription factor from species 3
+>TF|Acinetobacter_baumannii|crp_or_other|PLACEHOLDER Replace with a transcription factor from Acinetobacter baumannii
 MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEM
 QIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR
