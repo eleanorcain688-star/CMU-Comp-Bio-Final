@@ -8,8 +8,11 @@
 ; homolog runs through METALLO-beta-lactamases (zinc-dependent, class
 ; B — e.g. NDM), NOT serine beta-lactamases (class A — TEM, SHV) or
 ; class D (OXA). Both metallo-beta-lactamases and tRNase Z belong to
-; the same ancient "MBL-fold" superfamily (Daiyasu et al. 2001; Kim
-; et al. on PNGM-1).
+; the same ancient "MBL-fold" superfamily (Daiyasu et al. 2001; Lee,
+; Takahashi, Jeon et al. 2019, on PNGM-1 — the enzyme with measured
+; dual metallo-beta-lactamase AND tRNase Z activity that pins down
+; this evolutionary relationship. See presentation/PROJECT_EXPLAINER.md
+; Section 2b for the full story, it's genuinely worth knowing well.)
 ;
 ; NOTE on the Acinetobacter lactamase entry: it's from Acinetobacter
 ; sp. NF512, a close relative of A. baumannii, kept deliberately —
@@ -59,7 +62,7 @@ GKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITME
 AKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDF
 TVFNV
 
->TRNASE_Z|Acinetobacter_baumannii|rnz|real Ribonuclease Z / RNase BN
+>TRNASE_Z|Acinetobacter_baumannii|rnz|ACCESSION_NOT_RECORDED Ribonuclease Z / RNase BN (real sequence, but the UniProt accession number wasn't captured when this was sourced — look it up on uniprot.org before final citation if you want the accession in your references)
 MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILVDAGEGTQHRIQQARLSLQNLIAIC
 ITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDV
 NEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLK
