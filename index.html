@@ -180,13 +180,14 @@
 
 <header class="hero">
   <div class="wrap">
-    <div class="eyebrow">Computational Biology — Pre-College Final Project</div>
+    <div class="eyebrow">Computational Biology: Pre-College Final Project</div>
     <h1 class="title">Does sequence alignment recover function, or only ancestry?</h1>
     <p class="subtitle">
-      A real antibiotic-resistance enzyme, its likely evolutionary relative doing a
-      completely unrelated job, and an unrelated protein thrown in as a control —
-      run through three different alignment algorithms to see if any of them can
-      actually tell the difference between "related" and "similar."
+      We compared a real antibiotic-resistance enzyme with a likely evolutionary
+      relative that has a different function, an unrelated control protein, and
+      another enzyme that performs the same job through a different evolutionary
+      path. We then tested all four groups with three alignment algorithms to see
+      what the scores could actually tell us.
     </p>
     <div class="hero-meta">
       <div><div class="label">Target</div>Metallo-β-lactamases</div>
@@ -202,58 +203,47 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">01</span><h2>Background</h2></div>
     <p class="lede">
-      Penicillin works by stopping bacteria from building their cell walls.
-      β-lactamases are how bacteria fight back — enzymes that snip open the
-      drug's reactive ring before it ever gets the chance to work. Not all
-      β-lactamases do this the same way, though. We're focused on one
-      specific family here: <strong>metallo-β-lactamases</strong>, which use
-      zinc ions to do the chemistry, unlike the more familiar serine-based
-      enzymes such as TEM or SHV. That distinction turns out to matter more
-      than it sounds like it should — it's the reason this project exists at
-      all, because metallo-β-lactamases didn't come from nowhere, and the
-      evidence for where they came from is stranger than you'd guess.
+      Penicillin works by preventing bacteria from building their cell walls.
+      Bacteria can fight back by producing β-lactamases, which are enzymes that
+      break open part of the antibiotic before it can work. However, not all
+      β-lactamases work in the same way. This project focuses on
+      <strong>metallo-β-lactamases</strong>, which use zinc ions, unlike
+      serine-based enzymes such as TEM and SHV. This difference is important
+      because metallo-β-lactamases appear to have an unexpected evolutionary
+      history.
     </p>
     <p class="lede">
-      In 2018, researchers pulled DNA out of deep-sea sediment — sediment old
-      enough to predate the antibiotic era entirely — and found a gene for an
-      enzyme nobody had characterized before. They named it <strong>PNGM-1</strong>.
-      When they tested what it actually did in the lab, they found something
-      genuinely strange: it worked as a real metallo-β-lactamase, breaking
-      down antibiotics just fine, but it <em>also</em> worked as a real
-      <strong>tRNase Z</strong>, trimming pre-tRNA the same way that enzyme
-      family does in every living cell — one folded protein, both activities,
-      both measurable on the lab bench. Their conclusion was that PNGM-1 sits
-      close to the ancestral tRNase Z lineage, and that β-lactamase activity
-      started out as a kind of evolutionary side effect — what biologists
-      call a "promiscuous" secondary function — before later relatives
-      specialized into it completely. tRNase Z came first. Antibiotic
-      resistance, in this specific family, was an accident that stuck.
+      In 2018, researchers found a previously uncharacterized gene in DNA from
+      deep-sea sediment that was older than the modern antibiotic era. They
+      named the enzyme <strong>PNGM-1</strong>. Lab tests showed that PNGM-1
+      could break down antibiotics like a metallo-β-lactamase, but it could
+      <em>also</em> act as a <strong>tRNase Z</strong> by trimming pre-tRNA.
+      In other words, one folded protein could perform both activities. The
+      researchers proposed that PNGM-1 is close to the ancestral tRNase Z
+      lineage and that β-lactamase activity may have started as a secondary,
+      or "promiscuous," function before later proteins specialized in it.
+      This suggests that tRNase Z came first and antibiotic resistance developed
+      later in this protein family.
     </p>
     <p class="lede">
-      That's the split our whole experiment hangs on: same fold, wildly
-      different job. If an alignment algorithm scores metallo-β-lactamase
-      against tRNase Z as "highly similar," it's picking up on that shared
-      ancestry — not on shared function, since the two proteins barely
-      overlap in what they actually do. We added a third, genuinely unrelated
-      protein family (bacterial transcription factors) as a control: an
-      algorithm that's actually tracking function should separate TFs
-      cleanly from both of the other groups, while still correctly relating
-      — or correctly failing to relate — metallo-β-lactamase to tRNase Z.
+      This creates the main comparison in our experiment: two proteins can share
+      a fold and evolutionary history while doing very different jobs. If an
+      alignment algorithm gives metallo-β-lactamase and tRNase Z a high similarity
+      score, it may be detecting shared ancestry rather than shared function. We
+      also included bacterial transcription factors as an unrelated control so
+      we could compare a known structural relative with a protein that should not
+      be closely related.
     </p>
     <p class="lede">
-      There's a fourth case worth testing, and it's the mirror image of the
-      first one: what happens when two proteins do the <em>same</em> job but
-      don't share ancestry at all? <strong>Serine β-lactamases</strong> —
-      TEM, SHV, OXA, and relatives — destroy the exact same antibiotics as
-      metallo-β-lactamases, using the exact same overall strategy (breaking
-      the β-lactam ring), but they evolved completely independently, from
-      penicillin-binding proteins rather than the MBL-fold superfamily. Same
-      name, same job, unrelated fold, unrelated history — the textbook case
-      of <strong>convergent evolution</strong>. If sequence alignment is
-      tracking ancestry rather than function (which is the whole thesis
-      here), it should treat metallo- vs. serine-β-lactamase as basically
-      unrelated, the same way it treats either one against the transcription
-      factor control — despite both being called "β-lactamases."
+      We also wanted to test the reverse situation: two proteins that do the
+      <em>same</em> job but do not share the same ancestry.
+      <strong>Serine β-lactamases</strong>, including TEM, SHV, and OXA enzymes,
+      break down the same types of antibiotics as metallo-β-lactamases. However,
+      they evolved independently from penicillin-binding proteins and have a
+      different fold. This is an example of <strong>convergent evolution</strong>.
+      If sequence alignment mainly reflects ancestry, metallo- and serine
+      β-lactamases should look mostly unrelated even though they have the same
+      general function.
     </p>
     <div class="legend">
       <span class="chip"><span class="dot lac"></span>Metallo-β-lactamase (target)</span>
@@ -272,7 +262,7 @@
         <div style="background:var(--bg);padding:12px 14px;font-weight:600;text-align:center;">Different function</div>
 
         <div style="background:var(--bg);padding:12px 14px;font-weight:600;">Same ancestry</div>
-        <div style="background:var(--surface);padding:12px 14px;color:var(--ink-soft);text-align:center;">(not tested — this is just two copies of the same enzyme, like our multi-species lactamase rows)</div>
+        <div style="background:var(--surface);padding:12px 14px;color:var(--ink-soft);text-align:center;">(not tested: this is just two copies of the same enzyme, like our multi-species lactamase rows)</div>
         <div style="background:var(--lactamase-bg);padding:12px 14px;text-align:center;"><strong style="color:var(--lactamase);">Divergent evolution</strong><br>lactamase vs tRNase Z</div>
 
         <div style="background:var(--bg);padding:12px 14px;font-weight:600;">Different ancestry</div>
@@ -280,15 +270,14 @@
         <div style="background:var(--tf-bg);padding:12px 14px;text-align:center;"><strong style="color:var(--tf);">Unrelated</strong><br>lactamase vs transcription factor</div>
       </div>
       <p style="font-size:13px;color:var(--ink-soft);margin:16px 0 0;">
-        A sequence aligner that's actually detecting function, rather than
-        ancestry, should score <strong>convergent evolution</strong> about
-        the same as <strong>unrelated</strong> — both are historically
+        If a sequence aligner could directly detect function rather than
+        ancestry, it should score <strong>convergent evolution</strong> about
+        the same as <strong>unrelated</strong>: both are historically
         disconnected from the lactamase in ways that shouldn't produce high
         sequence identity, whatever their functional overlap. If it instead
         scored <strong>divergent evolution</strong> noticeably higher than
         both of those, <em>that</em> would be the sign it's tracking
-        function rather than ancestry. Our results section shows which of
-        these actually happened.
+        function rather than ancestry. The results section shows what actually happened in our comparison.
       </p>
     </div>
 
@@ -337,11 +326,10 @@
       </svg>
       <p style="font-size:13px;color:var(--ink-soft);margin:14px 0 0;">
         β-lactamase and tRNase Z share the same underlying metallo-hydrolase
-        scaffold (illustrated here as the same blob shape) — evidence they
-        share a common ancestor — but carry out unrelated chemistry. The
+        scaffold (illustrated here as the same blob shape): evidence they
+        share a common ancestor: but carry out unrelated chemistry. The
         transcription factor control has no such shared scaffold with either.
-        An alignment method that's actually function-aware shouldn't be fooled
-        by shape alone.
+        However, sequence alignment does not directly measure shape or function.
       </p>
     </div>
 
@@ -350,14 +338,13 @@
 
 <section id="phenomena">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">02</span><h2>Related Phenomena: Three Ways Sequence Misleads You</h2></div>
+    <div class="section-head"><span class="section-num">02</span><h2>Related Phenomena: When Sequence and Function Do Not Match</h2></div>
     <p class="lede">
-      Our experiment tests one specific way biology decouples sequence from
-      function — <strong>divergent evolution</strong>, where two genes duplicate
-      from a shared ancestor and then drift apart. It's worth being explicit that
-      this is only one of at least three distinct phenomena that break the
-      "similar sequence → similar function" assumption. The other two involve no
-      sequence divergence at all.
+      Our experiment focuses on one way that sequence and function can become
+      disconnected: <strong>divergent evolution</strong>. In this case, genes
+      come from a shared ancestor but change over time. This is only one of
+      several biological situations that can break the assumption that a similar
+      sequence always means a similar function.
     </p>
 
     <div class="grid-3">
@@ -366,7 +353,7 @@
         <div class="tagline">our project · metallo-β-lactamase / tRNase Z</div>
         <p>Two separate genes, duplicated long ago, drift apart in sequence while
         keeping the ancestral fold. Different genes, different sequences today,
-        unrelated functions — but a shared structural signature if you look
+        unrelated functions: but a shared structural signature if you look
         closely enough.</p>
       </div>
       <div class="card algo-card" style="border-top:3px solid var(--trnase);">
@@ -375,7 +362,7 @@
         <p>Often the <em>same gene</em>, doing two jobs depending on where and how
         much of it gets made. In duck lenses, the metabolic enzyme
         argininosuccinate lyase is massively overexpressed and repurposed wholesale
-        as a transparent structural protein — no mutation required, just dosage
+        as a transparent structural protein: no mutation required, just dosage
         and location.</p>
       </div>
       <div class="card algo-card" style="border-top:3px solid var(--tf);">
@@ -384,20 +371,18 @@
         <p>The single <em>identical</em> protein performs two mechanistically
         unrelated jobs depending on context. Inside the cell, PGI runs step two of
         glycolysis. Secreted outside the cell, that exact same molecule acts as a
-        cytokine — independently rediscovered and renamed three times
+        cytokine: independently rediscovered and renamed three times
         (neuroleukin, autocrine motility factor, maturation factor) before anyone
         realized it was one protein.</p>
       </div>
     </div>
 
     <p class="lede" style="margin-top:24px;">
-      Put together, these three cases suggest sequence-based tools like the ones
-      we're testing can only ever address the first category. A protein could
-      align at 0% identity with another and still be doing an identical job
-      (gene sharing, moonlighting) — or align at high identity with a close
-      relative and still be doing something completely different (our main
-      experiment). Alignment identity is genuinely informative, but it is not,
-      on its own, a function detector.
+      Together, these examples show that sequence-based tools have clear limits.
+      Two proteins can have very different sequences and still do the same job,
+      or they can have similar sequences and perform different jobs. Percent
+      identity is useful evidence, but it cannot determine protein function by
+      itself.
     </p>
   </div>
 </section>
@@ -406,14 +391,12 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">03</span><h2>Methods</h2></div>
     <p class="lede">
-      Sequences for three bacterial species were pulled from UniProt for each of
-      four protein classes (twelve sequences total, all real), then run pairwise
-      through three alignment algorithms, all implemented from scratch and scored
-      with the standard BLOSUM62 substitution matrix. The serine β-lactamase
-      entries were chosen to be species-appropriate rather than arbitrary: TEM-1
-      for E. coli and SHV for K. pneumoniae are the classic, well-characterized
-      enzyme for each species; A. baumannii's is OXA-51-like, its own
-      chromosomally intrinsic serine enzyme.
+      We collected sequences from UniProt for three bacterial species and four
+      protein classes, giving us twelve real sequences in total. We compared every
+      pair using three alignment algorithms that we implemented from scratch, all
+      scored with the BLOSUM62 substitution matrix. For the serine β-lactamases,
+      we chose enzymes associated with each species: TEM-1 for E. coli, SHV for
+      K. pneumoniae, and an OXA-51-like enzyme for A. baumannii.
     </p>
     <div class="grid-3">
       <div class="card algo-card">
@@ -429,7 +412,7 @@
       <div class="card algo-card">
         <h3>Mini-BLAST</h3>
         <div class="tagline">seed-and-extend heuristic</div>
-        <p>Indexes short exact-match "words," then extends each hit until the score drops off (X-drop). Ungapped and fast — the same core idea as real BLAST.</p>
+        <p>Indexes short exact-match "words," then extends each hit until the score drops off (X-drop). Ungapped and fast: the same core idea as real BLAST.</p>
       </div>
     </div>
   </div>
@@ -439,10 +422,10 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">04</span><h2>Results</h2></div>
     <p class="lede">
-      Percent identity for every pair of sequences, under each algorithm. Rows and
-      columns are grouped and color-ticked by protein class — watch whether the
-      β-lactamase/tRNase Z block lights up differently from the transcription-factor
-      block as you switch algorithms.
+      The heatmap shows the percent identity for every pair of sequences under
+      each algorithm. The rows and columns are grouped by protein class. Switching
+      between algorithms lets us see whether the metallo-β-lactamase and tRNase Z
+      group looks different from the unrelated transcription-factor group.
     </p>
 
     <div class="grid-2" style="align-items:start;">
@@ -478,7 +461,7 @@
 <section id="explorer">
   <div class="wrap">
     <div class="section-head"><span class="section-num">05</span><h2>Alignment Explorer</h2></div>
-    <p class="lede">Pick any two sequences to see their actual aligned residues, colored by match / mismatch / gap.</p>
+    <p class="lede">Choose any two sequences to view the aligned residues and see the matches, mismatches, and gaps.</p>
     <div class="grid-2" style="margin-bottom:22px;">
       <div>
         <div class="hero-meta-label" style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);text-transform:uppercase;margin-bottom:6px;">Sequence A</div>
@@ -498,35 +481,32 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">06</span><h2>Discussion</h2></div>
     <p class="lede">
-      Our central question was whether alignment algorithms recover <em>function</em>
-      or only <em>ancestry</em>. Two results ended up bearing on that, and they
-      point in slightly different directions.
+      Our main question was whether alignment algorithms can detect protein
+      <em>function</em>, or whether they mainly reflect <em>ancestry</em>. The
+      results gave us several useful findings.
     </p>
 
-    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 1 — algorithm choice matters even before biology enters the picture</h3>
+    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 1: Algorithm choice changed the result</h3>
     <p class="lede">
-      Before we even got to comparing across protein classes, our three real
-      NDM-1 sequences (K. pneumoniae, E. coli, Acinetobacter) already caught
-      us off guard. NDM-1 spreads by horizontal gene transfer on a mobile
-      transposon (Tn<em>125</em>), not by normal vertical inheritance — so
-      these three sequences are near-identical copies of the same gene, not
-      three independently-evolved lineages. And yet Needleman-Wunsch scored
-      the K. pneumoniae/E. coli pair at only 88% identity, while
-      Smith-Waterman put the same pair at 98%, and mini-BLAST at 100%. Same
-      two sequences, three very different verdicts. The gap wasn't
-      biological — it came down to a length mismatch (our K. pneumoniae
-      entry is the mature protein, missing its signal peptide, while the
-      other two are full-length), which global alignment punishes and
-      local or seed-based methods simply shrug off. It's a good reminder
-      that an algorithm's sensitivity to how a sequence happens to be
-      <em>formatted</em> can move a headline identity score by ten-plus
-      points, with nothing biological behind it.
+      Even before comparing different protein classes, the three NDM-1 sequences
+      gave us an unexpected result. NDM-1 can spread between species through
+      horizontal gene transfer on the mobile transposon Tn<em>125</em>. Because
+      of this, these sequences are almost identical copies of the same gene rather
+      than three separately evolved versions. Still, Needleman-Wunsch scored the
+      K. pneumoniae and E. coli pair at 88% identity, Smith-Waterman scored it at
+      98%, and mini-BLAST scored it at 100%. The difference was caused by sequence
+      length, not biology. Our K. pneumoniae sequence represents the mature protein
+      and is missing its signal peptide, while the other two sequences are full
+      length. Global alignment penalized this difference much more strongly than
+      the local and seed-based methods. This showed us that formatting and sequence
+      boundaries can change an identity score even when the biological relationship
+      stays the same.
     </p>
 
-    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 2 — did any algorithm separate function from ancestry?</h3>
+    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 2: Could the algorithms separate function from ancestry?</h3>
     <p class="lede">
-      With all nine sequences real, here's what the average cross-class
-      identity looks like:
+      The table below shows the average identity between protein classes when all
+      nine sequences in this comparison were real.
     </p>
     <div class="card" style="margin-bottom:18px;">
       <table style="width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:13px;">
@@ -544,55 +524,45 @@
       </table>
     </div>
     <p class="lede">
-      None of the three algorithms scored metallo-β-lactamase against
-      tRNase Z any higher than metallo-β-lactamase against the unrelated
-      transcription factor. If anything, under Smith-Waterman and
-      mini-BLAST, the lactamase scored a little <em>higher</em> against the
-      TF than against its actual structural relative — which is almost the
-      opposite of what we expected going in. Needleman-Wunsch and
-      Smith-Waterman both land in the 17–33% range across the board, which
-      happens to be right where Todd, Orengo & Thornton (2001) found that
-      sequence identity stops reliably tracking any relationship at all,
-      structural or functional.
+      None of the three algorithms scored metallo-β-lactamase against tRNase Z
+      higher than metallo-β-lactamase against the unrelated transcription factor.
+      In fact, Smith-Waterman and mini-BLAST gave slightly higher scores to the
+      transcription-factor comparison. This was the opposite of what we expected.
+      Needleman-Wunsch and Smith-Waterman produced values from about 17% to 33%
+      across these comparisons. This is close to the range where Todd, Orengo, and
+      Thornton (2001) found that sequence identity stops being a reliable sign of
+      structural or functional relationships.
     </p>
     <p class="lede">
-      Mini-BLAST's numbers need a footnote before anyone takes them at face
-      value: it reports identity over just its single best-matching
-      segment, sometimes only 3–6 residues long, not the whole protein.
-      The 100% and 83% scores against the Acinetobacter entries are almost
-      certainly short coincidental word matches — proteins this size will
-      often share a random 3-residue stretch somewhere by chance — not
-      evidence of anything real. That's a genuine limitation of ungapped,
-      word-based methods: a short match can look extremely confident and
-      still be meaningless, and there's no way to tell the difference from
-      the score alone.
+      The mini-BLAST results need to be interpreted carefully. Our version reports
+      identity only for the best matching segment, which can be as short as three
+      to six amino acids. A short segment can match by chance and still produce a
+      score such as 83% or 100%. For proteins of this length, random short matches
+      are not surprising. This is an important weakness of ungapped word-based
+      methods: a very high local identity can look convincing even when the match
+      is too short to be biologically meaningful.
     </p>
     <p class="lede">
-      Put plainly: at this level of divergence, none of the three
-      approaches — global, local, or seed-based — could recover the known
-      relationship between metallo-β-lactamase and tRNase Z. That
-      relationship is real; it's established by X-ray crystallography and
-      the enzymes' shared zinc-binding motifs (see Lee et al. and Daiyasu
-      et al. in References), and reinforced directly by PNGM-1, an enzyme
-      that still does both jobs today. But it's invisible at the sequence
-      level to every method we tried. Actually recovering it would take
-      structural alignment tools that compare 3D shape instead of 1D
-      sequence — which is really the whole point. Sequence and structure
-      carry overlapping but genuinely different information about a
-      protein's history, and ours only had access to one of them.
+      Overall, none of the three methods could recover the known relationship
+      between metallo-β-lactamase and tRNase Z at this level of sequence
+      divergence. That relationship is supported by X-ray crystallography,
+      shared zinc-binding motifs, and PNGM-1, which can still perform both jobs.
+      However, it was not visible in the one-dimensional sequence comparisons we
+      tested. Detecting it would probably require structural alignment tools that
+      compare three-dimensional folds. This was one of the clearest lessons from
+      our project: sequence and structure contain related but different information
+      about a protein's history.
     </p>
 
-    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 3 — the mirror test: convergent evolution</h3>
+    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 3: Testing convergent evolution</h3>
     <p class="lede">
-      Finding 2 asked whether shared ancestry with different function gets
-      mistaken for similarity. The natural follow-up is the reverse case:
-      does <em>shared function with no shared ancestry</em> — serine
-      β-lactamases, which destroy the same antibiotics through a completely
-      independent evolutionary origin — get mistaken for similarity too?
-      If alignment is really tracking ancestry rather than function, it
-      shouldn't. Here's what all three real serine-lactamase sequences
-      (TEM-1, SHV, and OXA-51-like, one per species) actually showed,
-      averaged against the metallo-lactamase target:
+      Finding 2 tested proteins with shared ancestry but different functions. We
+      next tested the reverse: proteins with a shared function but no shared
+      ancestry. Serine β-lactamases destroy the same antibiotics as metallo-
+      β-lactamases, but they evolved independently. If alignment mainly tracks
+      ancestry, these proteins should not receive unusually high similarity
+      scores. The table shows the averages for TEM-1, SHV, and OXA-51-like against
+      the metallo-β-lactamase sequences.
     </p>
     <div class="card" style="margin-bottom:18px;">
       <table style="width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:13px;">
@@ -609,102 +579,81 @@
         </tbody>
       </table>
       <p style="font-size:12px;color:var(--ink-soft);margin-top:10px;">
-        All three species, all real UniProt sequences — no placeholders in
+        All three species, all real UniProt sequences: no placeholders in
         this comparison.
       </p>
     </div>
     <p class="lede">
-      This is a clean result, and it's the confirmatory half of the
-      project: the metallo/serine-lactamase pair — despite sharing a name
-      and destroying the same antibiotics — scores essentially the same as
-      the metallo-lactamase/TF pair, across all three algorithms, and lands
-      right alongside the divergent-evolution numbers from Finding 2 too.
-      All three comparisons cluster in the same range per algorithm.
-      Sharing a function without sharing ancestry produced no more sequence
-      similarity than sharing nothing at all — and, just as tellingly,
-      sharing ancestry without sharing function didn't stand out either.
-      Combined, the picture is now symmetric: these algorithms track sequence
-      descent, not biological role, in both directions we tested it.
+      This result supported our prediction. The metallo/serine β-lactamase pair
+      received almost the same scores as the metallo-lactamase/transcription-factor
+      pair under all three algorithms. The values were also close to the divergent
+      evolution comparison from Finding 2. Sharing a function without sharing
+      ancestry did not create extra sequence similarity. At the same time, sharing
+      ancestry without sharing function did not stand out at this level of
+      divergence. In our dataset, the algorithms reflected detectable sequence
+      similarity rather than biological role.
     </p>
 
     <h3 style="font-size:17px;margin:26px 0 10px;">Connecting back to Related Phenomena</h3>
     <p class="lede">
-      Between Finding 2 and Finding 3, we've now tested two of the four
-      cells in the grid above — divergent evolution and convergent
-      evolution — and both point the same direction. But that still leaves
-      gene sharing (delta-crystallin/ASL) and moonlighting (PGI) completely
-      untouched, and no algorithm we tried would have any chance with
-      either: both involve 100% sequence identity — literally the same
-      protein — with function changing anyway. That's a real scope
-      limitation of alignment-based tools, and it's worth saying outright
-      rather than quietly stepping around it: "sequence similarity" and
-      "same function"
-      are connected by more than one mechanism, and we've only tested two
-      of the (at least) four ways they can come apart.
+      Findings 2 and 3 tested divergent and convergent evolution, but our project
+      did not directly test gene sharing or moonlighting. In those cases, the same
+      protein sequence can have more than one function, so no alignment algorithm
+      could separate the functions based on sequence alone. This is an important
+      limit of our project. Sequence similarity and shared function are connected,
+      but they are not the same thing, and biology provides several ways for them
+      to come apart.
     </p>
 
     <h3 style="font-size:17px;margin:26px 0 10px;">Limitations</h3>
     <p class="lede">
-      Our dataset is twelve sequences across three species and four protein
-      classes — not enough to draw general conclusions about any of these
-      protein families, only about this specific comparison. The NDM-1
-      horizontal-transfer effect (Finding 1) means our "three species" for
-      the lactamase row aren't a clean evolutionary comparison the way the
-      tRNase Z, serine-lactamase, and TF rows should be. All twelve
-      sequences are now real — the one small gap left is a citation detail,
-      not a data problem: the A. baumannii tRNase Z entry is missing its
-      UniProt accession number (see References), which doesn't affect any
-      result but is worth closing before final submission.
+      Our dataset contains only twelve sequences from three species and four
+      protein classes. That is too small to support broad conclusions about these
+      protein families, so our conclusions apply only to this comparison. The
+      horizontal transfer of NDM-1 also means that the three lactamase sequences
+      are not a clean species-by-species evolutionary comparison. All twelve
+      sequences are real, but the A. baumannii tRNase Z entry is still missing its
+      UniProt accession number. This does not change the results, but it should be
+      added before the final submission.
     </p>
   </div>
 </section>
 
 <section id="human-judgment">
   <div class="wrap">
-    <div class="section-head"><span class="section-num">07</span><h2>Where the Human Still Has to Show Up</h2></div>
+    <div class="section-head"><span class="section-num">07</span><h2>Why Human Judgment Still Matters</h2></div>
     <p class="lede">
-      There's a tidy version of this project's conclusion that just says "the
-      tool has a blind spot — use a better tool." We don't think that's quite
-      right, or at least it isn't the most useful way to end this.
+      It would be easy to end this project by saying that the tool has a blind
+      spot and that scientists should simply use a better tool. We do not think
+      that fully explains what happened.
     </p>
     <p class="lede">
-      PNGM-1 wasn't found by an algorithm scanning for matches. It was found
-      because a group of researchers thought to look somewhere nobody had
-      looked — deep-sea sediment nobody expected an antibiotic-resistance
-      gene to be hiding in — and then noticed something in their lab results
-      that didn't fit the existing story, and followed that thread instead of
-      writing it off as noise. No sequence aligner would have flagged PNGM-1
-      as interesting; on paper it looks unremarkable, another obscure
-      metallo-hydrolase. What actually made it the missing link was a person
-      asking "wait, why is this one enzyme doing two completely different
-      jobs?" and taking that question seriously enough to test it at the
-      bench.
+      PNGM-1 was found because researchers chose to study deep-sea sediment and
+      paid attention to a result that did not fit the expected story. A sequence
+      aligner alone would not necessarily have identified PNGM-1 as important.
+      What made it interesting was the observation that one enzyme seemed to do
+      two very different jobs, followed by experiments that tested both activities.
+      The discovery depended on researchers noticing an unusual result and deciding
+      that it was worth investigating.
     </p>
     <p class="lede">
-      Our own experiment makes a version of the same point, from the other
-      direction. Every algorithm we built, run the way real bioinformatics
-      tools actually get used, failed to notice a real evolutionary
-      relationship that structural biologists have known about for years.
-      That's not really an argument for reaching for a fancier algorithm
-      instead — it's an argument for not fully trusting a tool's silence.
-      If we'd stopped at "the heatmap says these aren't related," we'd have
-      missed the entire reason this project exists.
+      Our experiment showed a similar problem from another direction. Every
+      algorithm we tested missed an evolutionary relationship that is supported
+      by structural evidence. This does not mean the algorithms are useless. It
+      means that a low score, or the absence of a clear pattern, should not always
+      be treated as proof that no relationship exists. If we had accepted the
+      heatmap without checking the biology, we would have missed the main idea of
+      the project.
     </p>
     <p class="lede">
-      We built this with a lot of computational help along the way,
-      including from an AI assistant, and we think that's worth saying
-      plainly instead of glossing over. That help was genuinely useful — for
-      writing alignment code, tracking down real sequences, catching an
-      early mistake before it went further. But at every point this project
-      got somewhere actually interesting, it was because a person noticed
-      something a tool by itself wouldn't have flagged: a wrong assumption
-      worth questioning, a strange result worth double-checking, a question
-      worth asking that nothing automated would have thought to ask on its
-      own. Tools are how you move fast. They're not how you know what's
-      actually worth looking at, or when to stop trusting a number just
-      because it came out of a program. That part still has to be us — and
-      given how much science still depends on exactly that kind of noticing,
-      we don't think that's going away anytime soon.
+      We used computational tools throughout this project, including an AI
+      assistant. These tools helped us write and debug code, locate sequences, and
+      catch mistakes. However, the most important decisions still required human
+      judgment. We had to question assumptions, check surprising results, and
+      decide which patterns were biologically meaningful. Computational tools can
+      make research faster, but they do not automatically know which questions are
+      worth asking or when a number should be doubted. That responsibility still
+      belongs to the researchers using them.
     </p>
   </div>
 </section>
@@ -713,17 +662,17 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">08</span><h2>References</h2></div>
     <ol class="refs">
-      <li><span class="paper-title">Lee, J. H., Takahashi, M., Jeon, J. H., et al. (2019).</span> Dual activity of PNGM-1 pinpoints the evolutionary origin of subclass B3 metallo-β-lactamases: a molecular and evolutionary study. <em>Emerging Microbes & Infections</em>, 8(1), 1688–1700. — the PNGM-1 paper discussed in Background; the enzyme itself was first reported in Park, K. S., et al. (2018), <em>Journal of Global Antimicrobial Resistance</em>, 14, 302–305.</li>
+      <li><span class="paper-title">Lee, J. H., Takahashi, M., Jeon, J. H., et al. (2019).</span> Dual activity of PNGM-1 pinpoints the evolutionary origin of subclass B3 metallo-β-lactamases: a molecular and evolutionary study. <em>Emerging Microbes & Infections</em>, 8(1), 1688–1700.: the PNGM-1 paper discussed in Background; the enzyme itself was first reported in Park, K. S., et al. (2018), <em>Journal of Global Antimicrobial Resistance</em>, 14, 302–305.</li>
       <li><span class="paper-title">Daiyasu, H., Osaka, K., Ishino, Y., & Toh, H. (2001).</span> Expansion of the zinc metallo-hydrolase family of the β-lactamase fold. <em>FEBS Letters</em>, 503, 1–6.</li>
       <li><span class="paper-title">Redko, Y., Li de la Sierra-Gallay, I., & Condon, C. (2007).</span> When all's zed and done: the structure and function of RNase Z in prokaryotes. <em>Nature Reviews Microbiology</em>, 5, 278–286.</li>
-      <li><span class="paper-title">Todd, A. E., Orengo, C. A., & Thornton, J. M. (2001).</span> Evolution of function in protein superfamilies, from a structural perspective. <em>Journal of Molecular Biology</em>, 307(4), 1113–1143. — quantifies how sequence identity thresholds relate to functional conservation, used to interpret our results.</li>
-      <li><span class="paper-title">Colquhoun, J. M., Farokhyfar, M., Hutcheson, A. R., et al. (2021).</span> OXA-23 β-lactamase overexpression in Acinetobacter baumannii drives physiological changes resulting in new genetic vulnerabilities. <em>mBio</em>, 12(6), e03137-21. — source for serine β-lactamases' independent evolutionary origin from penicillin-binding proteins, discussed in Background and Finding 3.</li>
-      <li><span class="paper-title">Piatigorsky, J., et al. (1988).</span> Gene sharing by delta-crystallin and argininosuccinate lyase. <em>PNAS</em>, 85(10), 3479–3483. — the gene-sharing example discussed in "Related Phenomena."</li>
-      <li><span class="paper-title">Jeffery, C. J., Bahnson, B. J., Chien, W., Ringe, D., & Petsko, G. A. (2000).</span> Crystal structure of rabbit phosphoglucose isomerase, a glycolytic enzyme that moonlights as neuroleukin, autocrine motility factor, and differentiation mediator. <em>Biochemistry</em>, 39(5), 955–964. — the moonlighting example discussed in "Related Phenomena."</li>
+      <li><span class="paper-title">Todd, A. E., Orengo, C. A., & Thornton, J. M. (2001).</span> Evolution of function in protein superfamilies, from a structural perspective. <em>Journal of Molecular Biology</em>, 307(4), 1113–1143.: quantifies how sequence identity thresholds relate to functional conservation, used to interpret our results.</li>
+      <li><span class="paper-title">Colquhoun, J. M., Farokhyfar, M., Hutcheson, A. R., et al. (2021).</span> OXA-23 β-lactamase overexpression in Acinetobacter baumannii drives physiological changes resulting in new genetic vulnerabilities. <em>mBio</em>, 12(6), e03137-21.: source for serine β-lactamases' independent evolutionary origin from penicillin-binding proteins, discussed in Background and Finding 3.</li>
+      <li><span class="paper-title">Piatigorsky, J., et al. (1988).</span> Gene sharing by delta-crystallin and argininosuccinate lyase. <em>PNAS</em>, 85(10), 3479–3483.: the gene-sharing example discussed in "Related Phenomena."</li>
+      <li><span class="paper-title">Jeffery, C. J., Bahnson, B. J., Chien, W., Ringe, D., & Petsko, G. A. (2000).</span> Crystal structure of rabbit phosphoglucose isomerase, a glycolytic enzyme that moonlights as neuroleukin, autocrine motility factor, and differentiation mediator. <em>Biochemistry</em>, 39(5), 955–964.: the moonlighting example discussed in "Related Phenomena."</li>
       <li><span class="paper-title">Altschul, S. F., et al. (1990).</span> Basic local alignment search tool. <em>Journal of Molecular Biology</em>, 215(3), 403–410.</li>
       <li><span class="paper-title">Needleman, S. B., & Wunsch, C. D. (1970).</span> A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>Journal of Molecular Biology</em>, 48(3), 443–453.</li>
       <li><span class="paper-title">Smith, T. F., & Waterman, M. S. (1981).</span> Identification of common molecular subsequences. <em>Journal of Molecular Biology</em>, 147(1), 195–197.</li>
-      <li><span class="paper-title">Henikoff, S., & Henikoff, J. G. (1992).</span> Amino acid substitution matrices from protein blocks. <em>PNAS</em>, 89, 10915–10919. — source of the BLOSUM62 matrix used throughout this project's scoring.</li>
+      <li><span class="paper-title">Henikoff, S., & Henikoff, J. G. (1992).</span> Amino acid substitution matrices from protein blocks. <em>PNAS</em>, 89, 10915–10919.: source of the BLOSUM62 matrix used throughout this project's scoring.</li>
       <li><span class="paper-title">UniProt Consortium.</span> UniProt: the Universal Protein Knowledgebase. <em>Nucleic Acids Research</em>. uniprot.org</li>
     </ol>
   </div>
