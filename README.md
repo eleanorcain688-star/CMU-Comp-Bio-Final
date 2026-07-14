@@ -7,34 +7,43 @@ CMU Pre-College Computational Biology — Final Project
 Three pairwise alignment algorithms (Needleman-Wunsch, Smith-Waterman, and a
 simplified BLAST-style seed-and-extend heuristic), implemented from scratch
 in Python and scored with the real BLOSUM62 substitution matrix, tested on
-nine real UniProt protein sequences across three classes:
+real UniProt protein sequences across four classes:
 
 - **Metallo-β-lactamase** (target — the enzyme behind some of the
   hardest-to-treat antibiotic resistance, e.g. NDM-1)
 - **tRNase Z** (its likely evolutionary ancestor — same fold, unrelated job:
-  trims pre-tRNA instead of destroying antibiotics)
-- **CRP / transcription factor** (negative control — unrelated fold and
-  function, included as a baseline)
+  divergent evolution)
+- **Serine β-lactamase** (same job as the target — destroys the same
+  antibiotics — but completely unrelated ancestry: convergent evolution)
+- **CRP / transcription factor** (negative control — unrelated by both fold
+  and function, included as a baseline)
 
 Research question: do these algorithms recover the *known* structural
 relationship between metallo-β-lactamase and tRNase Z, or only detect
-similarity when it happens to still be visible in the raw sequence?
+similarity when it happens to still be visible in the raw sequence? And,
+tested from the other direction: does *sharing a function* without sharing
+ancestry get mistaken for similarity either?
 
-**Short answer, from the actual data:** no. None of the three algorithms
-scored the lactamase/tRNase Z pair meaningfully higher than the
-lactamase/control pair. See `website/index.html` (Discussion section) or
-`presentation/PROJECT_EXPLAINER.md` (Section 6) for the full numbers and
-what they mean.
+**Short answer, from the actual data:** no, in both directions. None of the
+three algorithms scored the lactamase/tRNase Z pair (related ancestry,
+different function) meaningfully higher than the lactamase/control pair —
+and the lactamase/serine-lactamase pair (same function, unrelated ancestry)
+scored just as low as the unrelated control. See `website/index.html`
+(Discussion section, Findings 1–3) or `presentation/PROJECT_EXPLAINER.md`
+(Section 6) for the full numbers and what they mean.
 
-## Project status: complete
+## Project status: essentially complete, one tiny citation gap
 
-All nine sequences in `data/sequences.fasta` are real, sourced from UniProt
-— no placeholders remain. Three species (Klebsiella pneumoniae, E. coli,
-Acinetobacter baumannii) are used consistently across all three protein
-classes. One accession is intentionally missing (the A. baumannii tRNase Z
-entry — see the `†` footnote in `presentation/PROJECT_EXPLAINER.md` Section
-4) — the sequence is real, the citation is just incomplete; worth a two
-minute UniProt trip if you want that fully closed out before submission.
+All twelve sequences in `data/sequences.fasta` are real, sourced from
+UniProt — no placeholder or fabricated data anywhere. Three species
+(Klebsiella pneumoniae, E. coli, Acinetobacter baumannii) are used
+consistently across all four protein classes.
+
+One small, purely cosmetic gap remains: the A. baumannii tRNase Z entry
+has a real sequence but is missing its UniProt accession number (a `†`
+footnote in `PROJECT_EXPLAINER.md` Section 4). It doesn't affect any
+result — it's a citation completeness detail, not a data problem — and is
+entirely optional to close.
 
 ## Project structure
 
@@ -63,13 +72,15 @@ presentation/
 directly, so it works by just opening it in a browser, no server needed.
 It includes:
 
-- An interactive heatmap comparing all three algorithms across all nine
+- An interactive heatmap comparing all three algorithms across all twelve
   sequences, with click-to-inspect real aligned residues
 - A live hierarchical clustering dendrogram that redraws per algorithm
-- A "Related Phenomena" section situating this experiment (divergent
-  evolution) against two other ways sequence and function decouple (gene
-  sharing, moonlighting)
-- A full Discussion section with the actual findings and real numbers
+- A "four-way comparison" grid laying out divergent evolution, convergent
+  evolution, and the unrelated control by shared ancestry vs. shared function
+- A "Related Phenomena" section situating this experiment (divergent and
+  convergent evolution, both directly tested) against two other ways
+  sequence and function decouple (gene sharing, moonlighting)
+- A full Discussion section with three real findings and real numbers
 - A closing section on what the tool's blind spot implies about the limits
   of automated methods generally
 
