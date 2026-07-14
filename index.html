@@ -20,6 +20,8 @@
     --trnase-bg: #e6e9f5;
     --tf: #b5651d;
     --tf-bg: #f6e9dc;
+    --serine: #6b4c8a;
+    --serine-bg: #ebe4f0;
     --accent: #2e7d6b;
     --max-w: 980px;
   }
@@ -94,6 +96,7 @@
   .dot.lac { background: var(--lactamase); }
   .dot.trn { background: var(--trnase); }
   .dot.tf  { background: var(--tf); }
+  .dot.ser { background: var(--serine); }
 
   /* ---------- Cards ---------- */
   .card { background: var(--surface); border: 1px solid var(--rule); border-radius: 4px; padding: 26px; }
@@ -188,6 +191,7 @@
     <div class="hero-meta">
       <div><div class="label">Target</div>Metallo-β-lactamases</div>
       <div><div class="label">Structural homolog</div>tRNase Z</div>
+      <div><div class="label">Convergent function</div>Serine β-lactamases</div>
       <div><div class="label">Negative control</div>Transcription factors</div>
       <div><div class="label">Algorithms</div>NW · SW · mini-BLAST</div>
     </div>
@@ -236,10 +240,56 @@
       cleanly from both of the other groups, while still correctly relating
       — or correctly failing to relate — metallo-β-lactamase to tRNase Z.
     </p>
+    <p class="lede">
+      There's a fourth case worth testing, and it's the mirror image of the
+      first one: what happens when two proteins do the <em>same</em> job but
+      don't share ancestry at all? <strong>Serine β-lactamases</strong> —
+      TEM, SHV, OXA, and relatives — destroy the exact same antibiotics as
+      metallo-β-lactamases, using the exact same overall strategy (breaking
+      the β-lactam ring), but they evolved completely independently, from
+      penicillin-binding proteins rather than the MBL-fold superfamily. Same
+      name, same job, unrelated fold, unrelated history — the textbook case
+      of <strong>convergent evolution</strong>. If sequence alignment is
+      tracking ancestry rather than function (which is the whole thesis
+      here), it should treat metallo- vs. serine-β-lactamase as basically
+      unrelated, the same way it treats either one against the transcription
+      factor control — despite both being called "β-lactamases."
+    </p>
     <div class="legend">
       <span class="chip"><span class="dot lac"></span>Metallo-β-lactamase (target)</span>
       <span class="chip"><span class="dot trn"></span>tRNase Z (structural homolog)</span>
+      <span class="chip"><span class="dot ser"></span>Serine β-lactamase (convergent function)</span>
       <span class="chip"><span class="dot tf"></span>Transcription factor (negative control)</span>
+    </div>
+
+    <div class="card" style="margin-top:8px;padding:24px 26px;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:16px;">
+        The four-way comparison, laid out
+      </div>
+      <div style="display:grid;grid-template-columns:140px 1fr 1fr;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:4px;overflow:hidden;font-size:13.5px;">
+        <div style="background:var(--bg);padding:12px 14px;"></div>
+        <div style="background:var(--bg);padding:12px 14px;font-weight:600;text-align:center;">Same function</div>
+        <div style="background:var(--bg);padding:12px 14px;font-weight:600;text-align:center;">Different function</div>
+
+        <div style="background:var(--bg);padding:12px 14px;font-weight:600;">Same ancestry</div>
+        <div style="background:var(--surface);padding:12px 14px;color:var(--ink-soft);text-align:center;">(not tested — this is just two copies of the same enzyme, like our multi-species lactamase rows)</div>
+        <div style="background:var(--lactamase-bg);padding:12px 14px;text-align:center;"><strong style="color:var(--lactamase);">Divergent evolution</strong><br>lactamase vs tRNase Z</div>
+
+        <div style="background:var(--bg);padding:12px 14px;font-weight:600;">Different ancestry</div>
+        <div style="background:var(--serine-bg);padding:12px 14px;text-align:center;"><strong style="color:var(--serine);">Convergent evolution</strong><br>metallo- vs serine-lactamase</div>
+        <div style="background:var(--tf-bg);padding:12px 14px;text-align:center;"><strong style="color:var(--tf);">Unrelated</strong><br>lactamase vs transcription factor</div>
+      </div>
+      <p style="font-size:13px;color:var(--ink-soft);margin:16px 0 0;">
+        A sequence aligner that's actually detecting function, rather than
+        ancestry, should score <strong>convergent evolution</strong> about
+        the same as <strong>unrelated</strong> — both are historically
+        disconnected from the lactamase in ways that shouldn't produce high
+        sequence identity, whatever their functional overlap. If it instead
+        scored <strong>divergent evolution</strong> noticeably higher than
+        both of those, <em>that</em> would be the sign it's tracking
+        function rather than ancestry. Our results section shows which of
+        these actually happened.
+      </p>
     </div>
 
     <div class="card" style="margin-top:8px;">
@@ -356,10 +406,14 @@
   <div class="wrap">
     <div class="section-head"><span class="section-num">03</span><h2>Methods</h2></div>
     <p class="lede">
-      Sequences for three bacterial species were pulled from UniProt for each of the
-      three protein classes (nine sequences total), then run pairwise through three
-      alignment algorithms, all implemented from scratch and scored with the standard
-      BLOSUM62 substitution matrix.
+      Sequences for three bacterial species were pulled from UniProt for each of
+      four protein classes (twelve sequences total, all real), then run pairwise
+      through three alignment algorithms, all implemented from scratch and scored
+      with the standard BLOSUM62 substitution matrix. The serine β-lactamase
+      entries were chosen to be species-appropriate rather than arbitrary: TEM-1
+      for E. coli and SHV for K. pneumoniae are the classic, well-characterized
+      enzyme for each species; A. baumannii's is OXA-51-like, its own
+      chromosomally intrinsic serine enzyme.
     </p>
     <div class="grid-3">
       <div class="card algo-card">
@@ -414,9 +468,9 @@
     </div>
 
     <div class="caveat" id="placeholderNotice" style="display:none">
-      ⚠ This dataset currently includes placeholder sequences (marked in the FASTA
-      file) standing in for species not yet finalized. Swap them for real UniProt
-      sequences before treating these numbers as a finding — see Methods.
+      ⚠ This dataset currently includes one or more placeholder sequences,
+      not yet swapped for real UniProt data: <strong class="placeholder-list"></strong>.
+      Don't treat any result touching these entries as a finding until they're replaced.
     </div>
   </div>
 </section>
@@ -528,28 +582,79 @@
       protein's history, and ours only had access to one of them.
     </p>
 
+    <h3 style="font-size:17px;margin:26px 0 10px;">Finding 3 — the mirror test: convergent evolution</h3>
+    <p class="lede">
+      Finding 2 asked whether shared ancestry with different function gets
+      mistaken for similarity. The natural follow-up is the reverse case:
+      does <em>shared function with no shared ancestry</em> — serine
+      β-lactamases, which destroy the same antibiotics through a completely
+      independent evolutionary origin — get mistaken for similarity too?
+      If alignment is really tracking ancestry rather than function, it
+      shouldn't. Here's what all three real serine-lactamase sequences
+      (TEM-1, SHV, and OXA-51-like, one per species) actually showed,
+      averaged against the metallo-lactamase target:
+    </p>
+    <div class="card" style="margin-bottom:18px;">
+      <table style="width:100%;border-collapse:collapse;font-family:'IBM Plex Mono',monospace;font-size:13px;">
+        <thead><tr style="border-bottom:1px solid var(--rule);">
+          <th style="text-align:left;padding:6px 8px;">Algorithm</th>
+          <th style="text-align:right;padding:6px 8px;">vs Serine-lactamase (convergent)</th>
+          <th style="text-align:right;padding:6px 8px;">vs tRNase Z (divergent)</th>
+          <th style="text-align:right;padding:6px 8px;">vs TF (unrelated)</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:6px 8px;">Needleman-Wunsch</td><td style="text-align:right;padding:6px 8px;">16.9%</td><td style="text-align:right;padding:6px 8px;">17.8%</td><td style="text-align:right;padding:6px 8px;">16.6%</td></tr>
+          <tr><td style="padding:6px 8px;">Smith-Waterman</td><td style="text-align:right;padding:6px 8px;">32.2%</td><td style="text-align:right;padding:6px 8px;">31.3%</td><td style="text-align:right;padding:6px 8px;">33.0%</td></tr>
+          <tr><td style="padding:6px 8px;">Mini-BLAST</td><td style="text-align:right;padding:6px 8px;">57.1%</td><td style="text-align:right;padding:6px 8px;">56.9%</td><td style="text-align:right;padding:6px 8px;">66.7%</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:var(--ink-soft);margin-top:10px;">
+        All three species, all real UniProt sequences — no placeholders in
+        this comparison.
+      </p>
+    </div>
+    <p class="lede">
+      This is a clean result, and it's the confirmatory half of the
+      project: the metallo/serine-lactamase pair — despite sharing a name
+      and destroying the same antibiotics — scores essentially the same as
+      the metallo-lactamase/TF pair, across all three algorithms, and lands
+      right alongside the divergent-evolution numbers from Finding 2 too.
+      All three comparisons cluster in the same range per algorithm.
+      Sharing a function without sharing ancestry produced no more sequence
+      similarity than sharing nothing at all — and, just as tellingly,
+      sharing ancestry without sharing function didn't stand out either.
+      Combined, the picture is now symmetric: these algorithms track sequence
+      descent, not biological role, in both directions we tested it.
+    </p>
+
     <h3 style="font-size:17px;margin:26px 0 10px;">Connecting back to Related Phenomena</h3>
     <p class="lede">
-      Either way, Finding 2 only speaks to <em>divergent evolution</em> —
-      one of the three mechanisms from earlier. Even an algorithm that
-      "won" here would still be blind to gene sharing (delta-crystallin/ASL)
-      and moonlighting (PGI), where sequence identity is 100% and the
-      function still changes with context. That's a real scope limitation
-      of alignment-based tools, and it's worth saying outright rather than
-      quietly stepping around it: "sequence similarity" and "same function"
-      are connected by more than one mechanism, and we only tested one of
-      them.
-
+      Between Finding 2 and Finding 3, we've now tested two of the four
+      cells in the grid above — divergent evolution and convergent
+      evolution — and both point the same direction. But that still leaves
+      gene sharing (delta-crystallin/ASL) and moonlighting (PGI) completely
+      untouched, and no algorithm we tried would have any chance with
+      either: both involve 100% sequence identity — literally the same
+      protein — with function changing anyway. That's a real scope
+      limitation of alignment-based tools, and it's worth saying outright
+      rather than quietly stepping around it: "sequence similarity" and
+      "same function"
+      are connected by more than one mechanism, and we've only tested two
+      of the (at least) four ways they can come apart.
     </p>
 
     <h3 style="font-size:17px;margin:26px 0 10px;">Limitations</h3>
     <p class="lede">
-      Our dataset is nine sequences across three species — not enough to draw
-      general conclusions about metallo-β-lactamases or tRNase Z as families, only
-      about this specific comparison. The NDM-1 horizontal-transfer effect (Finding
-      1) means our "three species" for the lactamase row aren't a clean
-      evolutionary comparison the way the tRNase Z and TF rows should be, which is
-      itself worth flagging rather than hiding.
+      Our dataset is twelve sequences across three species and four protein
+      classes — not enough to draw general conclusions about any of these
+      protein families, only about this specific comparison. The NDM-1
+      horizontal-transfer effect (Finding 1) means our "three species" for
+      the lactamase row aren't a clean evolutionary comparison the way the
+      tRNase Z, serine-lactamase, and TF rows should be. All twelve
+      sequences are now real — the one small gap left is a citation detail,
+      not a data problem: the A. baumannii tRNase Z entry is missing its
+      UniProt accession number (see References), which doesn't affect any
+      result but is worth closing before final submission.
     </p>
   </div>
 </section>
@@ -612,6 +717,7 @@
       <li><span class="paper-title">Daiyasu, H., Osaka, K., Ishino, Y., & Toh, H. (2001).</span> Expansion of the zinc metallo-hydrolase family of the β-lactamase fold. <em>FEBS Letters</em>, 503, 1–6.</li>
       <li><span class="paper-title">Redko, Y., Li de la Sierra-Gallay, I., & Condon, C. (2007).</span> When all's zed and done: the structure and function of RNase Z in prokaryotes. <em>Nature Reviews Microbiology</em>, 5, 278–286.</li>
       <li><span class="paper-title">Todd, A. E., Orengo, C. A., & Thornton, J. M. (2001).</span> Evolution of function in protein superfamilies, from a structural perspective. <em>Journal of Molecular Biology</em>, 307(4), 1113–1143. — quantifies how sequence identity thresholds relate to functional conservation, used to interpret our results.</li>
+      <li><span class="paper-title">Colquhoun, J. M., Farokhyfar, M., Hutcheson, A. R., et al. (2021).</span> OXA-23 β-lactamase overexpression in Acinetobacter baumannii drives physiological changes resulting in new genetic vulnerabilities. <em>mBio</em>, 12(6), e03137-21. — source for serine β-lactamases' independent evolutionary origin from penicillin-binding proteins, discussed in Background and Finding 3.</li>
       <li><span class="paper-title">Piatigorsky, J., et al. (1988).</span> Gene sharing by delta-crystallin and argininosuccinate lyase. <em>PNAS</em>, 85(10), 3479–3483. — the gene-sharing example discussed in "Related Phenomena."</li>
       <li><span class="paper-title">Jeffery, C. J., Bahnson, B. J., Chien, W., Ringe, D., & Petsko, G. A. (2000).</span> Crystal structure of rabbit phosphoglucose isomerase, a glycolytic enzyme that moonlights as neuroleukin, autocrine motility factor, and differentiation mediator. <em>Biochemistry</em>, 39(5), 955–964. — the moonlighting example discussed in "Related Phenomena."</li>
       <li><span class="paper-title">Altschul, S. F., et al. (1990).</span> Basic local alignment search tool. <em>Journal of Molecular Biology</em>, 215(3), 403–410.</li>
@@ -635,7 +741,10 @@
     "TRNASE_Z:Acinetobacter_baumannii",
     "TF:Klebsiella_pneumoniae",
     "TF:Escherichia_coli",
-    "TF:Acinetobacter_baumannii"
+    "TF:Acinetobacter_baumannii",
+    "SERINE_LACTAMASE:Escherichia_coli",
+    "SERINE_LACTAMASE:Klebsiella_pneumoniae",
+    "SERINE_LACTAMASE:Acinetobacter_baumannii"
   ],
   "classes": [
     "LACTAMASE",
@@ -646,7 +755,10 @@
     "TRNASE_Z",
     "TF",
     "TF",
-    "TF"
+    "TF",
+    "SERINE_LACTAMASE",
+    "SERINE_LACTAMASE",
+    "SERINE_LACTAMASE"
   ],
   "species": [
     "Klebsiella_pneumoniae",
@@ -657,6 +769,9 @@
     "Acinetobacter_baumannii",
     "Klebsiella_pneumoniae",
     "Escherichia_coli",
+    "Acinetobacter_baumannii",
+    "Escherichia_coli",
+    "Klebsiella_pneumoniae",
     "Acinetobacter_baumannii"
   ],
   "genes": [
@@ -668,7 +783,10 @@
     "rnz",
     "crp",
     "crp",
-    "crp"
+    "crp",
+    "blaTEM-1",
+    "blaSHV",
+    "blaOXA-51"
   ],
   "accessions": [
     "C7C422",
@@ -679,7 +797,10 @@
     "ACCESSION_NOT_RECORDED",
     "A0A378AK84",
     "P0ACJ8",
-    "A0A0D5YJV1"
+    "A0A0D5YJV1",
+    "P62593",
+    "J7I607",
+    "Q5QT35"
   ],
   "lengths": [
     242,
@@ -690,7 +811,24 @@
     318,
     210,
     210,
-    235
+    235,
+    286,
+    286,
+    274
+  ],
+  "is_placeholder": [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
   ],
   "matrices": {
     "needleman_wunsch": [
@@ -703,7 +841,10 @@
         17.55,
         16.12,
         16.12,
-        11.89
+        11.89,
+        21.18,
+        19.58,
+        17.88
       ],
       [
         88.0,
@@ -714,7 +855,10 @@
         15.62,
         18.55,
         18.91,
-        17.09
+        17.09,
+        15.81,
+        18.24,
+        14.13
       ],
       [
         89.63,
@@ -725,7 +869,10 @@
         15.67,
         15.56,
         17.78,
-        17.41
+        17.41,
+        13.94,
+        17.53,
+        13.98
       ],
       [
         18.83,
@@ -736,7 +883,10 @@
         31.37,
         23.2,
         23.2,
-        17.32
+        17.32,
+        15.76,
+        15.81,
+        14.24
       ],
       [
         18.03,
@@ -747,7 +897,10 @@
         30.75,
         21.9,
         22.22,
-        19.28
+        19.28,
+        14.98,
+        15.53,
+        15.69
       ],
       [
         17.55,
@@ -758,7 +911,10 @@
         100.0,
         18.24,
         18.24,
-        21.7
+        21.7,
+        18.12,
+        14.69,
+        17.3
       ],
       [
         16.12,
@@ -769,7 +925,10 @@
         18.24,
         100.0,
         99.52,
-        21.52
+        21.52,
+        18.47,
+        19.23,
+        21.82
       ],
       [
         16.12,
@@ -780,7 +939,10 @@
         18.24,
         99.52,
         100.0,
-        21.52
+        21.52,
+        18.47,
+        18.53,
+        21.82
       ],
       [
         11.89,
@@ -791,6 +953,51 @@
         21.7,
         21.52,
         21.52,
+        100.0,
+        18.75,
+        18.75,
+        18.61
+      ],
+      [
+        21.18,
+        15.81,
+        13.94,
+        15.76,
+        14.98,
+        18.12,
+        18.47,
+        18.47,
+        18.75,
+        100.0,
+        64.93,
+        15.02
+      ],
+      [
+        19.58,
+        18.24,
+        17.53,
+        15.81,
+        15.53,
+        14.69,
+        19.23,
+        18.53,
+        18.75,
+        64.93,
+        100.0,
+        14.88
+      ],
+      [
+        17.88,
+        14.13,
+        13.98,
+        14.24,
+        15.69,
+        17.3,
+        21.82,
+        21.82,
+        18.61,
+        15.02,
+        14.88,
         100.0
       ]
     ],
@@ -804,7 +1011,10 @@
         35.29,
         30.0,
         30.0,
-        38.89
+        38.89,
+        26.47,
+        31.94,
+        37.93
       ],
       [
         97.98,
@@ -815,7 +1025,10 @@
         35.29,
         30.0,
         30.0,
-        38.89
+        38.89,
+        28.17,
+        31.94,
+        37.93
       ],
       [
         100.0,
@@ -826,7 +1039,10 @@
         35.29,
         30.0,
         30.0,
-        38.89
+        38.89,
+        25.37,
+        31.94,
+        37.93
       ],
       [
         25.37,
@@ -837,7 +1053,10 @@
         32.35,
         22.73,
         22.73,
-        26.03
+        26.03,
+        39.13,
+        32.35,
+        26.47
       ],
       [
         33.33,
@@ -848,7 +1067,10 @@
         31.51,
         37.5,
         37.5,
-        23.68
+        23.68,
+        35.0,
+        26.47,
+        35.29
       ],
       [
         35.29,
@@ -859,7 +1081,10 @@
         100.0,
         28.95,
         28.95,
-        24.66
+        24.66,
+        30.43,
+        33.33,
+        34.88
       ],
       [
         30.0,
@@ -870,7 +1095,10 @@
         28.95,
         100.0,
         99.52,
-        21.51
+        21.51,
+        30.0,
+        28.57,
+        26.47
       ],
       [
         30.0,
@@ -881,7 +1109,10 @@
         28.95,
         99.52,
         100.0,
-        21.51
+        21.51,
+        30.0,
+        28.57,
+        26.47
       ],
       [
         38.89,
@@ -892,6 +1123,51 @@
         24.66,
         21.51,
         21.51,
+        100.0,
+        40.0,
+        40.0,
+        57.14
+      ],
+      [
+        26.47,
+        28.17,
+        25.37,
+        39.13,
+        35.0,
+        30.43,
+        30.0,
+        30.0,
+        40.0,
+        100.0,
+        65.49,
+        27.66
+      ],
+      [
+        31.94,
+        31.94,
+        31.94,
+        32.35,
+        26.47,
+        33.33,
+        28.57,
+        28.57,
+        40.0,
+        65.49,
+        100.0,
+        21.74
+      ],
+      [
+        37.93,
+        37.93,
+        37.93,
+        26.47,
+        35.29,
+        34.88,
+        26.47,
+        26.47,
+        57.14,
+        27.66,
+        21.74,
         100.0
       ]
     ],
@@ -905,7 +1181,10 @@
         83.33,
         50.0,
         50.0,
-        100.0
+        100.0,
+        35.71,
+        55.56,
+        80.0
       ],
       [
         100.0,
@@ -916,7 +1195,10 @@
         83.33,
         50.0,
         50.0,
-        100.0
+        100.0,
+        35.71,
+        55.56,
+        80.0
       ],
       [
         100.0,
@@ -927,7 +1209,10 @@
         83.33,
         50.0,
         50.0,
-        100.0
+        100.0,
+        35.71,
+        55.56,
+        80.0
       ],
       [
         42.86,
@@ -938,7 +1223,10 @@
         40.32,
         45.45,
         45.45,
-        62.5
+        62.5,
+        39.13,
+        50.0,
+        40.0
       ],
       [
         44.44,
@@ -949,7 +1237,10 @@
         34.88,
         44.44,
         44.44,
-        58.33
+        58.33,
+        60.0,
+        25.0,
+        50.0
       ],
       [
         83.33,
@@ -960,7 +1251,10 @@
         100.0,
         28.12,
         28.12,
-        29.17
+        29.17,
+        66.67,
+        62.5,
+        43.75
       ],
       [
         50.0,
@@ -971,7 +1265,10 @@
         28.12,
         100.0,
         99.52,
-        54.55
+        54.55,
+        38.46,
+        35.71,
+        50.0
       ],
       [
         50.0,
@@ -982,7 +1279,10 @@
         28.12,
         99.52,
         100.0,
-        54.55
+        54.55,
+        38.46,
+        60.0,
+        50.0
       ],
       [
         100.0,
@@ -993,6 +1293,51 @@
         29.17,
         54.55,
         54.55,
+        100.0,
+        25.0,
+        40.0,
+        57.14
+      ],
+      [
+        35.71,
+        35.71,
+        35.71,
+        39.13,
+        60.0,
+        66.67,
+        38.46,
+        38.46,
+        25.0,
+        100.0,
+        65.49,
+        45.45
+      ],
+      [
+        55.56,
+        55.56,
+        55.56,
+        50.0,
+        25.0,
+        62.5,
+        35.71,
+        60.0,
+        40.0,
+        65.49,
+        100.0,
+        40.0
+      ],
+      [
+        80.0,
+        80.0,
+        80.0,
+        40.0,
+        50.0,
+        43.75,
+        50.0,
+        50.0,
+        57.14,
+        45.45,
+        40.0,
         100.0
       ]
     ]
@@ -1031,6 +1376,18 @@
         "a1": "GEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGG-CLIKDSKAK-SLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "MDDR-IL-DLIYINRLK-ENTWFSVLL-EVFQ-KFILEHGKQITFEKNSYVFHAQDEFDGIYTVLEGSISLGYVDVNGNEALSAIAEPIMWFGEISLIDHEPRSHDA-IALKKSIVLHIPAKPLNELLKEHPYYWYYFARL-TSQKLRYVFLEQIAIQTRSISQRLAQRLLFILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHEL-SLLEKQNIIKIAFRKIEI-LDIEKLKVIAQVHS"
       },
+      "0-9": {
+        "a1": "GEIRP-TIGQ-QMETG-D-QRFG--D-LV-FRQLAPNVWQHTSYLDMP-GFGAV-AS---NGLI-VRDGGRVLVVDTAWTD-DQ-TAQILNWIKQEINLPVALAVVTHAH-QDKMGGMDALHAA-GIA--TYANALSNQL-APQEGMVAAQHSL-TFAA--NGW-VEPATA-PNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKA-KSLGN-LGDA-DTEHY-A-AS-A--R-AFG--AAF-P--KAS-MIVM--SHS-AP-DSR-AAITHTARMADKLR",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKE-LTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTG-ELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "0-10": {
+        "a1": "GE-IRPTIGQQMET-G-DQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIV-RDGGRVLVVDT---AWTDDQTAQILNWIKQ-EINLPVALA-VVTHAH-QDK-MG-GMD-A-LHAAGIATYANALSN-QLAPQEGMVAAQHSL-TFAAN-GWVEP-ATAPN--F-GPLK-VFYPGP-GHTSDN-IT-VGIDG-TDIAFGGCLIKDSKAKSL-GN-L--G--DAD-TEHYAASARAFGAAF-P--KASMIVMSH--SAPDS---R-AAITHT-ARMADK-LR",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "0-11": {
+        "a1": "GEIRPTIGQQMETGDQRFGD-LVFRQLAPNVWQHTSYLD-MPG-FGAVASNG-LIVRDG------GRVLV-VDTAWTDDQTAQILN-WIKQEINLPVALAVVTHAHQDKM-GGMDALHAAGIATYANALS-NQ-LAPQEGMVAAQHSLTFAANGWVEPAT-APNF---GPLKVF--YPGP-GHTSDNITVGID-GT-DIAFGGCLI--KD-SKAKSLGNLG-DADTE-HYAAS--ARAFGAAFPKASMIVMSHSAPDS-RAAITHTARMADKLR",
+        "a2": "MNIKTLLLITSAIFISACSPYIVTANPNHSASKSDEKAEKIKNLFNEVHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEVKRVGYGNADIGTQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIEEKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
       "1-2": {
         "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMET-----GDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR"
@@ -1059,6 +1416,18 @@
         "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "MD-DRIL-DLIYIN-RLKENTWFS-VLL-EVFQKF--ILEHGKQ-ITFEK-NSYVF-H-AQDEFDGI-YTVLE--GSI-SLGYVDVNGNEAL---SA-I-AE--PIM-WF-GEISL-IDHEPRSH-DAIALKKSIVLHIP--AKPLNELLKE-HPYYWYYFAR--LTSQKLRYVFLEQIA-I-QTRSISQRLAQRLLFILEGY-GNHILIQDHHIQISQ-EQLANM--LTTSRQTIN-HEL-SLLEKQNIIKIAFRKIEI-LDIEKLKVIAQVHS"
       },
+      "1-9": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVR-DGGR-VLVVDTAWTDDQTAQILNWIKQEI-N-LPV-ALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAA-QHSLTFAANGWVEPATAP-NFG-PLKVFYPGPGHTSDNITVGIDGTDI-AFGGCLIKDS-KAK-SLGNLGDADTEHYAASARAFGA-AFPKASMIV-MSHS-AP-DSR-AAITHTARMADKLR",
+        "a2": "MSIQH-FR-VA-LIPFFAAFCLPVFAHPETLVKVKDAEDQLG-ARVGYIEL-DLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "1-10": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPG-FGAVASNGLIVR-DGG-RVLVVDTAWTDDQTAQILNWIKQEI-N-LPVA-LAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAA-QHSLTFAANGWVEPATAP-NF-GPLKVFYPGPGHTSDNITVGIDG-TDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAF-P--KASMIVMSH--SAPDS---R-AAITHT-ARMADK-LR",
+        "a2": "MRYIRLC-IISLLAT-LPLAVHASP-QPLE-QIKLSESQLSG--RVGMIEM-DLASGRTL-TAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIR-SVLPAGWFIAD-KTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "1-11": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGD-QRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGW-VEPATAPNFGPLKVFYPGPGHTSD-NITVGIDGTDIAFGGCLIKDSKAKSLGNLG-DADTE-HYAAS--ARAFGAAFPKASMIVMSHSAPDS-RAAITHTARMADKLR",
+        "a2": "MNIKTLLLITSAIFISACSPYIVT-ANPNHSASKSDEKAEKIKNLFNEVHTTGVLVIQQ-GQTQQSYGNDLARASTEYVPASTFKMLN---AL-IGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEV-KRVGYGNADIG-TQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIE-EKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
       "2-3": {
         "a1": "MELPNI-MHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPN-VW--Q-HTSYL-DMPG-F-G-AVASNGL-IVRDGGRVL--VVDTA------WTD-DQT-AQI-LNWIKQEINLPVALAVVTHAHQDKMGGMDALH-AAGIATYANALSNQLAPQEGMVAAQHSLTF-AANGWV-EPA--TAPNF-GPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDS-R--A-A--I-THT--AR--MADKLR",
         "a2": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHP-VECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMA-RGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKMA"
@@ -1083,6 +1452,18 @@
         "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "MD-DRIL-DLIYIN-RLKENTWFS-VLL-EVFQKF--ILEHGKQ----ITFEKNS-YVF-HAQD-EFDGIYTVL-EGSI--SLGYV-DVNGNEALSAIAEPIMWF-GEISL-IDHEPRSH-DAIALKKSIVLHIP--AKPLNELLKE-HPYYWYYFAR--LTSQKLRYVFLEQIA-I-QTRSISQRLAQRLLFILEGY-GNHILIQDHHIQISQ-EQLANM--LTTSRQTIN-HEL-SLLEKQNIIKIAFRKIEI-LDIEKLKVIAQVHS"
       },
+      "2-9": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQ-QMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVR-DGGR-VLVVDTAWTDDQTAQILNWIKQEI-N-LPV-ALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAA-QHSLTFAANGWVEPATAP-NFG-PLKVFYPGPGHTSDNITVGIDGTDI-AFGGCLIKDS-KAK-SLGNLGDADTEHYAASARAFGA-AFPKASMIV-MSHS-AP-DSR-AAITHTARMADKLR",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIEL-DLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "2-10": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPG-FGAVASNGLIVR-DGG-RVLVVDTAWTDDQTAQILNWIKQEI-N-LPVA-LAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAA-QHSLTFAANGWVEPATAP-NF-GPLKVFYPGPGHTSDNITVGIDG-TDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAF-P--KASMIVMSH--SAPDS---R-AAITHT-ARMADK-LR",
+        "a2": "MRYIRLC-IISLLAT-LPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTL-TAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIR-SVLPAGWFIAD-KTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "2-11": {
+        "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVL--VVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGW-VEPATAPNFGPLKVFYPGPGHTSD-NITVGIDGTDIAFGGCLIKDSKAKSLGNLG-DADTE-HYAAS--ARAFGAAFPKASMIVMSHSAPDS-RAAITHTARMADKLR",
+        "a2": "MNIKTLLLITSAIFISACSPYIVT-ANPNHSASKSDEKAEKIKNLFNE-VHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEV-KRVGYGNADIG-TQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIE-EKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
       "3-4": {
         "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKMA",
         "a2": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV-"
@@ -1103,6 +1484,18 @@
         "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKMA",
         "a2": "MDDRILDL-IYI-NRLKENTWFSV-LLE-V-FQKFILE--HG-K-Q-I-T-FE--K-NS-YVFHAQ-DE-F--DGIY-T-VLEG-SISLGYVDVNG-NEAL-SAIAEPIMWFG-EISLIDHEP-RSHDAIALK-KSIVLHIPAKPLNELLKEHPYYWYY-FARLTSQKL--RYVF--LE--Q-IAI-QTRSI-SQR-L--A-Q-RLLFIL-E-G-YGNHI-LIQDHHIQISQEQLAN-ML--TTSR-QTINHELSLLEKQ-NI-IKIA--F--R-KIE-ILD-I-E-K-L--K-VIAQ---VH--S"
       },
+      "3-9": {
+        "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPK---GLKEFVETALRLSGSWTDYPLTIIEV-GPGLVF-DEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKMA",
+        "a2": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKD-AED-QLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTD-GMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAF-L--HNM-G--DHVTRL-DRWEP-ELNEAIPNDERDTTMPAAMATTLRKL-LTGELLTLASRQQLIDWMEADKVA-G-PLLRSALPAGWFIADKSGAGERGSRGIIAALGPD-GKPSRIVVIYTT--GSQ-A-TMDERNRQI-AE-IGA-S-LI-KHW"
+      },
+      "3-10": {
+        "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDY-PLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEA-GVGTLIATHFSSRYDAEGCLR-MLAECREIFPNTL-LAEDFMVYKMA",
+        "a2": "MRYIRL-CIISL-LATLPL-AVHAS-PQPLE-QIKLSESQLSGRVGMIEMDLASGR-T---LTAWRADERFPMMSTF-KVVLCGAVLARVDAGDEQLERKIH--YR-QQDLVDYSPVSEKHLADGMTVG-E-LCAAAITMSDN-SAANLLLATVGGPAGL-TA-FLRQ-I--GDNVTRLDRWE-TELNEALPGDARDTTTPASMAATLRKL-LTSQRLSARSQRQLLQWMV-DDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "3-11": {
+        "a1": "MEL-TFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGK-TLAIFGDTAP-CPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKMA",
+        "a2": "MNIKTLLLITSAI-FISA-CSPYIVT-ANPNHSASKSDEKAEKIKNLF-NEVHTTGVL--V-IQQGQTQQSYG-ND-L-ARA-STEYVPASTF--KMLNALIGLE-HHKATTTEV-FK-WD-GQKRLF-PE-WE-KDMTLGDAMKASAIPVYQ-DLARRI-GLELMSKEVKRVG-YGNADIGTQVD--NFWLV-GPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSM-LFIEEKNGNKIYA-K-SGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVR-KEITYKS-L-EQLGI--L-"
+      },
       "4-5": {
         "a1": "M-ELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIG-A--GEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEAT-LDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDK-GCQHLLRECRSIFPA-TELAN--D-F----T--VFNV-",
         "a2": "MLHFTFLGTSSGVPTLSRNVSGLAVR-NSKNKDWI-LVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDEL-FIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFE-GRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETGQLLKIE"
@@ -1119,6 +1512,18 @@
         "a1": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAG-VGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV",
         "a2": "MDDRILDL-IYI-NRLKENTWFSVLLE-VFQK--FILE--HG-K-Q-I-T-FE--K-NS-YVFHAQ-DE-F--DGIY-T-VLEGSIS-LG-Y-VD-VNG-NE-AL--S-AIAE-P--IMWFGEISLIDHEPRSHDAIALKKSI-VL-H-IPA--KP--LN-ELLK-----EHPYYWYYFA-R-LTSQKLRYV-FLEQI-A-IQTRSIS-QRLAQRLLFILE-GYGNHILIQDHHIQISQEQLANML--TTSRQ--TINHELSLLEKQNIIKIAFR---K-IE-IL-DIEKL--KV-IA-Q--VHS-"
       },
+      "4-9": {
+        "a1": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDC-GE-GTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV",
+        "a2": "MSIQHFRV-ALIPF-FA-AFCLPV-FAHP-ETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLG-RRI-HYSQNDLVEYSPVTEKHL-TDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEP-ELNEAIPNDERDTTMPA-AM--ATTLRKLLTGELLTLASRQQLID-WMEADKVAGPLLRSA-LPAGWFI-ADKSGAGERGSRGIIAALGPDGK--PSRIVVIY-TTGSQATMDE-RN-RQIAEIGASL-IKHW"
+      },
+      "4-10": {
+        "a1": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDY-PLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQ-ELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAK--ANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV",
+        "a2": "MRYIRL-CIISL-LATLPL-AVHASPQ-PLEQ-IKLSESQLSGRVGMIEMDLASGR--TL-TA-WRADERFPMMSTF-KVVLCGAVLARVDAGDEQL-E-RKIHYR-QQDLVDYSPVSEKHLADGMTVGE-L-CAAAITMSDN-SAANLLLATVGGPAGLTA-FLRQIGDNVTRLDRWETELNEALP-GDARDTTTPASMAATL-RKLLTSQRLSARSQRQL-LQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERN-QQI-AGIGAAL-IEHWQQ"
+      },
+      "4-11": {
+        "a1": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYD-DKGCQHLLRECRSIFPATELANDFTVFNV",
+        "a2": "MNIKTLLLITSA-IFISACSPYIVT-ANPNHSASKSDEKAEKIKN-LFNEVHTTGVL--V-IQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVF-KWDGQKRLFPEWEKDMTLGDAM-KASAIPVYQDL-ARRIGLELMSKEVKRVGYGNADIGTQVDN-FW-L-VG-PLKITP-QQ-E-AQF-AYKLANKTLP-F--S-P-KVQ-DEVQSM-LFIEEKNGN-KIYAK-SGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVR--KEI-TYKSL-EQLGI--L"
+      },
       "5-6": {
         "a1": "MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFEGRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETGQLLKIE",
         "a2": "MV----LGKPQTDPTLEWFLSHCHIHKYPSKS-TLIHQGEKAE-TLYY--I-VKGSVAV-L--IK-DE-EG-KEMILSY-LN-QGD--F-IG--EL-GLFE-EGQ--E-R---S-AWVRAKTACEVAEISYKKFRQL--IQVN-PDI-L-MRL-SSQ--M-ARRL-QVTSEK--V-GNL--AF-LDVTGRI--AQT-L-L-N--L-A-----K-QPDAMTH--PDG-MQI-KIT-RQEI-GQI-VGCSRETVGRILKMLEDQ---NLI----S-AH-GKT----IV--V---Y-G---------------T----R--"
@@ -1131,6 +1536,18 @@
         "a1": "MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFEGRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETGQLLKIE",
         "a2": "M-DDRILDLIY-INRLKEN-TWFSVLLEVFQKFIL-EHGKQITFEKNSYVFHAQDEFDGIYTVLEGS--ISL-GYV-D--VNG-NEALSAIA-EPI-MWF---G---E--I--SL--ID-HE---PRS-HD-A-I-A--LK-K--SIV--LHIPA--KPLN-ELLKE-H-PY--YW-Y----Y---F-AR-LTSQKLRYVFLEQI-A-I--QT-R-S-ISQRLAQRLLFILEG-YGNHIL--I-Q-D-H-HIQ-ISQ--E-Q-LANM-LT-TS-R-QTINHELSLLEK-QNIIKIAFRKIEILDIEKLKVIAQ-VH-S"
       },
+      "5-9": {
+        "a1": "MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILV-DAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFEGRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETG-QLLKIE",
+        "a2": "M-SIQHFRVAL-IPFFAA-FC-LPV-FAHPETLVKVKDAEDQLGARVGYIELDL-NSGKI-LESFRPEERFPMMSTFKVLLCGAVLS-R-VDAGQE-QLGRRIHYSQNDL-VEYS-P-VTEKHLTDGMTVR-ELCSAAITMSDNT-A-A-NLLLTTIGGPKELTAFLH-NM--GDHVTRLDR-WEPEL-NEAIPNDERDTTMPAAMATTL-RKLLTGELLTLASRQ-Q-LI-D--WME-A-DKVA-GPLLRSALPAGWFIADKS--G-AGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "5-10": {
+        "a1": "MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFEGRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEF-AEQQSL-DNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETGQLLKIE",
+        "a2": "M-RYIRLCIISLLATLPLAVH--A--SPQPLEQIKLSESQ-LSGRVGMIEMDLAS--GRTLTAWRADERFPMMSTFKVVLCGA-VLARVDAGDEQLER--KIHYRQQDL-VDYS-P-VSEKHLADGMTV-GELCAAAITMSDN--S-AANLLLATVGGPAGLTAFLR-QI--GDNVTRLDR-WETEL-NEALPG-D-AR--DTTTPASMAA-TLR-KLLTSQRLSAR---SQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRD-TPASMAERNQQIAGIGAALIEHWQ-Q"
+      },
+      "5-11": {
+        "a1": "MLHFTFLGTSSGVPTLSRNVSGLAVRNSKNKDWILVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDELFIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFEGRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTLSETGQLLKIE",
+        "a2": "MNIKTLLLITSAI-FISA-CSPYIV-TA-NPNHSASKSDEKAE-KIKNLFNEVHTTGVLVIQQGQTQQSYG--NDLARA--STEYVPASTF--KMLNA-L-I-G-L-EHHKATTTEVFKW-DG-Q-KRLFPE-WEKDMTLGDAMKASAIPVY-QDLARRIGLELMSK-EVKRVG-YGNADIGTQV--DNFWLVG-P-LKITPQQ-EAQFAYKLAN-KTLPFSPK-VQDEVQSMLFIE---EKNG-NKIYAKSGWGWD-VDPQ-V-GW-LTGWVVQPQGNI--VAFSLNL-EMKKG-I-PSSVRKEITYKSLEQ-LGIL"
+      },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSSQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR",
         "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR"
@@ -1139,9 +1556,57 @@
         "a1": "M---VLGKPQTDPTLE--WF--LSHC-H--I--H-K-YP-SKSTLI-HQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSSQMARRLQ-VTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLIS-AHGK-TI--V----VYG-TR-",
         "a2": "MDDRILDLIYINRLKENTWFSVLLEVFQKFILEHGKQITFEKNSYVFHAQDEFDGIYTVLEGSISLGYVDVNGNEALSAIAEPIMWFGEISLIDH-EPRSHDAIALKKSIVLHIPAKPLNELLKEHPYYWYYFARLTSQKLRYVFLEQIA-IQTRSISQRLAQRLLFILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHELSLLEKQNIIKIAFRKIEILDIEKLKVIAQVHS"
       },
+      "6-9": {
+        "a1": "MVLGKPQTDPTLEWFLSHC-HIHKYPSKSTLIHQGE-K-AETLYYI-VK-GSVAVL--IKDEEGKEMILSY--LNQGD-F--I--G-E-LG--L-FEEGQ--ERS--A--WVR-AKTA---CEVA-EISYKKFRQ-LI-QV-NP-DI---LMRLSSQMAR--R----L-Q-V-TSEK---V-GNLA-FL-D-VTGR---IA--QTLLN-L-A-K-Q-PDAMTH-PDGMQI--KITRQEIG-Q-IVGC-SRE-TVGRILKM-LE-DQNLISAHGKTIVVYG-T--R--",
+        "a2": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "6-10": {
+        "a1": "M-------V--LGK-P---QTDP-TLEWF-LSHCHIH-K---YP-S-KS--TL-IHQG-EKAETL--YYIVK-GSVAVLI-KDEEGKEMILSYLNQG--DF--IGELGLFE--E-GQERSAWV-RA-KTACE--VAEISYKK-FRQLI-QVNPDI--LMRLSSQMARRL--QV--TSEKVGNLAFL-D-VTG-RI-A--Q-TLLN-LA--K-Q-P-DAMTHPDGMQI--KITRQEIG-Q-IV---G-CSR-ETVGRI-LK----MLEDQN-LISAHGKTIVVYGTR",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "6-11": {
+        "a1": "MVLGKPQTDPTLEWFLSHC--HI-HKYP--SKSTLIHQGEKAETLYYIVKGS-VAVLIK-D-EE--GKEMI-LS--YLNQGDF--IGEL-GL----------FE-EGQER--SAWVRAKT---ACEVAEIS-YKKF-RQL-IQVNPDILMRLSSQMAR-RLQVTS-EKVGNLAFL-DVTGRIAQTLLN--L--A-K-QPD--AM---THPDGMQI--KI-----TRQEIGQIVGCSRETVGRIL--KM-LE-DQNLISAHGKTIV---V--YGTR",
+        "a2": "MNI-KTLLLITSAIFISACSPYIVTANPNHSASKSDEKAEKIKNLFNEVHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEVKRVGYGNADIGTQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIEEKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
       "7-8": {
         "a1": "M---VLGKPQTDPTLE--WF--LSHC-H--I--H-K-YP-SKSTLI-HQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQ-VTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLIS-AHGK-TI--V----VYG-TR-",
         "a2": "MDDRILDLIYINRLKENTWFSVLLEVFQKFILEHGKQITFEKNSYVFHAQDEFDGIYTVLEGSISLGYVDVNGNEALSAIAEPIMWFGEISLIDH-EPRSHDAIALKKSIVLHIPAKPLNELLKEHPYYWYYFARLTSQKLRYVFLEQIA-IQTRSISQRLAQRLLFILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHELSLLEKQNIIKIAFRKIEILDIEKLKVIAQVHS"
+      },
+      "7-9": {
+        "a1": "MVLGKPQTDPTLEWFLSHC-HIHKYPSKSTLIHQGE-K-AETLYYI-VK-GSVAVL--IKDEEGKEMILSY--LNQGD-F--I--G-E-LG--L-FEEGQ--ERS--A--WVR-AKTA---CEVA-EISYKKFRQ-LI-QV-NP-DI---LMRLSAQMAR--R----L-Q-V-TSEK---V-GNLA-FL-D-VTGR---IA--QTLLN-L-A-K-Q-PDAMTH-PDGMQI--KITRQEIG-Q-IVGC-SRE-TVGRILKM-LE-DQNLISAHGKTIVVYG-T--R--",
+        "a2": "MSIQHFRV-ALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "7-10": {
+        "a1": "M-------V--LGK-P---QTDP-TLEWF-LSHCHIH-K---YP-S-KS--TL-IHQG-EKAETL--YYIVK-GSV-A-VLIKDE--EGK----EM-ILSY--LNQ---GD-F-IGEL---GL-FEEGQERS---AWV--RA-KTA-C-EVAE-IS-YKKFR-QLIQVNP-DIL-MRLSAQMARRL-Q-VTSEKV-G-N-LAFLD--VTGRIAQTLL-NLAKQPDAMTHPDGMQIKITRQEIGQIVGCSR-ETVGRI-LK----MLEDQN-LISAHGKTIVVYGTR",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "7-11": {
+        "a1": "MVLGKPQTDPTLEWFLSHC--HI-HKYP--SKSTLIHQGEKAETLYYIVKGS-VAVLIK-D-EE--GKEMI-LS--YLNQGDF--IGEL-GL----------FE-EGQER--SAWVRAKT---ACEVAEIS-YKKF-RQL-IQVNPDILMRLSAQMAR-RLQVTS-EKVGNLAFL-DVTGRIAQTLLN--L--A-K-QPD--AM---THPDGMQI--KI-----TRQEIGQIVGCSRETVGRIL--KM-LE-DQNLISAHGKTIV---V--YGTR",
+        "a2": "MNI-KTLLLITSAIFISACSPYIVTANPNHSASKSDEKAEKIKNLFNEVHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEVKRVGYGNADIGTQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIEEKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
+      "8-9": {
+        "a1": "MD-DRI-LDLI-YINR--LKENTWFSVLLEVFQ-KFIL-EHGKQITFEKNS-YV---FHAQDEFD--GIYTVLEGSISLGYVDVNGNEALS-AIAEPIMWFGEISLIDHEPRSHDAIALKK--SIVLHIPAK-PLNELLKE--HPYYWYYFA-RLTSQ--KL-RY-VFL-EQIAIQTR--SISQRLA-Q-R-LLF--ILE-GYGNHIL--IQ-DHHI-QISQEQL-AN-MLT-TS-R-QTINHE-LSLL--E-K-QNIIKIAFRKIE-ILDIEKLKV--I-AQ-V-HS",
+        "a2": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDA-GQEQLGRRIHYSQNDLVEYSPVT-EKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW"
+      },
+      "8-10": {
+        "a1": "MD-DR--ILDLIYINRLKENTWFSVLLEV-FQKFILE-H-GK-QITFEK-NSY-VFHAQDEFD--GIY-TVLEGSISLGYVDVNGNEALS-AIAEPIMWFGEISLIDHEPRSHD-AIA-LKKSIVLHIPAKPLNELLKE--HPYYWYYFAR-L-TS-QKL-RY-VFL-EQI---AIQTRS-ISQRLA-QRLLFI--LEGYGNHILIQ---DHHI--QISQEQL-AN-MLT--T-S-RQTINHELSLL---EK-QNIIKIAFRKIEILDIEK-LKV--I-AQ-V-H--S",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAV-LARVDA-GDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "8-11": {
+        "a1": "MDDRILDLI-YINRLKENTWFSVLLEV-FQKFIL-EHGKQI-T-F-EKNSY-VFHAQD-EFDGIY-TVL-EGS---ISLG-YVDVN---GNEALSA-IAEPIMWFGEISLI-DHEPRSHDAIALKKS-I-VLHIPAKPLN-ELL-KEHPYYWYYFARLTSQKLRYVFLEQIAI--QTRS-ISQRLAQRLL-F---ILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHELSLLEKQ-NIIKIAFR-KI-E-I-LDIEK-L--KVIAQVH-S",
+        "a2": "MNIKTLLLITSAIFISACSPYIVTANPNHSASKSDEKAEKIKNLFNEVHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELMSKEVKRVGYGNADIGTQVDNFWLVGPLKITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIEEKNGNKIYAKSGWGWDVDPQVGWLTGWVVQPQGNIVAFSLNLEMKKGIPSSVRKEITYKSLEQLGIL"
+      },
+      "9-10": {
+        "a1": "MSIQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW--",
+        "a2": "M--RYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ"
+      },
+      "9-11": {
+        "a1": "MSIQHFRVALIPFFAAFCLP--VFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIH-YSQNDLVEYSPVTE--KHLTDGMTVRELCSA-AITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDR-WEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MNIKTLLLITSAIFISACSPYIVTANPNHSASKSDEKAEKIKNL-FNEVHTTGVLVIQQGQTQQSYG-NDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLELM-S-KEVKRVGYGNADIGTQVDNFWLVGPLKITPQQEAQFAYKLA-NKTL-P-FSPK-VQ-DEVQSML-FIE-EK-NGNKIYAKSGWGWDV-DPQ-VGWL-T-GWV--VQPQGNIVAFSLNLEMKKGIPSSVR-KEITYKSLEQLGIL"
+      },
+      "10-11": {
+        "a1": "MRYIRLCII-SLLATLPLAVH-ASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLT-SQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHWQQ",
+        "a2": "MNIKTLLLITSAIFISACSPYIVTANPNHSASKSDEK-AEKIKNLFNEVHTTGVLVIQQGQTQQSYGNDLARASTEYVPASTFKMLNALIGLEHHKATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIGLEL-MSKEVKRVGYGNADIGT-QVD-NFWLVGPLK--ITPQQEAQFAYKLANKTLPFSPKVQDEVQSMLFIEEKNGNKIYAKSGWGWDVDPQVG-WLTG--WVVQPQG-NIVAFSLNLEMKKGIPSSV--R-KEIT-Y-KSLEQLGIL"
       }
     },
     "smith_waterman": {
@@ -1177,6 +1642,18 @@
         "a1": "DQRFGDLVF-RQLAPNVW",
         "a2": "DDRILDLIYINRLKENTW"
       },
+      "0-9": {
+        "a1": "GGRVLVVDTAWTDDQTAQILNWIKQEINLPVALA",
+        "a2": "GDHVTRLD-RWEPELNEAIPN-DERDTTMPAAMA"
+      },
+      "0-10": {
+        "a1": "GRVLV-VDTAWTDDQTAQILNWIKQEINLPVALAVVTHAH-QDKMGGMDALHAAGIATYANALSNQLAPQEG",
+        "a2": "GAVLARVD-A-GDEQLERKIHY-RQQ-DL-VDYSPVSEKHLADGM-TVGELCAAAITMSDNSAANLLLATVG"
+      },
+      "0-11": {
+        "a1": "GGCLIKDSKA-KSLGN-LGDADTEHYAAS",
+        "a2": "GVLVIQQGQTQQSYGNDLARASTEYVPAS"
+      },
       "1-2": {
         "a1": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "MELPNIMHPVAKLSTALAAALMLSGCMPGEIRPTIGQQMET-----GDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR"
@@ -1205,6 +1682,18 @@
         "a1": "DQRFGDLVF-RQLAPNVW",
         "a2": "DDRILDLIYINRLKENTW"
       },
+      "1-9": {
+        "a1": "AAALMLSGCMPGEIRPTIGQQMETGDQRFGDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDG",
+        "a2": "AMATTLRKLLTGELL-TLASRQQLIDWMEADKVAGPLL-RSALPAGW-FIA--DKSGAGERGSRGIIAALG"
+      },
+      "1-10": {
+        "a1": "GRVLV-VDTAWTDDQTAQILNWIKQEINLPVALAVVTHAH-QDKMGGMDALHAAGIATYANALSNQLAPQEG",
+        "a2": "GAVLARVD-A-GDEQLERKIHY-RQQ-DL-VDYSPVSEKHLADGM-TVGELCAAAITMSDNSAANLLLATVG"
+      },
+      "1-11": {
+        "a1": "GGCLIKDSKA-KSLGN-LGDADTEHYAAS",
+        "a2": "GVLVIQQGQTQQSYGNDLARASTEYVPAS"
+      },
       "2-3": {
         "a1": "VTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVE-PATAPNFGPLKVF",
         "a2": "ITHLHGDHLFGLPGL-LCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVF"
@@ -1229,6 +1718,18 @@
         "a1": "DQRFGDLVF-RQLAPNVW",
         "a2": "DDRILDLIYINRLKENTW"
       },
+      "2-9": {
+        "a1": "AAALMLSGCMPGEIRPTIGQQMETGDQRFGDLVFRQLAPNVWQHTSYL-DMPGFGAVASNGLIVRDG",
+        "a2": "AMATTLRKLLTGELL-TLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALG"
+      },
+      "2-10": {
+        "a1": "GRVLV-VDTAWTDDQTAQILNWIKQEINLPVALAVVTHAH-QDKMGGMDALHAAGIATYANALSNQLAPQEG",
+        "a2": "GAVLARVD-A-GDEQLERKIHY-RQQ-DL-VDYSPVSEKHLADGM-TVGELCAAAITMSDNSAANLLLATVG"
+      },
+      "2-11": {
+        "a1": "GGCLIKDSKA-KSLGN-LGDADTEHYAAS",
+        "a2": "GVLVIQQGQTQQSYGNDLARASTEYVPAS"
+      },
       "3-4": {
         "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKM",
         "a2": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV"
@@ -1249,6 +1750,18 @@
         "a1": "LEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTL-LAEDFMVYKMA",
         "a2": "LEQ-IAIQTRSISQRLAQRLLFILEGYGNHILIQDH-HIQISQEQLANMLTTSRQTINHELSLLEKQNIIKIA"
       },
+      "3-9": {
+        "a1": "SRSMQGNSLPLTLYGPKGLKEFV",
+        "a2": "SDNTAANLLLTTIGGPKELTAFL"
+      },
+      "3-10": {
+        "a1": "LCSRSMQGNSLPLTLY-GPKGLKEFVETALRLSG",
+        "a2": "LCIISLLA-TLPLAVHASPQPLEQIKLSESQLSG"
+      },
+      "3-11": {
+        "a1": "TLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARG",
+        "a2": "TLPFSPKVQDEV-QSMLFIEEKNGNKIYAKSGWGWDVDPQVGWLT-GWVVQPQGNIVAFSLNLEMKKG"
+      },
       "4-5": {
         "a1": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIG-A--GEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEAT-LDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDK-GCQHLLRECRSIFPA-TELANDFTVFNV",
         "a2": "LHFTFLGTSSGVPTLSRNVSGLAVR-NSKNKDWI-LVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDVNEATQPQQLTDEL-FIQAHPLSHRVPSFAFSIYIKSTQKKIDIQALTQLGVPKGDIWGHLKRGYDVEFE-GRVLKSQDFIKIQNQQIHAIIGGDNDRPELLADACKDAQLLIHEATYLQTVLDKVGKGPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEEVRQFYKGHFYLANDFDEFTL"
@@ -1265,6 +1778,18 @@
         "a1": "KLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYG",
         "a2": "EFDGIY-TVLEGSISLGYVDVNGNEALSAIAEPIMWFG"
       },
+      "4-9": {
+        "a1": "RNVTAILLNL-QHPTQSGLW",
+        "a2": "KELTAFLHNMGDHVTRLDRW"
+      },
+      "4-10": {
+        "a1": "LCSRSMSGIIQPLTIY-GPQGIREFVETALRISG",
+        "a2": "LCIISLLATL-PLAVHASPQPLEQIKLSESQLSG"
+      },
+      "4-11": {
+        "a1": "VPTRTRNVTAILLNLQH",
+        "a2": "VPASTFKMLNALIGLEH"
+      },
       "5-6": {
         "a1": "IKIQNQQIHAIIGGDNDRPELLADACKDAQLL-IHEAT",
         "a2": "IKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKT"
@@ -1277,6 +1802,18 @@
         "a1": "HGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPY-SLQFIDVNEATQPQQLTDE-LFI",
         "a2": "HEPRSHDAIALKKSIVLHIPAKPLNELLKEHPYYWYYF-ARLTSQKLRYVFLEQIAIQTRSISQRLAQRLLFI"
       },
+      "5-9": {
+        "a1": "ASAGMNARNNPLIVIAPKEIQQW",
+        "a2": "SQATMDERNRQIAEIGASLIKHW"
+      },
+      "5-10": {
+        "a1": "GLVGLLASAGMNARNNPLIVI",
+        "a2": "GARGIVALLGPNNKAERIVVI"
+      },
+      "5-11": {
+        "a1": "GPMHSSAKMVAEFAEQQSLDNLILTHFSPRHQDKTGQQAITEE",
+        "a2": "GPLKITPQQEAQFA-YK-LANKTLP-FSPKVQDEVQSMLFIEE"
+      },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSSQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR",
         "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR"
@@ -1285,9 +1822,57 @@
         "a1": "EWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSSQMARRLQ-VTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLI",
         "a2": "KFILEHGKQITFEKNSYVFHAQDEFDGIYTVLEGSISLGYVDVNGNEALSAIAEPIMWFGEISLIDH-EPRSHDAIALKKSIVLHIPAKPLNELLKEHPYYWYYFARLTSQKLRYVFLEQIA-IQTRSISQRLAQRLLFILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHELSLLEKQNII"
       },
+      "6-9": {
+        "a1": "HPDGM-QIKITRQEIGQIVG",
+        "a2": "HPETLVKVKDAEDQLGARVG"
+      },
+      "6-10": {
+        "a1": "KGSVAVLIKDEEGKEMILSYL",
+        "a2": "RGIVALLGPNNKAERIVVIYL"
+      },
+      "6-11": {
+        "a1": "KDEEGKEMILSYLNQGDFIGELGLFEEGQERSAW",
+        "a2": "KSDEKAEKIKNLFNEVHTTGVL-VIQQGQTQQSY"
+      },
       "7-8": {
         "a1": "EWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQ-VTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLI",
         "a2": "KFILEHGKQITFEKNSYVFHAQDEFDGIYTVLEGSISLGYVDVNGNEALSAIAEPIMWFGEISLIDH-EPRSHDAIALKKSIVLHIPAKPLNELLKEHPYYWYYFARLTSQKLRYVFLEQIA-IQTRSISQRLAQRLLFILEGYGNHILIQDHHIQISQEQLANMLTTSRQTINHELSLLEKQNII"
+      },
+      "7-9": {
+        "a1": "HPDGM-QIKITRQEIGQIVG",
+        "a2": "HPETLVKVKDAEDQLGARVG"
+      },
+      "7-10": {
+        "a1": "KGSVAVLIKDEEGKEMILSYL",
+        "a2": "RGIVALLGPNNKAERIVVIYL"
+      },
+      "7-11": {
+        "a1": "KDEEGKEMILSYLNQGDFIGELGLFEEGQERSAW",
+        "a2": "KSDEKAEKIKNLFNEVHTTGVL-VIQQGQTQQSY"
+      },
+      "8-9": {
+        "a1": "ANMLTTSRQTINHE-LSLLEKQNII",
+        "a2": "AAMATTLRKLLTGELLTLASRQQLI"
+      },
+      "8-10": {
+        "a1": "LEQIAIQTRSISQRL",
+        "a2": "LEQIKLSESQLSGRV"
+      },
+      "8-11": {
+        "a1": "QRLLFILEGYGNHI",
+        "a2": "QSMLFIEEKNGNKI"
+      },
+      "9-10": {
+        "a1": "IQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHW"
+      },
+      "9-11": {
+        "a1": "KLLTGELLTLASRQQLI-DWMEADKVAGPLLR-SALPAGWFIADKSG",
+        "a2": "KATTTEVFKWDGQKRLFPEW-EKDMTLGDAMKASAIPVYQDLARRIG"
+      },
+      "10-11": {
+        "a1": "KLLTSQRLSARSQRQLL-QWMVDDRVAGPLIRSVLPAGWFIADKTG",
+        "a2": "KATTTEVFKWDGQKRLFPEWEKDMTLGDAMKASAIPVYQDLARRIG"
       }
     },
     "mini_blast": {
@@ -1323,6 +1908,18 @@
         "a1": "GEI",
         "a2": "GEI"
       },
+      "0-9": {
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
+      },
+      "0-10": {
+        "a1": "HTSDNITVG",
+        "a2": "HLADGMTVG"
+      },
+      "0-11": {
+        "a1": "GPLKV",
+        "a2": "GPLKI"
+      },
       "1-2": {
         "a1": "GDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR",
         "a2": "GDQRFGDLVFRQLAPNVWQHTSYLDMPGFGAVASNGLIVRDGGRVLVVDTAWTDDQTAQILNWIKQEINLPVALAVVTHAHQDKMGGMDALHAAGIATYANALSNQLAPQEGMVAAQHSLTFAANGWVEPATAPNFGPLKVFYPGPGHTSDNITVGIDGTDIAFGGCLIKDSKAKSLGNLGDADTEHYAASARAFGAAFPKASMIVMSHSAPDSRAAITHTARMADKLR"
@@ -1351,6 +1948,18 @@
         "a1": "GEI",
         "a2": "GEI"
       },
+      "1-9": {
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
+      },
+      "1-10": {
+        "a1": "HTSDNITVG",
+        "a2": "HLADGMTVG"
+      },
+      "1-11": {
+        "a1": "GPLKV",
+        "a2": "GPLKI"
+      },
       "2-3": {
         "a1": "PLKVFYPGPGHTSD",
         "a2": "PLTIIEVGPGLVFD"
@@ -1375,6 +1984,18 @@
         "a1": "GEI",
         "a2": "GEI"
       },
+      "2-9": {
+        "a1": "EHYAASARAFGAAF",
+        "a2": "QHFRVALIPFFAAF"
+      },
+      "2-10": {
+        "a1": "HTSDNITVG",
+        "a2": "HLADGMTVG"
+      },
+      "2-11": {
+        "a1": "GPLKV",
+        "a2": "GPLKI"
+      },
       "3-4": {
         "a1": "MELTFLGTSAGVPTRTRNMTSIILNLQQPTRAEMWLFDCGEGTQHQFLHTPYHPGKLNKIFITHLHGDHLFGLPGLLCSRSMQGNSLPLTLYGPKGLKEFVETALRLSGSWTDYPLTIIEVGPGLVFDEEGYRVTAYPLSHPVECYGYRIAQHDKPGTLDAAQLIADGVPPGPLFHQLKRGQRVELADGRVIDGSRYLGPSTPGKTLAIFGDTAPCPQALEMARGADVMVHETTLEQAMAEKANSRGHSSSQQTAALAKEAGVGTLIATHFSSRYDAEGCLRMLAECREIFPNTLLAEDFMVYKM",
         "a2": "MELIFLGTSAGVPTRTRNVTAILLNLQHPTQSGLWLFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEIGAGEILDDGLRKVTAYPLEHPLECYGYRIEEHDKPGALNAQALKAAGVPPGPLFQELKAGKTITLEDGRQINGADYLAAPVPGKALAIFGDTGPCDAALDLAKGVDVMVHEATLDITMEAKANSRGHSSTRQAATLAREAGVGKLIITHVSSRYDDKGCQHLLRECRSIFPATELANDFTVFNV"
@@ -1395,6 +2016,18 @@
         "a1": "LVFDEEGY",
         "a2": "LLFILEGY"
       },
+      "3-9": {
+        "a1": "SRSMQGNSLPLTLYGPKGLKEFV",
+        "a2": "SDNTAANLLLTTIGGPKELTAFL"
+      },
+      "3-10": {
+        "a1": "IADGVPPGPL",
+        "a2": "LADGMTVGEL"
+      },
+      "3-11": {
+        "a1": "NMTSIILNLQ",
+        "a2": "NIVAFSLNLE"
+      },
       "4-5": {
         "a1": "LFDCGEGTQHQLLHTAFNPGKLDKIFISHLHGDHLFGLPGLLCSRSMSGIIQPLTIYGPQGIREFVETALRISGSWTDYPLEIVEI",
         "a2": "LVDAGEGTQHRIQQARLSLQNLIAICITHVHGDHCYGLVGLLASAGMNARNNPLIVIAPKEIQQWFEITAQLTDLHLPYSLQFIDV"
@@ -1411,6 +2044,18 @@
         "a1": "EILDDGLRKVTA",
         "a2": "EILDIEKLKVIA"
       },
+      "4-9": {
+        "a1": "EIVEIGAGEI",
+        "a2": "QIAEIGASLI"
+      },
+      "4-10": {
+        "a1": "PLEIVEIGAGEI",
+        "a2": "PLEQIKLSESQL"
+      },
+      "4-11": {
+        "a1": "NVTAILLNLQ",
+        "a2": "NIVAFSLNLE"
+      },
       "5-6": {
         "a1": "IKIQNQQIHAIIGGDNDRPELLADACKDAQLL",
         "a2": "IKITRQEIGQIVGCSRETVGRILKMLEDQNLI"
@@ -1423,6 +2068,18 @@
         "a1": "VEFEGRVLKSQDFIKIQNQQIHAI",
         "a2": "INHELSLLEKQNIIKIAFRKIEIL"
       },
+      "5-9": {
+        "a1": "HVHGDH",
+        "a2": "HNMGDH"
+      },
+      "5-10": {
+        "a1": "QNQQIHAI",
+        "a2": "RNQQIAGI"
+      },
+      "5-11": {
+        "a1": "STQKKIDIQALTQLGV",
+        "a2": "SVRKEITYKSLEQLGI"
+      },
       "6-7": {
         "a1": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSSQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR",
         "a2": "MVLGKPQTDPTLEWFLSHCHIHKYPSKSTLIHQGEKAETLYYIVKGSVAVLIKDEEGKEMILSYLNQGDFIGELGLFEEGQERSAWVRAKTACEVAEISYKKFRQLIQVNPDILMRLSAQMARRLQVTSEKVGNLAFLDVTGRIAQTLLNLAKQPDAMTHPDGMQIKITRQEIGQIVGCSRETVGRILKMLEDQNLISAHGKTIVVYGTR"
@@ -1431,9 +2088,57 @@
         "a1": "QNLISAHGKTI",
         "a2": "QKFILEHGKQI"
       },
+      "6-9": {
+        "a1": "AVLIKDEEGKEMI",
+        "a2": "AVLSRVDAGQEQL"
+      },
+      "6-10": {
+        "a1": "QIKITRQEIGQIVG",
+        "a2": "QIKLSESQLSGRVG"
+      },
+      "6-11": {
+        "a1": "IKITRQEIGQ",
+        "a2": "LKITPQQEAQ"
+      },
       "7-8": {
         "a1": "QNLISAHGKTI",
         "a2": "QKFILEHGKQI"
+      },
+      "7-9": {
+        "a1": "AVLIKDEEGKEMI",
+        "a2": "AVLSRVDAGQEQL"
+      },
+      "7-10": {
+        "a1": "RLSAQMARRL",
+        "a2": "RLSARSQRQL"
+      },
+      "7-11": {
+        "a1": "IKITRQEIGQ",
+        "a2": "LKITPQQEAQ"
+      },
+      "8-9": {
+        "a1": "IQISQEQLANMLTTSRQTINHELSLLEK",
+        "a2": "VDAGQEQLGRRIHYSQNDLVEYSPVTEK"
+      },
+      "8-10": {
+        "a1": "LEQIAIQTRSISQRL",
+        "a2": "LEQIKLSESQLSGRV"
+      },
+      "8-11": {
+        "a1": "QRLLFILEGYGNHI",
+        "a2": "QSMLFIEEKNGNKI"
+      },
+      "9-10": {
+        "a1": "IQHFRVALIPFFAAFCLPVFAHPETLVKVKDAEDQLGARVGYIELDLNSGKILESFRPEERFPMMSTFKVLLCGAVLSRVDAGQEQLGRRIHYSQNDLVEYSPVTEKHLTDGMTVRELCSAAITMSDNTAANLLLTTIGGPKELTAFLHNMGDHVTRLDRWEPELNEAIPNDERDTTMPAAMATTLRKLLTGELLTLASRQQLIDWMEADKVAGPLLRSALPAGWFIADKSGAGERGSRGIIAALGPDGKPSRIVVIYTTGSQATMDERNRQIAEIGASLIKHW",
+        "a2": "MRYIRLCIISLLATLPLAVHASPQPLEQIKLSESQLSGRVGMIEMDLASGRTLTAWRADERFPMMSTFKVVLCGAVLARVDAGDEQLERKIHYRQQDLVDYSPVSEKHLADGMTVGELCAAAITMSDNSAANLLLATVGGPAGLTAFLRQIGDNVTRLDRWETELNEALPGDARDTTTPASMAATLRKLLTSQRLSARSQRQLLQWMVDDRVAGPLIRSVLPAGWFIADKTGAGERGARGIVALLGPNNKAERIVVIYLRDTPASMAERNQQIAGIGAALIEHW"
+      },
+      "9-11": {
+        "a1": "RVGYIELDLNS",
+        "a2": "RVGYGNADIGT"
+      },
+      "10-11": {
+        "a1": "RADERFPMMSTFKVV",
+        "a2": "RASTEYVPASTFKML"
       }
     }
   },
@@ -1446,7 +2151,8 @@ const DATA = JSON.parse(document.getElementById('resultsData').textContent);
 const CLASS_COLOR = {
   LACTAMASE: '#2e7d6b',
   TRNASE_Z: '#4a5f9e',
-  TF: '#b5651d'
+  TF: '#b5651d',
+  SERINE_LACTAMASE: '#6b4c8a'
 };
 
 const ALGOS = [
@@ -1458,8 +2164,12 @@ const ALGOS = [
 let currentAlgo = 'needleman_wunsch';
 
 // -------- placeholder notice --------
-if (DATA.species.some(s => s.includes('PLACEHOLDER'))) {
-  document.getElementById('placeholderNotice').style.display = 'block';
+const placeholderIdx = DATA.is_placeholder ? DATA.is_placeholder.map((p, i) => p ? i : -1).filter(i => i >= 0) : [];
+if (placeholderIdx.length > 0) {
+  const notice = document.getElementById('placeholderNotice');
+  notice.style.display = 'block';
+  const names = placeholderIdx.map(i => `${DATA.classes[i]} · ${DATA.species[i].replace(/_/g, ' ')}`).join(', ');
+  notice.querySelector('.placeholder-list').textContent = names;
 }
 
 // -------- color scale for heatmap cells --------
